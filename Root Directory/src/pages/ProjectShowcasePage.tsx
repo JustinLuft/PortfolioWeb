@@ -51,7 +51,7 @@ const projects: Project[] = [
   },
   {
     id: 3,
-    name: "SubMachine App",
+    name: "SubMachine Ap",
     description: "Designed and prototyped a fast-food ordering application as a semester-long software engineering project, emphasizing intuitive user interface and functional design.",
     skills: ["Prototype Development", "UI/UX", "Mobile Design"],
     githubLink: "https://github.com/justinluft/submachine-app",
