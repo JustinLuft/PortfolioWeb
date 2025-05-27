@@ -38,13 +38,14 @@ const AboutPage: React.FC = () => {
 
   const professionalExperience = [
     {
-      company: "Tech Innovations Lab",
-      role: "Software Development Intern",
-      period: "Summer 2023",
+      company: "College of Charleston",
+      role: "Capstone Project Developer",
+      period: "Spring 2024",
       responsibilities: [
-        "Developed scalable web applications",
-        "Implemented machine learning algorithms",
-        "Collaborated in agile development environments"
+        "Collaborated with a team to develop a full-stack photo booth experience for the college",
+        "Completed 5 two-week sprints using Agile Scrum methodologies",
+        "Delivered a working solution involving user input, media processing, and automated email delivery",
+        "Utilized GitHub for version control and collaborative development"
       ]
     }
   ];
@@ -119,7 +120,7 @@ const AboutPage: React.FC = () => {
                 </div>
                 <p className="mt-4">{personalInfo.summary}</p>
               </div>
-              <div className="mt-6 flex space-x-4">
+              <div className="mt-6 flex flex-wrap items-center gap-4">
                 {socialLinks.map((link) => (
                   <motion.a
                     key={link.label}
@@ -135,7 +136,7 @@ const AboutPage: React.FC = () => {
                 <Button 
                   variant="outline" 
                   onClick={downloadResume}
-                  className="ml-auto font-press-start text-primary border-primary hover:bg-primary/20"
+                  className="font-press-start text-primary border-primary hover:bg-primary/20"
                 >
                   <Briefcase className="mr-2 w-4 h-4" /> Download Resume
                 </Button>
