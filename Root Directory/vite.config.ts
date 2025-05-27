@@ -27,12 +27,12 @@ export default defineConfig({
       },
     },
     sourcemap: true,
-    // ✅ Use default esbuild minification (fastest)
-    // ✅ Don't set minify or terserOptions at all
+    // use default esbuild minification
   },
   preview: {
-  port: Number(process.env.PORT) || 3000,
-  host: true,
+    port: Number(process.env.PORT) || 3000,
+    host: true,
+    allowedHosts: ['portfolioweb-k020.onrender.com'], // Add your Render hostname here
   },
   optimizeDeps: {
     include: [
