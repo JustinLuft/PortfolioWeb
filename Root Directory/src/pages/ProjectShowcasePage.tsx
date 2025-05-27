@@ -51,7 +51,7 @@ const projects: Project[] = [
   },
   {
     id: 3,
-    name: "SubMachine Ap",
+    name: "SubMachine App",
     description: "Designed and prototyped a fast-food ordering application as a semester-long software engineering project, emphasizing intuitive user interface and functional design.",
     skills: ["Prototype Development", "UI/UX", "Mobile Design"],
     githubLink: "https://github.com/justinluft/submachine-app",
@@ -109,7 +109,7 @@ const ProjectShowcasePage: React.FC = () => {
         return (
           <div>
             <h3 className="font-press-start text-lg mb-2 text-primary">Project Overview</h3>
-            <p className="font-vt323 text-primary/80">{selectedProject.description}</p>
+            <p className="font-vt323 text-lg md:text-xl text-primary/80">{selectedProject.description}</p>
           </div>
         );
       case 'technologies':
