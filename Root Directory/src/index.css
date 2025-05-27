@@ -5,7 +5,7 @@
 @layer utilities {
   .terminal-line {
     @apply opacity-80 text-primary font-mono tracking-wider leading-relaxed;
-    text-shadow: 0 0 5px theme('colors.primary');
+    text-shadow: 0 0 5px #00FFD1; /* Tailwind doesn't support `theme()` in raw CSS */
   }
 
   .scanline {
@@ -17,21 +17,13 @@
     pointer-events: none;
     animation: scanline 7.5s linear infinite;
   }
-}
 
-/* Optional: Add a class for grid overlays if you're using cyberpunk-style backgrounds */
-@layer utilities {
-  .bg-grid-subtle {
-    background-image: linear-gradient(
-        to right,
-        rgba(0, 255, 209, 0.05) 1px,
-        transparent 1px
-      ),
-      linear-gradient(
-        to bottom,
-        rgba(0, 255, 209, 0.05) 1px,
-        transparent 1px
-      );
-    background-size: 32px 32px;
+  @keyframes scanline {
+    0% {
+      background-position: 0 -100%;
+    }
+    35%, 100% {
+      background-position: 0 100%;
+    }
   }
 }
