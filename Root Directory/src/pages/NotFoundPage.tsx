@@ -18,40 +18,6 @@ const NotFound: React.FC = () => {
     );
   }, [location.pathname]);
 
-  const glitchVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.5,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const glitchTextVariants = {
-    initial: { 
-      opacity: 0,
-      x: -20,
-      textShadow: '0 0 0 transparent'
-    },
-    animate: { 
-      opacity: 1, 
-      x: 0,
-      textShadow: [
-        '2px 2px 0px rgba(255,0,0,0.5)',
-        '2px -2px 0px rgba(0,255,255,0.5)',
-        '0 0 5px rgba(255,255,255,0.2)'
-      ],
-      transition: {
-        duration: 0.3,
-        repeat: Infinity,
-        repeatType: "reverse"
-      }
-    }
-  };
-
   return (
     <div className="relative min-h-screen bg-background overflow-hidden">
       {/* Cyberpunk Background Effects */}
@@ -74,13 +40,26 @@ const NotFound: React.FC = () => {
 
       {/* Content Container */}
       <motion.div 
-        initial="initial"
-        animate="animate"
-        variants={glitchVariants}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0, transition: { duration: 0.5, staggerChildren: 0.1 } }}
         className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4"
       >
         <motion.div 
-          variants={glitchTextVariants} 
+          initial={{ opacity: 0, x: -20, textShadow: '0 0 0 transparent' }}
+          animate={{ 
+            opacity: 1, 
+            x: 0,
+            textShadow: [
+              '2px 2px 0px rgba(255,0,0,0.5)',
+              '2px -2px 0px rgba(0,255,255,0.5)',
+              '0 0 5px rgba(255,255,255,0.2)'
+            ],
+            transition: {
+              duration: 0.3,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }
+          }}
           className="text-center"
         >
           <motion.h1 
@@ -94,14 +73,42 @@ const NotFound: React.FC = () => {
           </motion.h1>
           
           <motion.h2 
-            variants={glitchTextVariants}
+            initial={{ opacity: 0, x: -20, textShadow: '0 0 0 transparent' }}
+            animate={{ 
+              opacity: 1, 
+              x: 0,
+              textShadow: [
+                '2px 2px 0px rgba(255,0,0,0.5)',
+                '2px -2px 0px rgba(0,255,255,0.5)',
+                '0 0 5px rgba(255,255,255,0.2)'
+              ],
+              transition: {
+                duration: 0.3,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }
+            }}
             className="text-3xl font-press-start text-primary mb-6"
           >
             SYSTEM BREACH DETECTED
           </motion.h2>
           
           <motion.p 
-            variants={glitchTextVariants}
+            initial={{ opacity: 0, x: -20, textShadow: '0 0 0 transparent' }}
+            animate={{ 
+              opacity: 1, 
+              x: 0,
+              textShadow: [
+                '2px 2px 0px rgba(255,0,0,0.5)',
+                '2px -2px 0px rgba(0,255,255,0.5)',
+                '0 0 5px rgba(255,255,255,0.2)'
+              ],
+              transition: {
+                duration: 0.3,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }
+            }}
             className="text-xl font-vt323 text-primary/80 mb-8 max-w-md mx-auto"
           >
             Unauthorized route access. The requested path 
@@ -114,7 +121,8 @@ const NotFound: React.FC = () => {
 
         {/* Action Buttons */}
         <motion.div 
-          variants={glitchVariants}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0, transition: { duration: 0.5, staggerChildren: 0.1 } }}
           className="flex space-x-4"
         >
           <Button 
@@ -125,14 +133,14 @@ const NotFound: React.FC = () => {
             <RefreshCw className="mr-2" /> Reload System
           </Button>
           
-          <Button 
-            variant="outline" 
-            className="flex items-center gap-2 border-secondary text-secondary hover:bg-secondary/10"
-            as={Link}
-            to="/"
-          >
-            <Home className="mr-2" /> Return to Home
-          </Button>
+          <Link to="/">
+            <Button 
+              variant="outline" 
+              className="flex items-center gap-2 border-secondary text-secondary hover:bg-secondary/10"
+            >
+              <Home className="mr-2" /> Return to Home
+            </Button>
+          </Link>
         </motion.div>
       </motion.div>
 
