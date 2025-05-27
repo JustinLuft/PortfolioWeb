@@ -1,4 +1,3 @@
-```tsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -264,4 +263,3 @@ const ProjectShowcasePage: React.FC = () => {
 };
 
 export default ProjectShowcasePage;
-```

@@ -1,4 +1,3 @@
-```json
 {
   "compilerOptions": {
     "target": "ES2020",
@@ -25,23 +24,13 @@
       "@hooks/*": ["./src/hooks/*"],
       "@types/*": ["./src/types/*"],
       "@styles/*": ["./src/styles/*"]
-    },
-    "types": [
-      "node",
-      "vite/client",
-      "react",
-      "react-dom",
-      "react-router-dom",
-      "framer-motion"
-    ]
+    }
   },
   "include": [
     "src",
-    "src/**/*.ts", 
+    "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "vite.config.ts"
+    "src/**/*.tsx"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
-```

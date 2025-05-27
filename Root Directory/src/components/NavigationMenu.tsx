@@ -1,4 +1,3 @@
-```tsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CirclePower, Code, UserRound, Folder } from 'lucide-react';

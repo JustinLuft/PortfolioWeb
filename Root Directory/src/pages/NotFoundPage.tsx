@@ -1,4 +1,3 @@
-```tsx
 import React, { useEffect } from 'react';
 import { useLocation, Link } from "react-router-dom";
 import { motion } from 'framer-motion';
@@ -151,4 +150,3 @@ const NotFound: React.FC = () => {
 };
 
 export default NotFound;
-```

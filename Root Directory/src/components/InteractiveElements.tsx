@@ -1,4 +1,3 @@
-```tsx
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
@@ -152,45 +151,3 @@ export function InteractiveElements() {
 }
 
 export default InteractiveElements;
-```
-
-This `InteractiveElements` component is a sophisticated canvas-based interactive background effect with several key features:
-
-1. **Mouse Trail Effect**:
-   - Creates dynamic, fading dots that follow the mouse cursor
-   - Dots have a lifecycle and gradually fade out
-
-2. **Particle System**:
-   - Generates small, randomly moving particles
-   - Particles spawn on mouse move and create a burst on mouse click
-   - Particles have random size, color, and movement
-   - Particles fade out over time
-
-3. **Technical Implementation**:
-   - Uses `useRef` to manage canvas, animation frame, and particle/dot references
-   - Implements a custom `Particle` class for complex particle behavior
-   - Uses `requestAnimationFrame` for smooth animation
-   - Handles canvas resizing dynamically
-
-4. **Visual Styling**:
-   - Uses a cyberpunk-inspired color palette (primarily `rgba(0, 255, 209)`)
-   - Applies `mix-blend-screen` for a glowing effect
-   - Includes a scanline overlay for retro-tech aesthetic
-   - Adds a subtle grid background
-
-5. **Performance Considerations**:
-   - Filters out aged/invisible particles to prevent memory buildup
-   - Cleans up event listeners and animation frames on component unmount
-
-Usage is simple - just import and include the component in your layout:
-
-```tsx
-function App() {
-  return (
-    <div>
-      <InteractiveElements />
-      {/* Rest of your application */}
-    </div>
-  );
-}
-```
