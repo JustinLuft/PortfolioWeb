@@ -10,7 +10,6 @@ import {
   Camera 
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 
 interface Project {
   id: number;
@@ -36,7 +35,6 @@ const projects: Project[] = [
     fullDetails: {
       technologies: ["React", "TypeScript", "Node.js", "Express"],
       challenges: ["Real-time photo processing", "User experience design", "Team coordination"],
-      learnings: ["Agile methodology", "Collaborative software development", "UI/UX principles"]
     }
   },
   {
@@ -49,7 +47,6 @@ const projects: Project[] = [
     fullDetails: {
       technologies: ["Python", "BeautifulSoup", "SQLite", "Pandas"],
       challenges: ["Data extraction", "Parsing complex web structures", "Data normalization"],
-      learnings: ["Web scraping techniques", "Data cleaning", "Database management"]
     }
   },
   {
@@ -62,7 +59,6 @@ const projects: Project[] = [
     fullDetails: {
       technologies: ["Figma", "React Native", "Firebase"],
       challenges: ["User interface design", "State management", "Prototype iteration"],
-      learnings: ["Mobile app design", "Prototyping tools", "User-centered design"]
     }
   },
   {
@@ -75,7 +71,6 @@ const projects: Project[] = [
     fullDetails: {
       technologies: ["Python", "NumPy", "Scikit-learn"],
       challenges: ["Algorithm implementation", "Mathematical modeling", "Performance optimization"],
-      learnings: ["Machine learning fundamentals", "Linear algebra", "Computational efficiency"]
     }
   },
   {
@@ -88,7 +83,6 @@ const projects: Project[] = [
     fullDetails: {
       technologies: ["Java", "JUnit", "Performance Profiling"],
       challenges: ["Algorithm complexity", "Performance measurement", "Comparative analysis"],
-      learnings: ["Algorithmic efficiency", "Computational complexity", "Benchmarking techniques"]
     }
   },
   {
@@ -101,14 +95,13 @@ const projects: Project[] = [
     fullDetails: {
       technologies: ["C", "POSIX Threads", "Semaphores"],
       challenges: ["Deadlock prevention", "Race condition mitigation", "Synchronization"],
-      learnings: ["Concurrent programming", "Low-level system interactions", "Thread management"]
     }
   }
 ];
 
 const ProjectShowcasePage: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project>(projects[0]);
-  const [activeTab, setActiveTab] = useState<'overview' | 'technologies' | 'challenges' | 'learnings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'technologies' | 'challenges'>('overview');
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -142,17 +135,6 @@ const ProjectShowcasePage: React.FC = () => {
             <ul className="list-disc list-inside font-vt323 text-primary/80">
               {selectedProject.fullDetails.challenges.map((challenge, index) => (
                 <li key={index}>{challenge}</li>
-              ))}
-            </ul>
-          </div>
-        );
-      case 'learnings':
-        return (
-          <div>
-            <h3 className="font-press-start text-lg mb-2 text-primary">Key Learnings</h3>
-            <ul className="list-disc list-inside font-vt323 text-primary/80">
-              {selectedProject.fullDetails.learnings.map((learning, index) => (
-                <li key={index}>{learning}</li>
               ))}
             </ul>
           </div>
@@ -221,7 +203,7 @@ const ProjectShowcasePage: React.FC = () => {
 
             {/* Tab Navigation */}
             <div className="flex mb-6 border-b border-primary/20">
-              {['overview', 'technologies', 'challenges', 'learnings'].map((tab) => (
+              {['overview', 'technologies', 'challenges'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab as any)}
