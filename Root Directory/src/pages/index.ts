@@ -35,12 +35,11 @@ const LandingPage: FC = () => {
       terminalWelcomeSequence.forEach((line, index) => {
         setTimeout(() => {
           setTerminalLines(prev => [...prev, line]);
-          
-          // Set system ready after last line with a shorter delay
+
           if (index === terminalWelcomeSequence.length - 1) {
             setTimeout(() => setIsSystemReady(true), 300);
           }
-        }, 250 * (index + 1)); // Reduced delay between lines
+        }, 250 * (index + 1));
       });
     };
 
@@ -75,13 +74,13 @@ const LandingPage: FC = () => {
               key={index} 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2 }} // Faster transition
+              transition={{ duration: 0.2 }}
               dangerouslySetInnerHTML={{ __html: line }}
               className="terminal-line"
             />
           ))}
         </div>
-        
+
         {/* Scanline and CRT Effect */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />
@@ -96,7 +95,7 @@ const LandingPage: FC = () => {
           className="text-4xl md:text-6xl font-press-start text-primary text-center mb-8 text-glitch"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: isSystemReady ? 1 : 0, y: isSystemReady ? 0 : 20 }}
-          transition={{ duration: 0.5 }} // Slightly faster fade-in
+          transition={{ duration: 0.5 }}
         >
           CYBER DEV
         </motion.h1>
@@ -105,7 +104,7 @@ const LandingPage: FC = () => {
           className="text-xl md:text-2xl font-vt323 text-primary mb-12 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: isSystemReady ? 1 : 0 }}
-          transition={{ delay: 0.3 }} // Reduced delay
+          transition={{ delay: 0.3 }}
         >
           Welcome to the digital frontier
         </motion.p>
@@ -114,7 +113,7 @@ const LandingPage: FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }} // Slightly reduced delay
+            transition={{ delay: 0.5 }}
           >
             <div className="flex gap-8 mb-12">
               {socialLinks.map((link, index) => (
@@ -136,16 +135,6 @@ const LandingPage: FC = () => {
             </div>
           </motion.div>
         )}
-
-        {/* Mouse Trail Effect */}
-        <motion.div
-          className="pointer-events-none fixed top-0 left-0 w-6 h-6 rounded-full bg-primary/50 mix-blend-screen"
-          animate={{
-            x: mousePosition.x - 12,
-            y: mousePosition.y - 12,
-          }}
-          transition={{ duration: 0.1 }}
-        />
       </div>
     </div>
   );
