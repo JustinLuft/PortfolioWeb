@@ -196,7 +196,7 @@ const ProjectShowcasePage: React.FC = () => {
           >
             <div className="flex items-center mb-6">
               {selectedProject.icon}
-              <h2 className="ml-4 font-press-start text-2xl text-primary">
+              <h2 className="ml-4 font-press-start text-4xl text-primary">
                 {selectedProject.name}
               </h2>
             </div>
