@@ -1,0 +1,31 @@
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .terminal-line {
+    @apply opacity-80 text-primary font-mono tracking-wider leading-relaxed;
+    text-shadow: 0 0 5px theme('colors.primary');
+  }
+
+  .scanline {
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    animation: scanline 7.5s linear 0s infinite;
+  }
+
+  @keyframes scanline {
+    0% {
+      background-position: 0 -100%;
+    }
+    35%, 100% {
+      background-position: 0 100%;
+    }
+  }
+}
+```
