@@ -112,4 +112,3 @@ const LandingPage: FC = () => {
 };
 
 export default LandingPage;
-```
