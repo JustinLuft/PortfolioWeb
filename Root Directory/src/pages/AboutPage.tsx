@@ -53,7 +53,7 @@ const AboutPage: React.FC = () => {
   const socialLinks = [
     { 
       icon: <Linkedin className="w-6 h-6" />, 
-      url: "https://linkedin.com/in/justin-luft", 
+      url: "https://www.linkedin.com/in/justin-luft-ab2aa9224/", 
       label: "LinkedIn" 
     },
     { 
