@@ -30,7 +30,7 @@ const projects: Project[] = [
     name: "Photo Booth Experience",
     description: "Developed a comprehensive photo booth application for College of Charleston using agile methodologies, focusing on user experience and collaborative development.",
     skills: ["Scrum", "Team Collaboration", "UI/UX Design"],
-    githubLink: "https://github.com/justinluft/photobooth-project",
+    githubLink: "https://github.com/JustinLuft/UnityProject",
     icon: <Camera className="w-8 h-8 text-primary" />,
     fullDetails: {
       technologies: ["React", "TypeScript", "Node.js", "Express"],
@@ -42,7 +42,7 @@ const projects: Project[] = [
     name: "SC Bills Web Scraper",
     description: "Created a robust web scraping solution to collect, store, and enable searching of South Carolina legislative bills using advanced data extraction techniques.",
     skills: ["Web Scraping", "Python", "Data Management"],
-    githubLink: "https://github.com/justinluft/sc-bills-scraper",
+    githubLink: "https://github.com/JustinLuft/scbillscraper",
     icon: <Server className="w-8 h-8 text-primary" />,
     fullDetails: {
       technologies: ["Python", "BeautifulSoup", "SQLite", "Pandas"],
@@ -66,7 +66,7 @@ const projects: Project[] = [
     name: "Machine Learning Engine",
     description: "Implemented a custom machine learning engine for linear regression, demonstrating deep understanding of mathematical modeling and algorithmic implementation.",
     skills: ["Machine Learning", "NumPy", "Linear Regression"],
-    githubLink: "https://github.com/justinluft/ml-engine",
+    githubLink: "https://github.com/JustinLuft/linearregressionhw",
     icon: <Cpu className="w-8 h-8 text-primary" />,
     fullDetails: {
       technologies: ["Python", "NumPy", "Scikit-learn"],
@@ -78,7 +78,7 @@ const projects: Project[] = [
     name: "Sorting Algorithms Benchmark",
     description: "Developed a comprehensive benchmarking tool to analyze and compare performance of various sorting algorithms, providing insights into computational efficiency.",
     skills: ["Java", "Algorithms", "Performance Analysis"],
-    githubLink: "https://github.com/justinluft/sorting-algorithms",
+    githubLink: "https://github.com/JustinLuft/sort-comparison-analyzer",
     icon: <Cloud className="w-8 h-8 text-primary" />,
     fullDetails: {
       technologies: ["Java", "JUnit", "Performance Profiling"],
@@ -90,7 +90,7 @@ const projects: Project[] = [
     name: "Concurrent Systems",
     description: "Created advanced solutions for mutual exclusion and multithreaded programming challenges, demonstrating expertise in systems-level programming and concurrency.",
     skills: ["Concurrency", "Semaphores", "Systems Programming"],
-    githubLink: "https://github.com/justinluft/concurrent-systems",
+    githubLink: "https://github.com/JustinLuft/semaphore-assignment",
     icon: <Code className="w-8 h-8 text-primary" />,
     fullDetails: {
       technologies: ["C", "POSIX Threads", "Semaphores"],
