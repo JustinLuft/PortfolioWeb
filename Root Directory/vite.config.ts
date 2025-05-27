@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
 export default defineConfig({
-  root: path.resolve(__dirname, 'src'), // Use 'src' as root if your main files live there
   plugins: [react()],
   resolve: {
     alias: {
@@ -16,10 +15,9 @@ export default defineConfig({
     strictPort: true,
   },
   build: {
-    outDir: path.resolve(__dirname, 'dist'),
-    emptyOutDir: true, // clean output folder before build
+    outDir: 'dist',
+    emptyOutDir: true,
     rollupOptions: {
-      input: path.resolve(__dirname, 'src', 'index.html'), // explicitly specify entry HTML
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
