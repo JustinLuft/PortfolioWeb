@@ -31,7 +31,8 @@ export default defineConfig({
     // ✅ Don't set minify or terserOptions at all
   },
   preview: {
-    port: 4173,
+  port: Number(process.env.PORT) || 3000,
+  host: true,
   },
   optimizeDeps: {
     include: [
