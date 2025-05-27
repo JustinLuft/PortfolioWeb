@@ -263,4 +263,3 @@ const ProjectShowcasePage: React.FC = () => {
 };
 
 export default ProjectShowcasePage;
-```
