@@ -10,9 +10,10 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
-    open: true,
+    port: parseInt(process.env.PORT) || 3000,
+    host: true,
     strictPort: true,
+    open: true,
   },
   build: {
     outDir: 'dist',
@@ -27,7 +28,7 @@ export default defineConfig({
       },
     },
     sourcemap: true,
-    minify: 'true',
+    minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
@@ -36,7 +37,8 @@ export default defineConfig({
     },
   },
   preview: {
-    port: 4173,
+    port: parseInt(process.env.PORT) || 4173,
+    host: true,
   },
   optimizeDeps: {
     include: [
