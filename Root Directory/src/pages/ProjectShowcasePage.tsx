@@ -22,7 +22,6 @@ interface Project {
   fullDetails: {
     technologies: string[];
     challenges: string[];
-    learnings: string[];
   };
 }
 
