@@ -1,5 +1,9 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
+
+// Simple helper to join class names safely
+function classNames(...classes: (string | undefined | false)[]) {
+  return classes.filter(Boolean).join(" ")
+}
 
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -7,7 +11,7 @@ const Card = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
+    className={classNames(
       "rounded-lg border bg-card text-card-foreground shadow-sm",
       className
     )}
@@ -22,19 +26,19 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    className={classNames("flex flex-col space-y-1.5 p-6", className)}
     {...props}
   />
 ))
 CardHeader.displayName = "CardHeader"
 
 const CardTitle = React.forwardRef<
-  HTMLParagraphElement,
+  HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn(
+    className={classNames(
       "text-2xl font-semibold leading-none tracking-tight",
       className
     )}
@@ -49,7 +53,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={classNames("text-sm text-muted-foreground", className)}
     {...props}
   />
 ))
@@ -59,7 +63,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  <div ref={ref} className={classNames("p-6 pt-0", className)} {...props} />
 ))
 CardContent.displayName = "CardContent"
 
@@ -69,7 +73,7 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
+    className={classNames("flex items-center p-6 pt-0", className)}
     {...props}
   />
 ))
@@ -81,5 +85,5 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter
+  CardFooter,
 }
