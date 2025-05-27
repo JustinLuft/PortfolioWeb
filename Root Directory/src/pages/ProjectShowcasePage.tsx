@@ -33,7 +33,7 @@ const projects: Project[] = [
     githubLink: "https://github.com/JustinLuft/UnityProject",
     icon: <Camera className="w-8 h-8 text-primary" />,
     fullDetails: {
-      technologies: ["React", "TypeScript", "Node.js", "Express"],
+      technologies: ["Unity", "C", "SMTP", "Raspberry PI"],
       challenges: ["Real-time photo processing", "User experience design", "Team coordination"],
     }
   },
@@ -45,7 +45,7 @@ const projects: Project[] = [
     githubLink: "https://github.com/JustinLuft/scbillscraper",
     icon: <Server className="w-8 h-8 text-primary" />,
     fullDetails: {
-      technologies: ["Python", "BeautifulSoup", "SQLite", "Pandas"],
+      technologies: ["Python", "BeautifulSoup", "Firebase", "Pandas"],
       challenges: ["Data extraction", "Parsing complex web structures", "Data normalization"],
     }
   },
@@ -57,7 +57,7 @@ const projects: Project[] = [
     githubLink: "https://github.com/justinluft/submachine-app",
     icon: <Database className="w-8 h-8 text-primary" />,
     fullDetails: {
-      technologies: ["Figma", "React Native", "Firebase"],
+      technologies: ["Figma", "JavaScript", "MySQL"],
       challenges: ["User interface design", "State management", "Prototype iteration"],
     }
   },
@@ -81,7 +81,7 @@ const projects: Project[] = [
     githubLink: "https://github.com/JustinLuft/sort-comparison-analyzer",
     icon: <Cloud className="w-8 h-8 text-primary" />,
     fullDetails: {
-      technologies: ["Java", "JUnit", "Performance Profiling"],
+      technologies: ["Java", "IntelliJ", "Performance Profiling"],
       challenges: ["Algorithm complexity", "Performance measurement", "Comparative analysis"],
     }
   },
