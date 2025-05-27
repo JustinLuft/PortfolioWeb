@@ -1,4 +1,3 @@
-```tsx
 import React from 'react';
 import { Code, Server, Database, Cpu, Cloud, Layers, Lock, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
