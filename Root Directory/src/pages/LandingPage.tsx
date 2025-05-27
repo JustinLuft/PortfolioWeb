@@ -4,16 +4,16 @@ import { Linkedin, FileText, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const terminalWelcomeSequence = [
-  "BOOTING PORTFOLIO SYSTEM v1.2.3",
-  "Initializing core modules...",
-  "Checking system integrity...",
-  "Loading personal interface...",
-  "Connecting neural networks...",
+  ">BOOTING PORTFOLIO SYSTEM v1.2.3",
+  ">Initializing core modules...",
+  ">Checking system integrity...",
+  ">Loading personal interface...",
+  ">Connecting neural networks...",
   ">>> SYSTEM ONLINE <<<",
-  "Welcome, User",
+  ">Welcome, User",
   `Current Time: ${new Date().toLocaleString()}`,
-  "Network Status: SECURE",
-  "Ready for interaction..."
+  ">Network Status: SECURE",
+  ">Ready for interaction..."
 ];
 
 
