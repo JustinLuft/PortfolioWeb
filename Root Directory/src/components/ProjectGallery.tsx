@@ -121,4 +121,3 @@ export const ProjectGallery = () => {
 };
 
 export default ProjectGallery;
-```
