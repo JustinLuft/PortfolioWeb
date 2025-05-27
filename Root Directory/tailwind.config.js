@@ -1,14 +1,13 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
-const config = {
+const config: Config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
-  prefix: "",
   theme: {
     container: {
       center: true,
@@ -19,7 +18,7 @@ const config = {
     },
     extend: {
       colors: {
-        background: "#0B0C10", 
+        background: "#0B0C10",
         primary: "#00FFD1",
         secondary: "#FF1493",
         border: "hsl(var(--border))",
@@ -65,12 +64,12 @@ const config = {
           "0%, 100%": { textShadow: "0 0 5px #00FFD1" },
           "50%": { textShadow: "0 0 15px #00FFD1" },
         },
-        "glitch": {
+        glitch: {
           "2%, 64%": { transform: "translate(2px, 0) skew(0deg)" },
           "4%, 60%": { transform: "translate(-2px, 0) skew(0deg)" },
           "62%": { transform: "translate(0, 0) skew(5deg)" },
         },
-        "scanline": {
+        scanline: {
           "0%": { backgroundPosition: "0 -100%" },
           "35%, 100%": { backgroundPosition: "0 100%" },
         },
@@ -79,27 +78,25 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "neon-pulse": "neon-pulse 2s infinite",
-        "glitch": "glitch 1s linear infinite",
-        "scanline": "scanline 7.5s linear infinite",
+        glitch: "glitch 1s linear infinite",
+        scanline: "scanline 7.5s linear infinite",
       },
       fontFamily: {
-        'press-start': ['"Press Start 2P"', 'cursive'],
-        'vt323': ['"VT323"', 'monospace'],
+        "press-start": ['"Press Start 2P"', "cursive"],
+        vt323: ['"VT323"', "monospace"],
       },
       boxShadow: {
-        'neon': '0 0 10px #00FFD1, 0 0 20px #00FFD1, 0 0 40px #00FFD1',
-        'neon-secondary': '0 0 10px #FF1493, 0 0 20px #FF1493, 0 0 40px #FF1493',
+        neon: "0 0 10px #00FFD1, 0 0 20px #00FFD1, 0 0 40px #00FFD1",
+        "neon-secondary":
+          "0 0 10px #FF1493, 0 0 20px #FF1493, 0 0 40px #FF1493",
       },
       backgroundImage: {
-        'grid-subtle': 'linear-gradient(to right, rgba(0, 255, 209, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 255, 209, 0.05) 1px, transparent 1px)',
+        "grid-subtle":
+          "linear-gradient(to right, rgba(0, 255, 209, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 255, 209, 0.05) 1px, transparent 1px)",
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    require("@tailwindcss/typography")
-  ],
-} satisfies Config
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+};
 
-export default config
-```
+export default config;
