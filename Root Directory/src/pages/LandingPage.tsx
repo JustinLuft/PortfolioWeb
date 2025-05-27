@@ -4,17 +4,18 @@ import { Linkedin, FileText, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const terminalWelcomeSequence = [
-  `\x1b[32mBOOTING PORTFOLIO SYSTEM v1.2.3\x1b[0m`,
-  `\x1b[33mInitializing core modules...\x1b[0m`,
-  `\x1b[36mChecking system integrity...\x1b[0m`,
-  `\x1b[34mLoading personal interface...\x1b[0m`,
-  `\x1b[35mConnecting neural networks...\x1b[0m`,
-  `\x1b[32m>>> SYSTEM ONLINE <<<\x1b[0m`,
-  `\x1b[33mWelcome, User\x1b[0m`,
-  `\x1b[36mCurrent Time: ${new Date().toLocaleString()}\x1b[0m`,
-  `\x1b[34mNetwork Status: SECURE\x1b[0m`,
-  `\x1b[35mReady for interaction...\x1b[0m`
+  "BOOTING PORTFOLIO SYSTEM v1.2.3",
+  "Initializing core modules...",
+  "Checking system integrity...",
+  "Loading personal interface...",
+  "Connecting neural networks...",
+  ">>> SYSTEM ONLINE <<<",
+  "Welcome, User",
+  `Current Time: ${new Date().toLocaleString()}`,
+  "Network Status: SECURE",
+  "Ready for interaction..."
 ];
+
 
 const LandingPage: FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
