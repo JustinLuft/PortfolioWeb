@@ -7,11 +7,7 @@ import {
   Database, 
   Cloud, 
   Cpu,
-  Camera,
-  Layers,
-  Terminal,
-  Info,
-  Zap 
+  Camera 
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -23,39 +19,92 @@ interface Project {
   skills: string[];
   githubLink: string;
   icon: React.ReactNode;
-  images?: string[];
-  technologies: string[];
-  challenges: string[];
-  learnings: string[];
-  detailedDescription: string;
+  fullDetails: {
+    technologies: string[];
+    challenges: string[];
+    learnings: string[];
+  };
 }
 
 const projects: Project[] = [
   {
     id: 1,
     name: "Photo Booth Experience",
-    description: "Developed a comprehensive photo booth application for College of Charleston using agile methodologies",
+    description: "Developed a comprehensive photo booth application for College of Charleston using agile methodologies, focusing on user experience and collaborative development.",
     skills: ["Scrum", "Team Collaboration", "UI/UX Design"],
     githubLink: "https://github.com/justinluft/photobooth-project",
     icon: <Camera className="w-8 h-8 text-primary" />,
-    images: [
-      "https://example.com/photobooth1.jpg",
-      "https://example.com/photobooth2.jpg"
-    ],
-    technologies: ["React", "TypeScript", "Node.js", "Express"],
-    challenges: [
-      "Real-time photo processing",
-      "User experience design",
-      "Team coordination"
-    ],
-    learnings: [
-      "Agile methodology",
-      "Collaborative software development", 
-      "UI/UX principles"
-    ],
-    detailedDescription: "A cutting-edge photo booth application developed for College of Charleston, leveraging modern web technologies and agile development practices. The project focused on creating an intuitive, user-friendly interface while implementing robust backend processing capabilities."
+    fullDetails: {
+      technologies: ["React", "TypeScript", "Node.js", "Express"],
+      challenges: ["Real-time photo processing", "User experience design", "Team coordination"],
+      learnings: ["Agile methodology", "Collaborative software development", "UI/UX principles"]
+    }
   },
-  // Add more projects following the same structure...
+  {
+    id: 2,
+    name: "SC Bills Web Scraper",
+    description: "Created a robust web scraping solution to collect, store, and enable searching of South Carolina legislative bills using advanced data extraction techniques.",
+    skills: ["Web Scraping", "Python", "Data Management"],
+    githubLink: "https://github.com/justinluft/sc-bills-scraper",
+    icon: <Server className="w-8 h-8 text-primary" />,
+    fullDetails: {
+      technologies: ["Python", "BeautifulSoup", "SQLite", "Pandas"],
+      challenges: ["Data extraction", "Parsing complex web structures", "Data normalization"],
+      learnings: ["Web scraping techniques", "Data cleaning", "Database management"]
+    }
+  },
+  {
+    id: 3,
+    name: "SubMachine App",
+    description: "Designed and prototyped a fast-food ordering application as a semester-long software engineering project, emphasizing intuitive user interface and functional design.",
+    skills: ["Prototype Development", "UI/UX", "Mobile Design"],
+    githubLink: "https://github.com/justinluft/submachine-app",
+    icon: <Database className="w-8 h-8 text-primary" />,
+    fullDetails: {
+      technologies: ["Figma", "React Native", "Firebase"],
+      challenges: ["User interface design", "State management", "Prototype iteration"],
+      learnings: ["Mobile app design", "Prototyping tools", "User-centered design"]
+    }
+  },
+  {
+    id: 4,
+    name: "Machine Learning Engine",
+    description: "Implemented a custom machine learning engine for linear regression, demonstrating deep understanding of mathematical modeling and algorithmic implementation.",
+    skills: ["Machine Learning", "NumPy", "Linear Regression"],
+    githubLink: "https://github.com/justinluft/ml-engine",
+    icon: <Cpu className="w-8 h-8 text-primary" />,
+    fullDetails: {
+      technologies: ["Python", "NumPy", "Scikit-learn"],
+      challenges: ["Algorithm implementation", "Mathematical modeling", "Performance optimization"],
+      learnings: ["Machine learning fundamentals", "Linear algebra", "Computational efficiency"]
+    }
+  },
+  {
+    id: 5,
+    name: "Sorting Algorithms Benchmark",
+    description: "Developed a comprehensive benchmarking tool to analyze and compare performance of various sorting algorithms, providing insights into computational efficiency.",
+    skills: ["Java", "Algorithms", "Performance Analysis"],
+    githubLink: "https://github.com/justinluft/sorting-algorithms",
+    icon: <Cloud className="w-8 h-8 text-primary" />,
+    fullDetails: {
+      technologies: ["Java", "JUnit", "Performance Profiling"],
+      challenges: ["Algorithm complexity", "Performance measurement", "Comparative analysis"],
+      learnings: ["Algorithmic efficiency", "Computational complexity", "Benchmarking techniques"]
+    }
+  },
+  {
+    id: 6,
+    name: "Concurrent Systems",
+    description: "Created advanced solutions for mutual exclusion and multithreaded programming challenges, demonstrating expertise in systems-level programming and concurrency.",
+    skills: ["Concurrency", "Semaphores", "Systems Programming"],
+    githubLink: "https://github.com/justinluft/concurrent-systems",
+    icon: <Code className="w-8 h-8 text-primary" />,
+    fullDetails: {
+      technologies: ["C", "POSIX Threads", "Semaphores"],
+      challenges: ["Deadlock prevention", "Race condition mitigation", "Synchronization"],
+      learnings: ["Concurrent programming", "Low-level system interactions", "Thread management"]
+    }
+  }
 ];
 
 const ProjectShowcasePage: React.FC = () => {
@@ -67,20 +116,16 @@ const ProjectShowcasePage: React.FC = () => {
       case 'overview':
         return (
           <div>
-            <h3 className="font-press-start text-lg mb-2 text-primary flex items-center">
-              <Info className="mr-2" /> Project Overview
-            </h3>
-            <p className="font-vt323 text-primary/80">{selectedProject.detailedDescription}</p>
+            <h3 className="font-press-start text-lg mb-2 text-primary">Project Overview</h3>
+            <p className="font-vt323 text-primary/80">{selectedProject.description}</p>
           </div>
         );
       case 'technologies':
         return (
           <div>
-            <h3 className="font-press-start text-lg mb-2 text-primary flex items-center">
-              <Layers className="mr-2" /> Technologies Used
-            </h3>
+            <h3 className="font-press-start text-lg mb-2 text-primary">Technologies Used</h3>
             <div className="flex flex-wrap gap-2">
-              {selectedProject.technologies.map((tech, index) => (
+              {selectedProject.fullDetails.technologies.map((tech, index) => (
                 <span 
                   key={index} 
                   className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs"
@@ -94,11 +139,9 @@ const ProjectShowcasePage: React.FC = () => {
       case 'challenges':
         return (
           <div>
-            <h3 className="font-press-start text-lg mb-2 text-primary flex items-center">
-              <Terminal className="mr-2" /> Project Challenges
-            </h3>
+            <h3 className="font-press-start text-lg mb-2 text-primary">Project Challenges</h3>
             <ul className="list-disc list-inside font-vt323 text-primary/80">
-              {selectedProject.challenges.map((challenge, index) => (
+              {selectedProject.fullDetails.challenges.map((challenge, index) => (
                 <li key={index}>{challenge}</li>
               ))}
             </ul>
@@ -107,11 +150,9 @@ const ProjectShowcasePage: React.FC = () => {
       case 'learnings':
         return (
           <div>
-            <h3 className="font-press-start text-lg mb-2 text-primary flex items-center">
-              <Zap className="mr-2" /> Key Learnings
-            </h3>
+            <h3 className="font-press-start text-lg mb-2 text-primary">Key Learnings</h3>
             <ul className="list-disc list-inside font-vt323 text-primary/80">
-              {selectedProject.learnings.map((learning, index) => (
+              {selectedProject.fullDetails.learnings.map((learning, index) => (
                 <li key={index}>{learning}</li>
               ))}
             </ul>
@@ -121,44 +162,27 @@ const ProjectShowcasePage: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-background overflow-hidden">
+    <div className="relative min-h-screen bg-black overflow-hidden">
       {/* Cyberpunk Background Layer */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-[#0B0C10] to-[#1A1E23] opacity-90" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0B0C10] to-[#1A1E23] opacity-90" />
         <div className="absolute inset-0 bg-grid-subtle opacity-10 pointer-events-none" />
         <div className="scanline absolute inset-0 pointer-events-none z-10" />
-        
-        {/* Subtle Particle Background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute w-2 h-2 bg-primary rounded-full animate-bounce" style={{ top: '10%', left: '20%' }} />
-          <div className="absolute w-1 h-1 bg-secondary rounded-full animate-bounce" style={{ top: '30%', right: '15%' }} />
-          <div className="absolute w-3 h-3 bg-primary/50 rounded-full animate-pulse" style={{ bottom: '20%', left: '10%' }} />
-        </div>
       </div>
 
       <div className="container mx-auto px-4 py-16 relative z-20">
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl font-press-start text-primary mb-4">
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl font-press-start mb-4 text-primary">
             Project Showcase
           </h1>
-          <p className="text-xl font-vt323 text-primary/80 max-w-2xl mx-auto">
-            Exploring innovative solutions and pushing technological boundaries
+          <p className="text-xl font-vt323 text-primary/80">
+            Explore innovative projects that showcase technical expertise
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Project List */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-4"
-          >
+          <div className="space-y-4">
             {projects.map((project) => (
               <motion.div
                 key={project.id}
@@ -173,25 +197,20 @@ const ProjectShowcasePage: React.FC = () => {
               >
                 <div className="flex items-center gap-4">
                   {project.icon}
-                  <div>
-                    <h3 className="font-press-start text-lg text-primary">
-                      {project.name}
-                    </h3>
-                    <p className="font-vt323 text-sm text-primary/70">
-                      {project.description}
-                    </p>
-                  </div>
+                  <h3 className="font-press-start text-lg text-primary">
+                    {project.name}
+                  </h3>
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
 
           {/* Project Details */}
           <motion.div
             key={selectedProject.id}
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.5 }}
             className="bg-background/80 backdrop-blur-sm border border-primary/20 rounded-lg p-6"
           >
             <div className="flex items-center mb-6">
@@ -200,20 +219,6 @@ const ProjectShowcasePage: React.FC = () => {
                 {selectedProject.name}
               </h2>
             </div>
-
-            {/* Image Gallery (if images exist) */}
-            {selectedProject.images && (
-              <div className="flex space-x-2 mb-6 overflow-x-auto">
-                {selectedProject.images.map((image, index) => (
-                  <img 
-                    key={index} 
-                    src={image} 
-                    alt={`${selectedProject.name} - Image ${index + 1}`} 
-                    className="w-24 h-24 object-cover rounded-lg"
-                  />
-                ))}
-              </div>
-            )}
 
             {/* Tab Navigation */}
             <div className="flex mb-6 border-b border-primary/20">
@@ -234,27 +239,17 @@ const ProjectShowcasePage: React.FC = () => {
             </div>
 
             {/* Tab Content */}
-            <div className="mb-6 min-h-[200px]">
+            <div className="mb-6">
               {renderTabContent()}
             </div>
 
-            {/* Project Actions */}
-            <div className="flex space-x-4">
-              <Button 
-                variant="outline" 
-                className="w-full flex items-center gap-2 border-primary text-primary hover:bg-primary/10"
-                onClick={() => window.open(selectedProject.githubLink, '_blank')}
-              >
-                <Github className="w-4 h-4" /> View on GitHub
-              </Button>
-              {/* Optional: Add Live Demo button if applicable */}
-              {/* <Button 
-                variant="outline" 
-                className="w-full flex items-center gap-2 border-secondary text-secondary hover:bg-secondary/10"
-              >
-                <Eye className="w-4 h-4" /> Live Demo
-              </Button> */}
-            </div>
+            <Button 
+              variant="outline" 
+              className="w-full flex items-center gap-2 border-primary text-primary hover:bg-primary/10"
+              onClick={() => window.open(selectedProject.githubLink, '_blank')}
+            >
+              <Github className="w-4 h-4" /> View on GitHub
+            </Button>
           </motion.div>
         </div>
       </div>
