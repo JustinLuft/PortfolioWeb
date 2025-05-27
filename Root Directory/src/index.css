@@ -15,15 +15,23 @@
     );
     background-size: 100% 4px;
     pointer-events: none;
-    animation: scanline 7.5s linear 0s infinite;
+    animation: scanline 7.5s linear infinite;
   }
+}
 
-  @keyframes scanline {
-    0% {
-      background-position: 0 -100%;
-    }
-    35%, 100% {
-      background-position: 0 100%;
-    }
+/* Optional: Add a class for grid overlays if you're using cyberpunk-style backgrounds */
+@layer utilities {
+  .bg-grid-subtle {
+    background-image: linear-gradient(
+        to right,
+        rgba(0, 255, 209, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(0, 255, 209, 0.05) 1px,
+        transparent 1px
+      );
+    background-size: 32px 32px;
   }
 }
