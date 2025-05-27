@@ -3,10 +3,11 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
 export default defineConfig({
+  root: path.resolve(__dirname, 'src'), // Use 'src' as root if your main files live there
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(__dirname, 'src'),
     },
   },
   server: {
@@ -15,15 +16,17 @@ export default defineConfig({
     strictPort: true,
   },
   build: {
-    outDir: 'dist',
+    outDir: path.resolve(__dirname, 'dist'),
+    emptyOutDir: true, // clean output folder before build
     rollupOptions: {
+      input: path.resolve(__dirname, 'src', 'index.html'), // explicitly specify entry HTML
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
             return 'vendor';
           }
-        }
-      }
+        },
+      },
     },
     sourcemap: true,
     minify: 'terser',
@@ -43,7 +46,7 @@ export default defineConfig({
       'react-dom',
       'react-router-dom',
       'framer-motion',
-      'lucide-react'
-    ]
-  }
+      'lucide-react',
+    ],
+  },
 });
