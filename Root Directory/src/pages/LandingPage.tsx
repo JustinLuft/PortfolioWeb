@@ -4,13 +4,13 @@ import { Linkedin, FileText, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const terminalWelcomeSequence = [
-  `\x1b[32mBOOTING CYBER DEV SYSTEM v1.2.3\x1b[0m`,
+  `\x1b[32mBOOTING PORTFOLIO SYSTEM v1.2.3\x1b[0m`,
   `\x1b[33mInitializing core modules...\x1b[0m`,
   `\x1b[36mChecking system integrity...\x1b[0m`,
   `\x1b[34mLoading personal interface...\x1b[0m`,
   `\x1b[35mConnecting neural networks...\x1b[0m`,
   `\x1b[32m>>> SYSTEM ONLINE <<<\x1b[0m`,
-  `\x1b[33mWelcome, Justin Luft\x1b[0m`,
+  `\x1b[33mWelcome, User\x1b[0m`,
   `\x1b[36mCurrent Time: ${new Date().toLocaleString()}\x1b[0m`,
   `\x1b[34mNetwork Status: SECURE\x1b[0m`,
   `\x1b[35mReady for interaction...\x1b[0m`
@@ -51,7 +51,7 @@ const LandingPage: FC = () => {
     {
       icon: <Linkedin className="mr-2 w-5 h-5" />,
       label: "LinkedIn",
-      url: "https://linkedin.com/in/justin-luft"
+      url: "https://www.linkedin.com/in/justin-luft-ab2aa9224/"
     },
     {
       icon: <FileText className="mr-2 w-5 h-5" />,
@@ -61,7 +61,7 @@ const LandingPage: FC = () => {
     {
       icon: <Github className="mr-2 w-5 h-5" />,
       label: "GitHub",
-      url: "https://github.com/justinluft"
+      url: "https://github.com/JustinLuft"
     }
   ];
 
@@ -98,7 +98,7 @@ const LandingPage: FC = () => {
           animate={{ opacity: isSystemReady ? 1 : 0, y: isSystemReady ? 0 : 20 }}
           transition={{ duration: 0.5 }} // Slightly faster fade-in
         >
-          CYBER DEV
+          JUSTIN LUFT
         </motion.h1>
 
         <motion.p 
@@ -107,7 +107,7 @@ const LandingPage: FC = () => {
           animate={{ opacity: isSystemReady ? 1 : 0 }}
           transition={{ delay: 0.3 }} // Reduced delay
         >
-          Welcome to the digital frontier
+          Computer Scientist
         </motion.p>
 
         {isSystemReady && (
