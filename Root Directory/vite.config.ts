@@ -10,10 +10,9 @@ export default defineConfig({
     },
   },
   server: {
-    port: parseInt(process.env.PORT) || 3000,
-    host: true,
-    strictPort: true,
+    port: 3000,
     open: true,
+    strictPort: true,
   },
   build: {
     outDir: 'dist',
@@ -28,17 +27,11 @@ export default defineConfig({
       },
     },
     sourcemap: true,
-    minify: 'true',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
+    // ✅ Use default esbuild minification (fastest)
+    // ✅ Don't set minify or terserOptions at all
   },
   preview: {
-    port: parseInt(process.env.PORT) || 4173,
-    host: true,
+    port: 4173,
   },
   optimizeDeps: {
     include: [
