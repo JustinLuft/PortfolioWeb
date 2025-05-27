@@ -28,7 +28,7 @@ export default defineConfig({
       },
     },
     sourcemap: true,
-    minify: 'terser',
+    minify: 'true',
     terserOptions: {
       compress: {
         drop_console: true,
