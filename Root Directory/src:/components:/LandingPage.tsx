@@ -1,4 +1,3 @@
-```tsx
 import { FC, useEffect, useState } from 'react';
 import { Power, Terminal, Code } from 'lucide-react';
 import { motion } from 'framer-motion';
