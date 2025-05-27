@@ -148,4 +148,3 @@ const SkillsPage: React.FC = () => {
 };
 
 export default SkillsPage;
-```
