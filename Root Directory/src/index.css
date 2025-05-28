@@ -5,7 +5,7 @@
 @layer utilities {
   .terminal-line {
     @apply opacity-80 text-primary font-mono tracking-wider leading-relaxed;
-    text-shadow: 0 0 5px #00FFD1; /* Tailwind doesn't support `theme()` in raw CSS */
+    text-shadow: 0 0 5px #00FFD1;
   }
 
   .scanline {
@@ -25,5 +25,24 @@
     35%, 100% {
       background-position: 0 100%;
     }
+  }
+}
+
+/* === Global Custom Cursor === */
+
+/* Hide the default cursor */
+body {
+  cursor: none;
+}
+
+/* Triangle SVG Cursor */
+* {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30' fill='rgba(0, 255, 209, 0.7)'%3E%3Cpath d='M15 0 L0 30 L30 30 Z' /%3E%3C/svg%3E") 15 15, auto;
+}
+
+/* Fallback for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    cursor: auto !important;
   }
 }
