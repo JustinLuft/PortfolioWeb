@@ -87,7 +87,7 @@ const AboutPage: React.FC = () => {
             About Me
           </h1>
           <p className="text-xl font-vt323 text-primary/80 max-w-2xl mx-auto">
-            Exploring the intersection of technology, innovation, and creative problem-solving
+            Profile | Education | Experience
           </p>
         </motion.div>
 
@@ -102,7 +102,7 @@ const AboutPage: React.FC = () => {
               <div className="flex items-center mb-6">
                 <User className="w-12 h-12 text-primary mr-4" />
                 <h2 className="font-press-start text-2xl text-primary">
-                  Personal Profile
+                  Justin Luft
                 </h2>
               </div>
               <div className="space-y-4 font-vt323 text-primary/90">
