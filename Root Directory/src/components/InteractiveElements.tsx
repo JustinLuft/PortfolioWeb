@@ -13,7 +13,6 @@ export function InteractiveElements() {
   const trailDotsRef = useRef<TrailDot[]>([]);
   const requestRef = useRef<number>();
   const particlesRef = useRef<any[]>([]);
-  const mousePosition = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -30,12 +29,6 @@ export function InteractiveElements() {
 
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
-
-    // Track mouse position globally for cursor rendering
-    const handleMouseMoveGlobal = (e: MouseEvent) => {
-      mousePosition.current = { x: e.clientX, y: e.clientY };
-    };
-    window.addEventListener('mousemove', handleMouseMoveGlobal);
 
     // Particle class for more complex effects
     class Particle {
@@ -71,62 +64,7 @@ export function InteractiveElements() {
       }
     }
 
-    // Function to render the custom triangle cursor with scanline
-    const renderCursor = () => {
-      if (!ctx || !canvas) return;
-
-      const x = mousePosition.current.x;
-      const y = mousePosition.current.y;
-      const size = 30; // Cursor size
-
-      const cursorColor = 'rgba(0, 255, 209, 0.8)';
-      const scanColor = 'rgba(0, 255, 209, 0.3)';
-
-      // Clear only the previous cursor area or whole canvas? 
-      // (canvas cleared already in animate)
-
-      // Glow effect for outline
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = cursorColor;
-
-      // Draw triangle cursor outline
-      ctx.beginPath();
-      ctx.moveTo(x, y - size / 2);       // Top point
-      ctx.lineTo(x - size / 2, y + size / 2); // Bottom left
-      ctx.lineTo(x + size / 2, y + size / 2); // Bottom right
-      ctx.closePath();
-
-      ctx.strokeStyle = cursorColor;
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 5]); // Dashed outline
-      ctx.stroke();
-
-      // Reset dash and shadow
-      ctx.setLineDash([]);
-      ctx.shadowBlur = 0;
-
-      // Clip to triangle for scanning effect
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(x, y - size / 2);
-      ctx.lineTo(x - size / 2, y + size / 2);
-      ctx.lineTo(x + size / 2, y + size / 2);
-      ctx.closePath();
-      ctx.clip();
-
-      // Animated scan line
-      const scanOffset = (Date.now() / 10) % size;
-      ctx.beginPath();
-      ctx.strokeStyle = scanColor;
-      ctx.lineWidth = 1;
-      ctx.moveTo(x - size / 2, y - size / 2 + scanOffset);
-      ctx.lineTo(x + size / 2, y + size / 2 + scanOffset);
-      ctx.stroke();
-
-      ctx.restore();
-    };
-
-    // Enhanced mouse trail and particle system with custom cursor rendering
+    // Enhanced mouse trail and particle system
     const animate = () => {
       if (!ctx || !canvas) return;
 
@@ -156,9 +94,6 @@ export function InteractiveElements() {
           particle.draw(ctx);
           return particle;
         });
-
-      // Draw custom triangle cursor on top
-      renderCursor();
 
       requestRef.current = requestAnimationFrame(animate);
     };
@@ -192,7 +127,6 @@ export function InteractiveElements() {
 
     return () => {
       window.removeEventListener('resize', updateCanvasSize);
-      window.removeEventListener('mousemove', handleMouseMoveGlobal);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('click', handleClick);
       if (requestRef.current) {
