@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CirclePower, Code, UserRound, Folder } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -56,12 +56,14 @@ const NavigationMenu = () => {
           >
             <button
               onClick={() => handleNavigation(item.path)}
-              className="group flex flex-col items-center gap-2 p-3 rounded-lg transition-all duration-300 relative overflow-hidden"
+              className={`
+                group flex flex-col items-center gap-2 p-3 rounded-lg transition-all duration-300 relative overflow-hidden
                 ${activeItem === item.path
                   ? 'text-secondary shadow-neon-secondary'
                   : 'text-primary hover:text-secondary hover:shadow-neon-secondary'}
-                before:absolute before:inset-0 before:bg-primary/10 before:opacity-0 hover:before:opacity-20 
-                before:transition-opacity before:duration-300}
+                before:absolute before:inset-0 before:bg-primary/10 before:opacity-0 hover:before:opacity-20
+                before:transition-opacity before:duration-300
+              `}
             >
               {/* Pixel Glitch Effect */}
               <div className="relative">
