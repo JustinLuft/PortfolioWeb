@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Power, 
+  CirclePower, 
   User, 
   Folder, 
   Code 
@@ -47,7 +47,7 @@ const NavigationMenu = () => {
     {
       label: 'Home',
       path: '/',
-      icon: <Power size={20} />
+      icon: <CirclePower size={20} />
     },
     {
       label: 'About',
@@ -159,7 +159,11 @@ const NavigationMenu = () => {
                 rounded-none
               `}
             >
-              <div className="relative z-10 flex items-center justify-center w-6 h-6">
+              <div
+                className={`relative z-10 flex items-center justify-center w-6 h-6 ${
+                  item.label === 'Projects' ? 'ml-[5px]' : ''
+                }`}
+              >
                 {React.cloneElement(item.icon, { className: "inline-block align-middle" })}
               </div>
             
@@ -181,6 +185,7 @@ const NavigationMenu = () => {
                 )}
               </AnimatePresence>
             </button>
+
 
             <span className="block text-center font-press-start text-[8px] text-primary/70 mt-1">
               {item.label}
