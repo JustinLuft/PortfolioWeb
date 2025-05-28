@@ -157,16 +157,13 @@ const NavigationMenu = () => {
                   : 'border-primary/50 text-primary hover:border-secondary hover:text-secondary'}
                 hover:shadow-[0_0_10px_rgba(255,20,147,0.3)]
                 rounded-none
+                ${item.label === 'Projects' ? 'ml-[10px]' : ''}
               `}
             >
-              <div
-                className={`relative z-10 flex items-center justify-center w-6 h-6 ${
-                  item.label === 'Projects' ? 'ml-[5px]' : ''
-                }`}
-              >
+              <div className="relative z-10 flex items-center justify-center w-6 h-6">
                 {React.cloneElement(item.icon, { className: "inline-block align-middle" })}
               </div>
-            
+          
               <AnimatePresence>
                 {activeItem === item.path && (
                   <motion.div
@@ -185,13 +182,12 @@ const NavigationMenu = () => {
                 )}
               </AnimatePresence>
             </button>
-
-
+          
             <span className="block text-center font-press-start text-[8px] text-primary/70 mt-1">
               {item.label}
             </span>
           </motion.div>
-        ))}
+                  ))}
       </div>
     </nav>
   );
