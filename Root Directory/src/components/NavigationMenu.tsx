@@ -159,11 +159,10 @@ const NavigationMenu = () => {
                 rounded-none
               `}
             >
-              <div className="relative z-10 flex items-center justify-center w-5 h-5 leading-none">
-                {/* Clone icon element adding alignment classes */}
+              <div className="relative z-10 flex items-center justify-center w-6 h-6">
                 {React.cloneElement(item.icon, { className: "inline-block align-middle" })}
               </div>
-
+            
               <AnimatePresence>
                 {activeItem === item.path && (
                   <motion.div
