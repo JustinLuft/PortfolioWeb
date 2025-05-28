@@ -35,14 +35,24 @@ body {
   cursor: none;
 }
 
-/* Small Triangle SVG Cursor (16x16) */
-* {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 30 30' fill='rgba(0, 255, 209, 0.7)'%3E%3Cpath d='M15 0 L0 30 L30 30 Z' /%3E%3C/svg%3E") 8 8, auto;
+/* Define CSS variables for cursor URLs */
+:root {
+  --cursor-normal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 30 30' fill='rgba(0, 255, 209, 0.7)'%3E%3Cpath d='M15 0 L0 30 L30 30 Z' /%3E%3C/svg%3E") 8 8, auto;
+  --cursor-hover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 30 30' fill='rgba(0, 255, 209, 0.7)'%3E%3Cpath d='M15 0 L0 30 L30 30 Z' /%3E%3C/svg%3E") 8 8, auto;
 }
 
-/* Ensure clickable elements also use the triangle */
-a, button, input, textarea, select {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 30 30' fill='rgba(0, 255, 209, 0.7)'%3E%3Cpath d='M15 0 L0 30 L30 30 Z' /%3E%3C/svg%3E") 8 8, auto;
+/* Apply normal cursor everywhere */
+* {
+  cursor: var(--cursor-normal) !important;
+}
+
+/* Change cursor on hover for interactive elements */
+a:hover,
+button:hover,
+input:hover,
+textarea:hover,
+select:hover {
+  cursor: var(--cursor-hover) !important;
 }
 
 /* Fallback for touch devices */
