@@ -94,10 +94,10 @@ const SkillsPage: React.FC = () => {
           className="text-center mb-12"
         >
           <h1 className="text-4xl font-press-start text-primary mb-4">
-            Tech Arsenal
+            Technical Skillset
           </h1>
           <p className="text-xl font-vt323 text-primary/80 max-w-2xl mx-auto">
-            A deep dive into my computer science toolkit—where algorithms, databases, and teamwork converge.
+            A breakdown of my computer science skillset — where algorithms, databases, and teamwork converge.
           </p>
         </motion.div>
 
