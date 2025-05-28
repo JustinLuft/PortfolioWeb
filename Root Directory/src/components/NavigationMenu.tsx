@@ -30,9 +30,9 @@ const NavigationMenu = () => {
       const lines = Array.from({ length: 40 }, () => ({
         x: Math.random() * 100,
         opacity: Math.random() * 0.4,
-        length: Math.random() * 150 + 50, // Longer and more varied line lengths
-        rotation: Math.random() * 90, // Random rotation
-        speed: Math.random() * 5 + 2 // Varied animation speed
+        length: Math.random() * 150 + 50,
+        rotation: Math.random() * 90,
+        speed: Math.random() * 5 + 2
       }));
       setCyberLines(lines);
     };
@@ -99,8 +99,8 @@ const NavigationMenu = () => {
               left: `${line.x}%`,
               width: `${line.length}px`,
               height: '1px',
-              backgroundColor: 'rgba(0, 255, 209, 0.2)', // Cyber green with opacity
-              transform: `rotate(${line.rotation}deg)` // Random rotation
+              backgroundColor: 'rgba(0, 255, 209, 0.2)',
+              transform: `rotate(${line.rotation}deg)`
             }}
           />
         ))}
@@ -130,7 +130,7 @@ const NavigationMenu = () => {
               left: 0,
               top: `${Math.random() * 100}%`,
               width: '2px',
-              backgroundColor: 'rgba(0, 255, 209, 0.3)', // Cyber green with opacity
+              backgroundColor: 'rgba(0, 255, 209, 0.3)',
             }}
           />
         ))}
@@ -140,9 +140,7 @@ const NavigationMenu = () => {
         {menuItems.map((item) => (
           <motion.div
             key={item.path}
-            whileHover={{ 
-              scale: 1.05,
-            }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="relative group"
           >
@@ -152,19 +150,19 @@ const NavigationMenu = () => {
                 group flex items-center justify-center 
                 w-12 h-12 transition-all duration-300 
                 relative overflow-hidden border-2
+                leading-none
                 ${activeItem === item.path
                   ? 'border-secondary text-secondary shadow-[0_0_10px_rgba(255,20,147,0.5)]'
                   : 'border-primary/50 text-primary hover:border-secondary hover:text-secondary'}
                 hover:shadow-[0_0_10px_rgba(255,20,147,0.3)]
-                rounded-none  // Square corners
+                rounded-none
               `}
             >
-              {/* Icon - Centered with flex */}
-              <div className="relative z-10 flex items-center justify-center w-full h-full">
-                {item.icon}
+              <div className="relative z-10 flex items-center justify-center w-5 h-5 leading-none">
+                {/* Clone icon element adding alignment classes */}
+                {React.cloneElement(item.icon, { className: "inline-block align-middle" })}
               </div>
-              
-              {/* Active Indicator - Slower Animation */}
+
               <AnimatePresence>
                 {activeItem === item.path && (
                   <motion.div
@@ -173,7 +171,7 @@ const NavigationMenu = () => {
                     animate={{ 
                       width: '100%',
                       transition: {
-                        duration: 10, // Slower animation
+                        duration: 10,
                         repeat: Infinity,
                         repeatType: "reverse",
                       }
@@ -183,8 +181,7 @@ const NavigationMenu = () => {
                 )}
               </AnimatePresence>
             </button>
-            
-            {/* Label - Positioned below the button */}
+
             <span className="block text-center font-press-start text-[8px] text-primary/70 mt-1">
               {item.label}
             </span>
