@@ -46,7 +46,7 @@ const NavigationMenu = () => {
     {
       label: 'Home',
       path: '/',
-      icon: <Power size={20} />
+      icon: <CirclePower size={20} />
     },
     {
       label: 'About',
