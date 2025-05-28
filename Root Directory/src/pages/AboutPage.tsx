@@ -25,13 +25,14 @@ const AboutPage: React.FC = () => {
 
   const educationExperience = [
     {
-      institution: "College of Charleston",
-      degree: "B.S. Computer Science",
-      period: "2020 - 2024",
+      institution: "College of Charleston, South Carolina",
+      degree: "Computer Science B.S.",
+      period: "August 2021 - May 2025",
       highlights: [
-        "Dean's List",
-        "Software Engineering Focus",
-        "Advanced Algorithms Specialization"
+        "CSCI 362 (Software Engineering)",
+        "CSCI 310 (Advanced Algorithms)",
+        "CSCI 431 (Database Concepts)",
+        "CSCI 380 (User Interface Development)"
       ]
     }
   ];
@@ -102,11 +103,10 @@ const AboutPage: React.FC = () => {
               <div className="flex items-center mb-6">
                 <User className="w-12 h-12 text-primary mr-4" />
                 <h2 className="font-press-start text-2xl text-primary">
-                  Justin Luft
+                  {personalInfo.name}
                 </h2>
               </div>
               <div className="space-y-4 font-vt323 text-primary/90 text-xl">
-                {/* doubled font size on spans and paragraphs here */}
                 <div className="flex items-center text-xl">
                   <MapPin className="mr-2 text-primary" />
                   <span>{personalInfo.location}</span>
@@ -161,13 +161,13 @@ const AboutPage: React.FC = () => {
                 </h2>
               </div>
               {educationExperience.map((edu) => (
-                <div key={edu.institution} className="font-vt323 text-primary/90 text-xl">
-                  <h3 className="text-xl font-press-start text-primary">
+                <div key={edu.institution} className="font-vt323 text-primary/90">
+                  <h3 className="text-3xl font-press-start text-primary">
                     {edu.institution}
                   </h3>
-                  <p className="text-sm text-primary/70 mb-2 text-lg">{edu.period}</p>
-                  <p className="text-lg">{edu.degree}</p>
-                  <ul className="list-disc list-inside mt-2 text-sm text-lg">
+                  <p className="text-lg text-primary/70 mb-2">{edu.period}</p>
+                  <p className="text-2xl">{edu.degree}</p>
+                  <ul className="list-disc list-inside mt-2 text-2xl md:text-3xl">
                     {edu.highlights.map((highlight) => (
                       <li key={highlight}>{highlight}</li>
                     ))}
@@ -185,13 +185,13 @@ const AboutPage: React.FC = () => {
                 </h2>
               </div>
               {professionalExperience.map((exp) => (
-                <div key={exp.company} className="font-vt323 text-primary/90 text-xl">
-                  <h3 className="text-xl font-press-start text-primary">
+                <div key={exp.company} className="font-vt323 text-primary/90">
+                  <h3 className="text-3xl font-press-start text-primary">
                     {exp.company}
                   </h3>
-                  <p className="text-sm text-primary/70 mb-2 text-lg">{exp.period}</p>
-                  <p className="text-lg">{exp.role}</p>
-                  <ul className="list-disc list-inside mt-2 text-sm text-lg">
+                  <p className="text-lg text-primary/70 mb-2">{exp.period}</p>
+                  <p className="text-2xl">{exp.role}</p>
+                  <ul className="list-disc list-inside mt-2 text-2xl md:text-3xl">
                     {exp.responsibilities.map((responsibility) => (
                       <li key={responsibility}>{responsibility}</li>
                     ))}
