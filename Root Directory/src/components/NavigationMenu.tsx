@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CirclePower, Code, UserRound, Folder } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  CirclePower, 
+  User, 
+  Folder, 
+  Code 
+} from 'lucide-react';
 
 interface MenuItem {
   label: string;
@@ -12,28 +17,52 @@ interface MenuItem {
 const NavigationMenu = () => {
   const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState<string>(window.location.pathname);
+  const [cyberLines, setCyberLines] = useState<{ 
+    x: number; 
+    opacity: number; 
+    length: number; 
+    rotation: number;
+    speed: number;
+  }[]>([]);
+
+  useEffect(() => {
+    const generateCyberLines = () => {
+      const lines = Array.from({ length: 40 }, () => ({
+        x: Math.random() * 100,
+        opacity: Math.random() * 0.4,
+        length: Math.random() * 150 + 50, // Longer and more varied line lengths
+        rotation: Math.random() * 90, // Random rotation
+        speed: Math.random() * 5 + 2 // Varied animation speed
+      }));
+      setCyberLines(lines);
+    };
+
+    generateCyberLines();
+    const interval = setInterval(generateCyberLines, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const menuItems: MenuItem[] = [
-    { 
-      label: 'Home', 
-      path: '/', 
-      icon: <CirclePower className="w-5 h-5" /> 
+    {
+      label: 'Home',
+      path: '/',
+      icon: <Power size={20} />
     },
-    { 
-      label: 'Skills', 
-      path: '/skills', 
-      icon: <Code className="w-5 h-5" /> 
+    {
+      label: 'About',
+      path: '/about',
+      icon: <User size={20} />
     },
-    { 
-      label: 'Projects', 
-      path: '/projects', 
-      icon: <Folder className="w-5 h-5" /> 
+    {
+      label: 'Projects',
+      path: '/projects',
+      icon: <Folder size={20} />
     },
-    { 
-      label: 'About', 
-      path: '/about', 
-      icon: <UserRound className="w-5 h-5" /> 
-    },
+    {
+      label: 'Skills',
+      path: '/skills',
+      icon: <Code size={20} />
+    }
   ];
 
   const handleNavigation = (path: string) => {
@@ -42,65 +71,126 @@ const NavigationMenu = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 h-screen w-20 bg-[#0B0C10] border-r border-primary/30 flex flex-col items-center py-8 z-[9999] overflow-hidden">
-      <div className="flex flex-col gap-8 items-center relative z-10">
+    <nav className="fixed top-0 left-0 h-screen w-24 bg-[#0B0C10] border-r-2 border-primary/30 flex flex-col items-center py-8 z-[9999] overflow-hidden">
+      {/* Cyber Lines Background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {cyberLines.map((line, index) => (
+          <motion.div
+            key={index}
+            initial={{ 
+              opacity: 0, 
+              x: line.x - 20,
+              rotate: line.rotation
+            }}
+            animate={{ 
+              opacity: [0, line.opacity, 0],
+              x: [line.x - 20, line.x, line.x + 20],
+              rotate: [line.rotation, line.rotation + 10, line.rotation - 10]
+            }}
+            transition={{
+              duration: line.speed,
+              repeat: Infinity,
+              repeatType: "loop",
+              delay: index * 0.1
+            }}
+            style={{
+              position: 'absolute',
+              top: `${Math.random() * 100}%`,
+              left: `${line.x}%`,
+              width: `${line.length}px`,
+              height: '1px',
+              backgroundColor: 'rgba(0, 255, 209, 0.2)', // Cyber green with opacity
+              transform: `rotate(${line.rotation}deg)` // Random rotation
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Vertical Cyber Lines on Nav Border */}
+      <div className="absolute left-0 top-0 bottom-0 w-1 overflow-hidden pointer-events-none">
+        {cyberLines.slice(0, 10).map((line, index) => (
+          <motion.div
+            key={`vertical-${index}`}
+            initial={{ 
+              opacity: 0, 
+              height: 0,
+            }}
+            animate={{ 
+              opacity: [0, line.opacity, 0],
+              height: [0, Math.random() * 100, 0]
+            }}
+            transition={{
+              duration: line.speed * 2,
+              repeat: Infinity,
+              repeatType: "loop",
+              delay: index * 0.2
+            }}
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: `${Math.random() * 100}%`,
+              width: '2px',
+              backgroundColor: 'rgba(0, 255, 209, 0.3)', // Cyber green with opacity
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="flex flex-col gap-6 items-center relative z-10">
         {menuItems.map((item) => (
           <motion.div
             key={item.path}
             whileHover={{ 
-              scale: 1.1,
-              rotate: Math.random() * 2 - 1,
+              scale: 1.05,
             }}
             whileTap={{ scale: 0.95 }}
-            className="relative"
+            className="relative group"
           >
             <button
               onClick={() => handleNavigation(item.path)}
               className={`
-                group flex flex-col items-center gap-2 p-3 rounded-lg transition-all duration-300 relative overflow-hidden
+                group flex items-center justify-center 
+                w-12 h-12 transition-all duration-300 
+                relative overflow-hidden border-2
                 ${activeItem === item.path
-                  ? 'text-secondary shadow-neon-secondary'
-                  : 'text-primary hover:text-secondary hover:shadow-neon-secondary'}
-                before:absolute before:inset-0 before:bg-primary/10 before:opacity-0 hover:before:opacity-20
-                before:transition-opacity before:duration-300
+                  ? 'border-secondary text-secondary shadow-[0_0_10px_rgba(255,20,147,0.5)]'
+                  : 'border-primary/50 text-primary hover:border-secondary hover:text-secondary'}
+                hover:shadow-[0_0_10px_rgba(255,20,147,0.3)]
+                rounded-none  // Square corners
               `}
             >
-              {/* Pixel Glitch Effect */}
-              <div className="relative">
+              {/* Icon - Centered with flex */}
+              <div className="relative z-10 flex items-center justify-center w-full h-full">
                 {item.icon}
-                <div className="absolute inset-0 bg-primary/20 mix-blend-color-dodge opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
               </div>
               
-              <span className="font-press-start text-[8px] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                {item.label}
-              </span>
-              
-              {activeItem === item.path && (
-                <motion.div
-                  layoutId="active-indicator"
-                  className="absolute -right-[2px] top-1/2 -translate-y-1/2 w-1 h-8 bg-secondary rounded-l"
-                  initial={false}
-                  animate={{
-                    boxShadow: [
-                      '0 0 5px #FF1493',
-                      '0 0 10px #FF1493',
-                      '0 0 15px #FF1493',
-                    ],
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                  }}
-                />
-              )}
+              {/* Active Indicator - Slower Animation */}
+              <AnimatePresence>
+                {activeItem === item.path && (
+                  <motion.div
+                    layoutId="active-indicator"
+                    initial={{ width: 0 }}
+                    animate={{ 
+                      width: '100%',
+                      transition: {
+                        duration: 10, // Slower animation
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                      }
+                    }}
+                    className="absolute bottom-0 left-0 h-[2px] bg-secondary"
+                  />
+                )}
+              </AnimatePresence>
             </button>
+            
+            {/* Label - Positioned below the button */}
+            <span className="block text-center font-press-start text-[8px] text-primary/70 mt-1">
+              {item.label}
+            </span>
           </motion.div>
         ))}
       </div>
-
-      {/* Bottom Cyberpunk Accent */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary/20 via-secondary/50 to-primary/20" />
     </nav>
   );
 };
