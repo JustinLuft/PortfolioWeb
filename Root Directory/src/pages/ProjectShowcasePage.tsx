@@ -109,7 +109,7 @@ const ProjectShowcasePage: React.FC = () => {
         return (
           <div>
             <h3 className="font-press-start text-lg mb-2 text-primary">Project Overview</h3>
-            <p className="font-vt323 text-lg md:text-xl text-primary/80">{selectedProject.description}</p>
+            <p className="font-vt323 text-2xl md:text-3xl text-primary/80">{selectedProject.description}</p>
           </div>
         );
       case 'technologies':
@@ -132,7 +132,7 @@ const ProjectShowcasePage: React.FC = () => {
         return (
           <div>
             <h3 className="font-press-start text-lg mb-2 text-primary">Project Challenges</h3>
-            <ul className="list-disc list-inside font-vt323 text-primary/80">
+            <ul className="list-disc list-inside font-vt323 text-2xl md:text-3xl text-primary/80">
               {selectedProject.fullDetails.challenges.map((challenge, index) => (
                 <li key={index}>{challenge}</li>
               ))}
