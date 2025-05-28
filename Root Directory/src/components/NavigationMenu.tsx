@@ -157,7 +157,7 @@ const NavigationMenu = () => {
                   : 'border-primary/50 text-primary hover:border-secondary hover:text-secondary'}
                 hover:shadow-[0_0_10px_rgba(255,20,147,0.3)]
                 rounded-none
-                ${item.label === 'Projects' ? 'ml-[8px]' : ''}
+                ${item.label === 'Projects' ? 'ml-[7px]' : ''}
               `}
             >
               <div className="relative z-10 flex items-center justify-center w-6 h-6">
