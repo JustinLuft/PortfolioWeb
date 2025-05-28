@@ -56,7 +56,7 @@ const NavigationMenu = () => {
           >
             <button
               onClick={() => handleNavigation(item.path)}
-              className={group flex flex-col items-center gap-2 p-3 rounded-lg transition-all duration-300 relative overflow-hidden 
+              className={group flex flex-col items-center gap-2 p-3 rounded-lg transition-all duration-300 relative overflow-hidden}
                 ${activeItem === item.path
                   ? 'text-secondary shadow-neon-secondary'
                   : 'text-primary hover:text-secondary hover:shadow-neon-secondary'}
