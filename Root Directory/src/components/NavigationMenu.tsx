@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  CirclePower, 
+  Power, 
   User, 
   Folder, 
   Code 
@@ -47,7 +47,7 @@ const NavigationMenu = () => {
     {
       label: 'Home',
       path: '/',
-      icon: <CirclePower size={20} />
+      icon: <Power size={20} />
     },
     {
       label: 'About',
