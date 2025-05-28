@@ -86,7 +86,7 @@ const AboutPage: React.FC = () => {
           <h1 className="text-4xl font-press-start text-primary mb-4">
             About Me
           </h1>
-          <p className="text-xl font-vt323 text-primary/80 max-w-2xl mx-auto">
+          <p className="text-2xl font-vt323 text-primary/80 max-w-2xl mx-auto">
             Profile | Education | Experience
           </p>
         </motion.div>
@@ -105,20 +105,21 @@ const AboutPage: React.FC = () => {
                   Justin Luft
                 </h2>
               </div>
-              <div className="space-y-4 font-vt323 text-primary/90">
-                <div className="flex items-center">
+              <div className="space-y-4 font-vt323 text-primary/90 text-xl">
+                {/* doubled font size on spans and paragraphs here */}
+                <div className="flex items-center text-xl">
                   <MapPin className="mr-2 text-primary" />
                   <span>{personalInfo.location}</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center text-xl">
                   <Mail className="mr-2 text-primary" />
                   <span>{personalInfo.email}</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center text-xl">
                   <Phone className="mr-2 text-primary" />
                   <span>{personalInfo.phone}</span>
                 </div>
-                <p className="mt-4">{personalInfo.summary}</p>
+                <p className="mt-4 text-xl">{personalInfo.summary}</p>
               </div>
               <div className="mt-6 flex flex-wrap items-center gap-4">
                 {socialLinks.map((link) => (
@@ -136,7 +137,7 @@ const AboutPage: React.FC = () => {
                 <Button 
                   variant="outline" 
                   onClick={downloadResume}
-                  className="font-press-start text-primary border-primary hover:bg-primary/20"
+                  className="font-press-start text-primary border-primary hover:bg-primary/20 text-lg"
                 >
                   <Briefcase className="mr-2 w-4 h-4" /> Download Resume
                 </Button>
@@ -160,13 +161,13 @@ const AboutPage: React.FC = () => {
                 </h2>
               </div>
               {educationExperience.map((edu) => (
-                <div key={edu.institution} className="font-vt323 text-primary/90">
+                <div key={edu.institution} className="font-vt323 text-primary/90 text-xl">
                   <h3 className="text-xl font-press-start text-primary">
                     {edu.institution}
                   </h3>
-                  <p className="text-sm text-primary/70 mb-2">{edu.period}</p>
-                  <p>{edu.degree}</p>
-                  <ul className="list-disc list-inside mt-2 text-sm">
+                  <p className="text-sm text-primary/70 mb-2 text-lg">{edu.period}</p>
+                  <p className="text-lg">{edu.degree}</p>
+                  <ul className="list-disc list-inside mt-2 text-sm text-lg">
                     {edu.highlights.map((highlight) => (
                       <li key={highlight}>{highlight}</li>
                     ))}
@@ -184,13 +185,13 @@ const AboutPage: React.FC = () => {
                 </h2>
               </div>
               {professionalExperience.map((exp) => (
-                <div key={exp.company} className="font-vt323 text-primary/90">
+                <div key={exp.company} className="font-vt323 text-primary/90 text-xl">
                   <h3 className="text-xl font-press-start text-primary">
                     {exp.company}
                   </h3>
-                  <p className="text-sm text-primary/70 mb-2">{exp.period}</p>
-                  <p>{exp.role}</p>
-                  <ul className="list-disc list-inside mt-2 text-sm">
+                  <p className="text-sm text-primary/70 mb-2 text-lg">{exp.period}</p>
+                  <p className="text-lg">{exp.role}</p>
+                  <ul className="list-disc list-inside mt-2 text-sm text-lg">
                     {exp.responsibilities.map((responsibility) => (
                       <li key={responsibility}>{responsibility}</li>
                     ))}
