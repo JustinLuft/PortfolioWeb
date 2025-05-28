@@ -48,7 +48,7 @@ const NavigationMenu = () => {
       label: 'Home',
       path: '/',
       icon: <CirclePower size={20} />
-    }
+    },
     {
       label: 'Projects',
       path: '/projects',
@@ -58,12 +58,12 @@ const NavigationMenu = () => {
       label: 'Skills',
       path: '/skills',
       icon: <Code size={20} />
-    }
+    },
     {
       label: 'About',
       path: '/about',
       icon: <User size={20} />
-    },
+    }
   ];
 
   const handleNavigation = (path: string) => {
