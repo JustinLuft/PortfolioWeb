@@ -164,7 +164,7 @@ const projects: Project[] = [
       "Synchronizing threads and cleanly handling early termination when a solution is found"
     ],
   }
-}
+},
   {
   id: 11,
   name: "Train Car Sorting Simulation",
