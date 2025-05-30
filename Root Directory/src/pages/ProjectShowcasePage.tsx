@@ -248,15 +248,15 @@ const ProjectShowcasePage: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Project List */}
-          <div className="space-y-4 max-h-[600px] overflow-y-auto">
+         <div className="scrollbar-left scrollbar-custom space-y-4 max-h-[600px]">
             {projects.map((project) => (
               <motion.div
                 key={project.id}
                 whileHover={{ scale: 1.05 }}
                 onClick={() => setSelectedProject(project)}
                 className={`cursor-pointer p-4 rounded-lg transition-all duration-300 ${
-                  selectedProject.id === project.id 
-                    ? 'bg-primary/20 border border-primary' 
+                  selectedProject.id === project.id
+                    ? 'bg-primary/20 border border-primary'
                     : 'bg-background/50 hover:bg-primary/10'
                 }`}
               >
