@@ -116,10 +116,10 @@ const projects: Project[] = [
   },
   {
   id: 8,
-  name: "Longest Palindromic Subsequence (Java)",
+  name: "Longest Palindromic Subsequence",
   description: "Built a dynamic programming algorithm in Java to compute the longest palindromic subsequence (LPS) in a given string using a custom table with directional pointers.",
   skills: ["Dynamic Programming", "Algorithm Design", "Java"],
-  githubLink: "https://github.com/JustinLuft/LongestPalindromicSubsequence", // Replace if different
+  githubLink: "https://github.com/JustinLuft/LPS", 
   icon: <Code2 className="w-8 h-8 text-primary" />,
   fullDetails: {
     technologies: ["Java", "2D ArrayList", "Custom Element Class"],
