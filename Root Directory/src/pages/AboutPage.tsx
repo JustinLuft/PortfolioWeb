@@ -119,7 +119,7 @@ const AboutPage: React.FC = () => {
                   <Phone className="mr-2 text-primary" />
                   <span>{personalInfo.phone}</span>
                 </div>
-                <p className="mt-4 text-xl">{personalInfo.summary}</p>
+                <p className="mt-4 text-5xl leading-relaxed">{personalInfo.summary}</p>
               </div>
               <div className="mt-6 flex flex-wrap items-center gap-4">
                 {socialLinks.map((link) => (
