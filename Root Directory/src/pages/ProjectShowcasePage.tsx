@@ -8,7 +8,8 @@ import {
   Cloud, 
   Cpu,
   Camera,
-  MousePointerClick
+  MousePointerClick,
+  Code2
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -112,7 +113,23 @@ const projects: Project[] = [
       "Managing real-time input automation with precise timing",
       "Implementing global hotkeys across systems"],
     }
+  },
+  {
+  id: 8,
+  name: "Longest Palindromic Subsequence (Java)",
+  description: "Built a dynamic programming algorithm in Java to compute the longest palindromic subsequence (LPS) in a given string using a custom table with directional pointers.",
+  skills: ["Dynamic Programming", "Algorithm Design", "Java"],
+  githubLink: "https://github.com/JustinLuft/LongestPalindromicSubsequence", // Replace if different
+  icon: <Code2 className="w-8 h-8 text-primary" />,
+  fullDetails: {
+    technologies: ["Java", "2D ArrayList", "Custom Element Class"],
+    challenges: [
+      "Designing a pointer-based DP table to track subsequences",
+      "Reverse traversal of the table to reconstruct the solution",
+      "Edge-case handling for empty or one-character inputs"
+    ],
   }
+}
 ];
 
 const ProjectShowcasePage: React.FC = () => {
