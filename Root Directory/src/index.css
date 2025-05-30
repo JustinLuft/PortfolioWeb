@@ -18,6 +18,25 @@
     animation: scanline 7.5s linear infinite;
   }
 
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 8px;
+  }
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: #1A1E23; /* your dark bg track */
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #00FFD1; /* neon cyan */
+    border-radius: 9999px;
+    border: 2px solid #1A1E23; /* track color for padding effect */
+    box-shadow: 0 0 8px #00FFD1; /* subtle glow effect */
+  }
+
+  /* Firefox */
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: #00FFD1 #1A1E23;
+  }
+
   @keyframes scanline {
     0% {
       background-position: 0 -100%;
