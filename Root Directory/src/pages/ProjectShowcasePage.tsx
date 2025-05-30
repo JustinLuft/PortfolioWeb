@@ -9,7 +9,8 @@ import {
   Cpu,
   Camera,
   MousePointerClick,
-  Code2
+  Code2,
+  CalculatorIcon
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -127,6 +128,39 @@ const projects: Project[] = [
       "Designing a pointer-based DP table to track subsequences",
       "Reverse traversal of the table to reconstruct the solution",
       "Edge-case handling for empty or one-character inputs"
+    ],
+  }
+},
+  {
+  id: 9,
+  name: "Bernoulli Number Calculator",
+  description: "Implemented a Java program to compute Bernoulli numbers using rational arithmetic and recursive binomial coefficient relations for accurate fractional results.",
+  skills: ["Java", "Recursion", "Rational Arithmetic", "Number Theory"],
+  githubLink: "https://github.com/JustinLuft/BSF",
+  icon: <CalculatorIcon className="w-8 h-8 text-primary" />,
+  fullDetails: {
+    technologies: ["Java", "Custom Rational Class", "Recursion", "Binomial Coefficients"],
+    challenges: [
+      "Designing a Rational number class with full arithmetic and fraction reduction",
+      "Implementing recursive computation of Bernoulli numbers using binomial coefficients",
+      "Managing large integer operations and preventing overflow in factorial calculations"
+    ],
+  }
+},
+  {
+  id: 10,
+  name: "Multithreaded Sudoku Solver",
+  description: "Enhanced a recursive Sudoku solver by implementing multithreading to parallelize the search space and accelerate solution discovery.",
+  skills: ["C", "Multithreading", "Bitmasking", "Backtracking", "Recursion"],
+  githubLink: "https://github.com/JustinLuft/sudokuthread",
+  icon: <CalculatorIcon className="w-8 h-8 text-primary" />,
+  fullDetails: {
+    technologies: ["C", "POSIX Threads (pthreads)", "Bitmask Optimization", "Recursive Backtracking"],
+    challenges: [
+      "Implementing thread-level parallelism by branching on the most ambiguous cell choices",
+      "Managing shared state and avoiding data races without sacrificing performance",
+      "Ensuring correct and efficient bitmask operations for candidate numbers",
+      "Synchronizing threads and cleanly handling early termination when a solution is found"
     ],
   }
 }
