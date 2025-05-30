@@ -7,7 +7,8 @@ import {
   Database, 
   Cloud, 
   Cpu,
-  Camera 
+  Camera,
+  MousePointerClick
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -95,6 +96,21 @@ const projects: Project[] = [
     fullDetails: {
       technologies: ["C", "POSIX Threads", "Semaphores"],
       challenges: ["Deadlock prevention", "Race condition mitigation", "Synchronization"],
+    }
+  },
+  {
+  id: 7,
+  name: "Python AutoClicker",
+  description: "Built a customizable Python-based auto-clicker with GUI controls for automating mouse and keyboard inputs using time intervals, positions, and hotkeys.",
+  skills: ["Tkinter", "Input Automation", "User Interface Design"],
+  githubLink: "https://github.com/JustinLuft/autoclicker", 
+  icon: <MousePointerClick className="w-8 h-8 text-primary" />,
+  fullDetails: {
+    technologies: ["Python", "Tkinter", "pynput", "keyboard"],
+    challenges: [
+      "Building a flexible and intuitive GUI",
+      "Managing real-time input automation with precise timing",
+      "Implementing global hotkeys across systems"],
     }
   }
 ];
