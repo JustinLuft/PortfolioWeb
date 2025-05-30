@@ -20,7 +20,7 @@ const AboutPage: React.FC = () => {
     location: "Charleston, SC",
     email: "j.n.luft@icloud.com",
     phone: "(646) 320-4998",
-    summary: "Passionate computer science professional with a strong foundation in software development, algorithmic problem-solving, and innovative technology solutions. Experienced in creating scalable web applications and exploring cutting-edge technological challenges.",
+    summary: "Computer Science Major with a strong foundation in both high and low-level programming, specializing in algorithms, software development, and UI design. Proficient in various languages, and skilled in Agile methodologies such as Scrum. Eager to contribute to forward-thinking projects and collaborate with industry experts to drive technological advancements and gain experience.",
   };
 
   const educationExperience = [
