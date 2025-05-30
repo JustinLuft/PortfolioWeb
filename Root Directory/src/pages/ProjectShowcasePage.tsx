@@ -10,7 +10,8 @@ import {
   Camera,
   MousePointerClick,
   Code2,
-  CalculatorIcon
+  CalculatorIcon,
+  Train
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -164,6 +165,23 @@ const projects: Project[] = [
     ],
   }
 }
+  {
+  id: 11,
+  name: "Train Car Sorting Simulation",
+  description: "Developed a simulation to process and sort custom train car objects (PassengerCar, CargoCar, MailCar) based on destination and class priority.",
+  skills: ["Java", "Object-Oriented Programming", "Sorting Algorithms", "Simulation"],
+  githubLink: "https://github.com/JustinLuft/traincarsorting",
+  icon: <Train className="w-8 h-8 text-primary" />,
+  fullDetails: {
+    technologies: ["Java", "Custom Classes", "Comparable Interface", "Priority Sorting"],
+    challenges: [
+      "Designing a flexible class hierarchy for different train cars",
+      "Implementing sorting logic based on destination and priority rules",
+      "Ensuring type-safe and efficient handling of mixed car objects"
+    ],
+  }
+}
+
 ];
 
 const ProjectShowcasePage: React.FC = () => {
@@ -230,29 +248,25 @@ const ProjectShowcasePage: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Project List */}
-          <div className="space-y-4">
+          <div className="space-y-4 max-h-[600px] overflow-y-auto">
             {projects.map((project) => (
               <motion.div
                 key={project.id}
                 whileHover={{ scale: 1.05 }}
                 onClick={() => setSelectedProject(project)}
-                className={`
-                  cursor-pointer p-4 rounded-lg transition-all duration-300 
-                  ${selectedProject.id === project.id 
+                className={`cursor-pointer p-4 rounded-lg transition-all duration-300 ${
+                  selectedProject.id === project.id 
                     ? 'bg-primary/20 border border-primary' 
-                    : 'bg-background/50 hover:bg-primary/10'}
-                `}
+                    : 'bg-background/50 hover:bg-primary/10'
+                }`}
               >
                 <div className="flex items-center gap-4">
                   {project.icon}
-                  <h3 className="font-press-start text-lg text-primary">
-                    {project.name}
-                  </h3>
+                  <h3 className="font-press-start text-lg text-primary">{project.name}</h3>
                 </div>
               </motion.div>
             ))}
           </div>
-
           {/* Project Details */}
           <motion.div
             key={selectedProject.id}
