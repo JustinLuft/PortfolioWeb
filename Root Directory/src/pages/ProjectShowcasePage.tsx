@@ -185,6 +185,8 @@ const projects: Project[] = [
 ];
 
 const ProjectShowcasePage: React.FC = () => {
+  const projectsPerPage = 7;
+  const [currentPage, setCurrentPage] = useState(0);
   const [selectedProject, setSelectedProject] = useState<Project>(projects[0]);
   const [activeTab, setActiveTab] = useState<'overview' | 'technologies' | 'challenges'>('overview');
 
@@ -248,25 +250,49 @@ const ProjectShowcasePage: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Project List */}
-         <div className="scrollbar-left scrollbar-custom space-y-4 max-h-[600px]">
-            {projects.map((project) => (
-              <motion.div
-                key={project.id}
-                whileHover={{ scale: 1.05 }}
-                onClick={() => setSelectedProject(project)}
-                className={`cursor-pointer p-4 rounded-lg transition-all duration-300 ${
-                  selectedProject.id === project.id
-                    ? 'bg-primary/20 border border-primary'
-                    : 'bg-background/50 hover:bg-primary/10'
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  {project.icon}
-                  <h3 className="font-press-start text-lg text-primary">{project.name}</h3>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+         {/* Paginated Project List */}
+            <div className="space-y-4">
+              {projects
+                .slice(currentPage * projectsPerPage, (currentPage + 1) * projectsPerPage)
+                .map((project) => (
+                  <motion.div
+                    key={project.id}
+                    whileHover={{ scale: 1.05 }}
+                    onClick={() => setSelectedProject(project)}
+                    className={`cursor-pointer p-4 rounded-lg transition-all duration-300 ${
+                      selectedProject.id === project.id
+                        ? 'bg-primary/20 border border-primary'
+                        : 'bg-background/50 hover:bg-primary/10'
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      {project.icon}
+                      <h3 className="font-press-start text-lg text-primary">{project.name}</h3>
+                    </div>
+                  </motion.div>
+              ))}
+            
+              {/* Pagination Controls */}
+              <div className="flex justify-between mt-4">
+                <Button 
+                  variant="outline"
+                  className="text-primary border-primary hover:bg-primary/10"
+                  disabled={currentPage === 0}
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+                >
+                  Previous
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="text-primary border-primary hover:bg-primary/10"
+                  disabled={(currentPage + 1) * projectsPerPage >= projects.length}
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+
           {/* Project Details */}
           <motion.div
             key={selectedProject.id}
