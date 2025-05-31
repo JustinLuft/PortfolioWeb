@@ -19,39 +19,43 @@
   }
 
   /* Container class that moves scrollbar to left */
-.scrollbar-left {
-  direction: rtl;       /* scrollbar on the left */
-  overflow-y: auto;
-  overflow-x: hidden;   /* prevent horizontal scroll */
-}
+  .scrollbar-left {
+    direction: rtl;       /* scrollbar on the left */
+    overflow-y: auto;
+    overflow-x: hidden;   /* prevent horizontal scroll */
+    cursor: var(--cursor-normal) !important; /* ensure custom cursor */
+  }
 
-/* Reset content inside to normal LTR direction */
-.scrollbar-left > * {
-  direction: ltr;
-}
+  /* Reset content inside to normal LTR direction */
+  .scrollbar-left > * {
+    direction: ltr;
+  }
 
-/* Combine with your existing custom scrollbar styles */
-.scrollbar-left.scrollbar-custom::-webkit-scrollbar {
-  width: 8px;
-}
+  /* Combine with your existing custom scrollbar styles */
+  .scrollbar-left.scrollbar-custom::-webkit-scrollbar {
+    width: 8px;
+    cursor: var(--cursor-normal) !important; /* cursor on scrollbar */
+  }
 
-.scrollbar-left.scrollbar-custom::-webkit-scrollbar-track {
-  background: #1A1E23;
-}
+  .scrollbar-left.scrollbar-custom::-webkit-scrollbar-track {
+    background: #1A1E23;
+    cursor: var(--cursor-normal) !important; /* cursor on track */
+  }
 
-.scrollbar-left.scrollbar-custom::-webkit-scrollbar-thumb {
-  background-color: #00FFD1;
-  border-radius: 9999px;
-  border: 2px solid #1A1E23;
-  box-shadow: 0 0 8px #00FFD1;
-}
+  .scrollbar-left.scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #00FFD1;
+    border-radius: 9999px;
+    border: 2px solid #1A1E23;
+    box-shadow: 0 0 8px #00FFD1;
+    cursor: var(--cursor-normal) !important; /* cursor on thumb */
+  }
 
-/* Firefox */
-.scrollbar-left.scrollbar-custom {
-  scrollbar-width: thin;
-  scrollbar-color: #00FFD1 #1A1E23;
-}
-
+  /* Firefox */
+  .scrollbar-left.scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: #00FFD1 #1A1E23;
+    cursor: var(--cursor-normal) !important; /* cursor on scrollbar container */
+  }
 
   @keyframes scanline {
     0% {
