@@ -276,15 +276,16 @@ const ProjectShowcasePage: React.FC = () => {
               <div className="flex justify-between mt-4">
                 <Button 
                   variant="outline"
-                  className="text-primary border-primary hover:bg-primary/10"
+                  className="font-press-start text-sm text-primary border-primary hover:bg-primary/10"
                   disabled={currentPage === 0}
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
                 >
                   Previous
                 </Button>
+                
                 <Button 
                   variant="outline"
-                  className="text-primary border-primary hover:bg-primary/10"
+                  className="font-press-start text-sm text-primary border-primary hover:bg-primary/10"
                   disabled={(currentPage + 1) * projectsPerPage >= projects.length}
                   onClick={() => setCurrentPage((prev) => prev + 1)}
                 >
