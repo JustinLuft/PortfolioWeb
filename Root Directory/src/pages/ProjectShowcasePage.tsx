@@ -54,17 +54,17 @@ const projects: Project[] = [
     }
   },
   {
-    id: 3,
-    name: "SubMachine App",
-    description: "Designed and prototyped a fast-food ordering application as a semester-long software engineering project, emphasizing intuitive user interface and functional design.",
-    skills: ["Prototype Development", "UI/UX", "Mobile Design"],
-    githubLink: "https://github.com/justinluft/submachine-app",
-    icon: <Database className="w-8 h-8 text-primary" />,
-    fullDetails: {
-      technologies: ["Figma", "JavaScript", "MySQL"],
-      challenges: ["User interface design", "State management", "Prototype iteration"],
-    }
-  },
+  id: 3,
+  name: "CinemaCache - Personalized Movie Prompt Generator",
+  description: "A React-based web app that lets users manage their movie collections and generate customized movie recommendation prompts, integrating Firebase Authentication and Firestore for secure data storage.",
+  skills: ["React", "TypeScript", "Firebase Authentication", "Firestore", "UI Design", "State Management"],
+  githubLink: "https://github.com/justinluft/cinemacache",
+  icon: <Clapperboard className="w-8 h-8 text-primary" />,
+  fullDetails: {
+    technologies: ["React", "TypeScript", "Firebase", "Tailwind CSS", "Vite"],
+    challenges: ["Real-time data fetching", "User authentication and security", "Dynamic prompt generation", "Responsive UI design"],
+  }
+},
   {
     id: 4,
     name: "Machine Learning Engine",
@@ -180,7 +180,19 @@ const projects: Project[] = [
       "Ensuring type-safe and efficient handling of mixed car objects"
     ],
   }
-}
+},
+  {
+    id: 12,
+    name: "SubMachine App",
+    description: "Designed and prototyped a fast-food ordering application as a semester-long software engineering project, emphasizing intuitive user interface and functional design.",
+    skills: ["Prototype Development", "UI/UX", "Mobile Design"],
+    githubLink: "https://github.com/justinluft/submachine-app",
+    icon: <Database className="w-8 h-8 text-primary" />,
+    fullDetails: {
+      technologies: ["Figma", "JavaScript", "MySQL"],
+      challenges: ["User interface design", "State management", "Prototype iteration"],
+    }
+  }
 
 ];
 
