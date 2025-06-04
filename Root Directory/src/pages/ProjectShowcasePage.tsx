@@ -356,6 +356,15 @@ const ProjectShowcasePage: React.FC = () => {
             >
               <Github className="w-4 h-4" /> View on GitHub
             </Button>
+            {selectedProject.websiteLink && (
+              <Button
+                variant="outline"
+                className="w-full flex items-center gap-2 border-primary text-primary hover:bg-primary/10 mt-2"
+                onClick={() => window.open(selectedProject.websiteLink, '_blank')}
+              >
+                <MousePointerClick className="w-4 h-4" /> Visit Website
+              </Button>
+            )}
           </motion.div>
         </div>
       </div>
