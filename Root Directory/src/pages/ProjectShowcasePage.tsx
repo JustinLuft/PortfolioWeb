@@ -22,12 +22,14 @@ interface Project {
   description: string;
   skills: string[];
   githubLink: string;
+  websiteLink?: string;
   icon: React.ReactNode;
   fullDetails: {
     technologies: string[];
     challenges: string[];
   };
 }
+
 
 const projects: Project[] = [
   {
@@ -59,13 +61,15 @@ const projects: Project[] = [
   name: "CinemaCache - Personalized Movie Prompt Generator",
   description: "A React-based web app that lets users manage their movie collections and generate customized movie recommendation prompts, integrating Firebase Authentication and Firestore for secure data storage.",
   skills: ["React", "TypeScript", "Firebase Authentication", "Firestore", "UI Design", "State Management"],
-  githubLink: "https://github.com/justinluft/cinemacache",
+  githubLink: "https://github.com/JustinLuft/CinemaCache",
+  websiteLink: "https://cinema-cache.vercel.app/", // add your live URL here
   icon: <Clapperboard className="w-8 h-8 text-primary" />,
   fullDetails: {
     technologies: ["React", "TypeScript", "Firebase", "Tailwind CSS", "Vite"],
     challenges: ["Real-time data fetching", "User authentication and security", "Dynamic prompt generation", "Responsive UI design"],
   }
 },
+
   {
     id: 4,
     name: "Machine Learning Engine",
