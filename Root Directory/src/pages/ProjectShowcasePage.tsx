@@ -11,7 +11,8 @@ import {
   MousePointerClick,
   Code2,
   CalculatorIcon,
-  Train
+  Train,
+  Clapperboard
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
