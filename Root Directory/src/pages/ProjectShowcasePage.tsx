@@ -12,7 +12,8 @@ import {
   Code2,
   CalculatorIcon,
   Train,
-  Clapperboard
+  Clapperboard,
+  Users
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -69,31 +70,52 @@ const projects: Project[] = [
     challenges: ["Real-time data fetching", "User authentication and security", "Dynamic prompt generation", "Responsive UI design"],
   }
 },
-
-  {
-    id: 4,
-    name: "Machine Learning Engine",
-    description: "Implemented a custom machine learning engine for linear regression, demonstrating deep understanding of mathematical modeling and algorithmic implementation.",
-    skills: ["Machine Learning", "NumPy", "Linear Regression"],
-    githubLink: "https://github.com/JustinLuft/linearregressionhw",
-    icon: <Cpu className="w-8 h-8 text-primary" />,
-    fullDetails: {
-      technologies: ["Python", "NumPy", "Scikit-learn"],
-      challenges: ["Algorithm implementation", "Mathematical modeling", "Performance optimization"],
-    }
-  },
-  {
-    id: 5,
-    name: "Sorting Algorithms Benchmark",
-    description: "Developed a comprehensive benchmarking tool to analyze and compare performance of various sorting algorithms, providing insights into computational efficiency.",
-    skills: ["Java", "Algorithms", "Performance Analysis"],
-    githubLink: "https://github.com/JustinLuft/sort-comparison-analyzer",
-    icon: <Cloud className="w-8 h-8 text-primary" />,
-    fullDetails: {
-      technologies: ["Java", "IntelliJ", "Performance Profiling"],
-      challenges: ["Algorithm complexity", "Performance measurement", "Comparative analysis"],
-    }
-  },
+{
+  id: 4,
+  name: "BuildCarolina Graduate Showcase",
+  description: "A sleek, responsive web application designed to showcase BuildCarolina graduates and their portfolios, built during the CharlestonHacks Innovation Engine Hackathon.",
+  skills: ["TypeScript", "React.js", "Tailwind CSS", "Vite", "Firebase", "UI/UX Design", "Team Collaboration", "Responsive Design", "Hackathon"],
+  githubLink: "https://github.com/JustinLuft/GradShowcase", // Replace with your actual repo URL
+  websiteLink: "https://grad-showcase.vercel.app/",
+  icon: <Users className="w-8 h-8 text-primary" />,
+  fullDetails: {
+    technologies: ["TypeScript", "React.js", "Tailwind CSS", "Vite", "Firebase", "Framer Motion"],
+    challenges: [
+      "Building during a fixed one-month hackathon timeline",
+      "Designing for both mobile and desktop responsiveness",
+      "Creating admin and graduate user flows",
+      "Implementing fast search and filter features",
+      "Embedding external links while maintaining UX quality"],
+  }
+},
+{
+  id: 5,
+  name: "WP Prop Firm Comparison Plugin",
+  description: "A WordPress plugin that captures user emails and displays a filterable comparison table of prop trading firm data scraped using a hybrid of AI-powered and manual techniques.",
+  skills: [
+    "WordPress Plugin Development",
+    "PHP", 
+    "Web Scraping", 
+    "BeautifulSoup", 
+    "JavaScript", 
+    "Email Capture", 
+    "Database Storage", 
+    "UI/UX Design", 
+    "Firecrawl API"
+  ],
+  githubLink: "https://github.com/JustinLuft/wppropscraper2", // update if needed
+  icon: <Table className="w-8 h-8 text-primary" />,
+  fullDetails: {
+    technologies: ["PHP", "JavaScript", "WordPress", "BeautifulSoup", "Firecrawl API", "HTML/CSS"],
+    challenges: [
+      "Gating access with an email submission form tied to a custom database table",
+      "Parsing and storing structured comparison data from multiple sources",
+      "Combining AI-generated and hand-tuned scraping logic",
+      "Building a clean, responsive UI within WordPress shortcode architecture",
+      "Ensuring scalability and usability for end-users exploring firm options"
+    ]
+  }
+},
   {
     id: 6,
     name: "Concurrent Systems",
@@ -196,6 +218,30 @@ const projects: Project[] = [
     fullDetails: {
       technologies: ["Figma", "JavaScript", "MySQL"],
       challenges: ["User interface design", "State management", "Prototype iteration"],
+    }
+  },
+  {
+    id: 13,
+    name: "Machine Learning Engine",
+    description: "Implemented a custom machine learning engine for linear regression, demonstrating deep understanding of mathematical modeling and algorithmic implementation.",
+    skills: ["Machine Learning", "NumPy", "Linear Regression"],
+    githubLink: "https://github.com/JustinLuft/linearregressionhw",
+    icon: <Cpu className="w-8 h-8 text-primary" />,
+    fullDetails: {
+      technologies: ["Python", "NumPy", "Scikit-learn"],
+      challenges: ["Algorithm implementation", "Mathematical modeling", "Performance optimization"],
+    }
+  },
+  {
+    id: 14,
+    name: "Sorting Algorithms Benchmark",
+    description: "Developed a comprehensive benchmarking tool to analyze and compare performance of various sorting algorithms, providing insights into computational efficiency.",
+    skills: ["Java", "Algorithms", "Performance Analysis"],
+    githubLink: "https://github.com/JustinLuft/sort-comparison-analyzer",
+    icon: <Cloud className="w-8 h-8 text-primary" />,
+    fullDetails: {
+      technologies: ["Java", "IntelliJ", "Performance Profiling"],
+      challenges: ["Algorithm complexity", "Performance measurement", "Comparative analysis"],
     }
   }
 
