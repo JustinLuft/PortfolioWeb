@@ -13,7 +13,8 @@ import {
   CalculatorIcon,
   Train,
   Clapperboard,
-  Users
+  Users,
+  Table
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
