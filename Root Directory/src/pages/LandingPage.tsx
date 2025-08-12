@@ -51,7 +51,7 @@ const LandingPage: FC = () => {
     {
       icon: <Linkedin className="mr-2 w-5 h-5" />,
       label: "LinkedIn",
-      url: "https://www.linkedin.com/in/justin-luft-ab2aa9224/"
+      url: "http://www.linkedin.com/in/justinnl"
     },
     {
       icon: <FileText className="mr-2 w-5 h-5" />,
