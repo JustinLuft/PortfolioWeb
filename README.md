@@ -12,7 +12,7 @@ A modern personal portfolio website built with **React**, **TypeScript**, **Tail
 - 🧭 Responsive navigation menu
 - ✨ TypeScript for type safety
 
-## 📂 Project Structure
+```
 Root Directory/
 ├── index.html
 ├── package.json
@@ -34,7 +34,7 @@ Root Directory/
     │   ├── SkillsPage.tsx
     │   ├── ProjectShowcasePage.tsx
     │   └── NotFoundPage.tsx
-
+```
 ## 🛠️ Installation & Setup
 1. Clone this repo:
    ```bash
