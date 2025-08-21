@@ -1,5 +1,5 @@
 # Portfolio Website
-A modern personal portfolio website built with **React**, **TypeScript**, **TailwindCSS**, and **Vite**. It includes pages for showcasing projects, skills, about me, and a downloadable resume.
+My personal personal portfolio website built with **React**, **TypeScript**, **TailwindCSS**, and **Vite**. It includes pages for showcasing projects, skills, about me, and a downloadable resume.
 
 ## 🌐 Live Demo
 👉 [View Portfolio](https://portfolio-web-mu-ten.vercel.app/)
