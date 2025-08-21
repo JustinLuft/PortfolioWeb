@@ -35,5 +35,8 @@ Root Directory/
     │   ├── ProjectShowcasePage.tsx
     │   └── NotFoundPage.tsx
 
+## 🛠️ Installation & Setup
+1. Clone this repo:
+   ```bash
    git clone https://github.com/yourusername/PortfolioWeb.git
    cd PortfolioWeb-main/Root\ Directory
