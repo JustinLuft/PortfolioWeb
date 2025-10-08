@@ -74,7 +74,7 @@ const projects: Project[] = [
       "Deploying full-stack application across Render and Vercel with environment configuration"
     ],
   }
-}
+},
   {
   id: 4,
   name: "CinemaCache - Personalized Movie Prompt Generator",
