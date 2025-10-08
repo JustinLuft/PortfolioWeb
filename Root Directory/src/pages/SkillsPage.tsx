@@ -1,5 +1,5 @@
 import React from 'react';
-import { Code, Server, Database, Cpu, Cloud, Layers, Lock, Globe } from 'lucide-react';
+import { Code, Server, Database, Cpu, Cloud, Layers, Lock, Globe, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 
@@ -11,6 +11,7 @@ const SkillsPage: React.FC = () => {
         { name: "Java", level: "Advanced" },
         { name: "Python", level: "Advanced" },
         { name: "C", level: "Intermediate" },
+        { name: "Typescript", level: "Basic" },
         { name: "MIPS Assembly", level: "Basic" },
         { name: "Prolog", level: "Basic" }
       ],
@@ -19,17 +20,19 @@ const SkillsPage: React.FC = () => {
     { 
       title: "Web & Software Development",
       skills: [
-        { name: "React", level: "Basic" },
-        { name: "Next.js", level: "Basic" },
+        { name: "React", level: "Intermediate" },
+        { name: "Next.js", level: "Intermediate" },
         { name: "Firebase", level: "Intermediate" },
-        { name: "HTML/CSS/JS", level: "Intermediate" },
-        { name: "GET/POST Handling in C", level: "Intermediate" }
+        { name: "HTML/CSS/JS", level: "Advanced" },
+        { name: "GET/POST Handling in C", level: "Intermediate" },
+        { name: "Node.js & Express.js", level: "Intermediate" }
       ],
       icon: <Globe className="w-12 h-12 text-primary" />
     },
     { 
       title: "Databases",
       skills: [
+        { name: "PostgreSQL", level: "Intermediate" },
         { name: "MySQL", level: "Intermediate" },
         { name: "SQLite", level: "Intermediate" },
         { name: "Firebase Realtime DB", level: "Intermediate" }
@@ -52,9 +55,20 @@ const SkillsPage: React.FC = () => {
         { name: "Agile", level: "Advanced" },
         { name: "Scrum", level: "Advanced" },
         { name: "Waterfall", level: "Intermediate" },
-        { name: "Git", level: "Intermediate" }
+        { name: "Git & Version Control", level: "Advanced" }
       ],
       icon: <Layers className="w-12 h-12 text-primary" />
+    },
+    { 
+      title: "Business Intelligence & Productivity Tools",
+      skills: [
+        { name: "Power BI", level: "Advanced" },
+        { name: "Power Apps", level: "Intermediate" },
+        { name: "Excel (Formulas, VBA, Data Modeling)", level: "Advanced" },
+        { name: "SharePoint & Power Automate", level: "Intermediate" },
+        { name: "Data Visualization & Dashboard Design", level: "Advanced" }
+      ],
+      icon: <BarChart3 className="w-12 h-12 text-primary" />
     },
     { 
       title: "Soft Skills",
@@ -97,7 +111,7 @@ const SkillsPage: React.FC = () => {
             Technical Skillset
           </h1>
           <p className="text-xl font-vt323 text-primary/80 max-w-2xl mx-auto">
-            A breakdown of my computer science skillset — where algorithms, databases, and teamwork converge.
+            A breakdown of my computer science and technology stack — from algorithms to analytics and automation.
           </p>
         </motion.div>
 
@@ -107,10 +121,7 @@ const SkillsPage: React.FC = () => {
               key={category.title}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ 
-                duration: 0.5, 
-                delay: index * 0.1 
-              }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card className="bg-background/80 backdrop-blur-sm border border-primary/20 p-6 h-full">
                 <div className="flex items-center mb-6">
@@ -121,10 +132,7 @@ const SkillsPage: React.FC = () => {
                 </div>
                 <div className="space-y-3">
                   {category.skills.map((skill) => (
-                    <div 
-                      key={skill.name} 
-                      className="flex justify-between items-center"
-                    >
+                    <div key={skill.name} className="flex justify-between items-center">
                       <span className="font-vt323 text-primary/90">
                         {skill.name}
                       </span>
