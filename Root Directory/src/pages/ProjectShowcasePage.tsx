@@ -60,6 +60,23 @@ const projects: Project[] = [
   },
   {
   id: 3,
+  name: "NoteCore - Themed Note-Taking App",
+  description: "Built a full-stack note-taking application with secure authentication, real-time sync indicators, and PDF export functionality, showcasing expertise in scalable web architecture and modern UI design.",
+  skills: ["React", "Node.js", "Express.js", "PostgreSQL", "Tailwind CSS"],
+  githubLink: "https://github.com/JustinLuft/notecore",
+  icon: <Cloud className="w-8 h-8 text-primary" />,
+  fullDetails: {
+    technologies: ["React", "Vite", "Tailwind CSS", "Lucide-React", "Node.js", "Express.js", "PostgreSQL", "Render", "Vercel"],
+    challenges: [
+      "Designing modular backend architecture with Express controllers",
+      "Implementing user authentication and secure CRUD operations",
+      "Building responsive and dynamic React components with live sync states",
+      "Deploying full-stack application across Render and Vercel with environment configuration"
+    ],
+  }
+}
+  {
+  id: 4,
   name: "CinemaCache - Personalized Movie Prompt Generator",
   description: "A React-based web app that lets users manage their movie collections and generate customized movie recommendation prompts, integrating Firebase Authentication and Firestore for secure data storage.",
   skills: ["React", "TypeScript", "Firebase Authentication", "Firestore", "UI Design", "State Management"],
@@ -72,7 +89,7 @@ const projects: Project[] = [
   }
 },
 {
-  id: 4,
+  id: 5,
   name: "BuildCarolina Graduate Showcase",
   description: "A sleek, responsive web application designed to showcase BuildCarolina graduates and their portfolios, built during the CharlestonHacks Innovation Engine Hackathon.",
   skills: ["TypeScript", "React.js", "Tailwind CSS", "Vite", "Firebase", "UI/UX Design", "Team Collaboration", "Responsive Design", "Hackathon"],
@@ -90,7 +107,7 @@ const projects: Project[] = [
   }
 },
 {
-  id: 5,
+  id: 6,
   name: "WP Prop Firm Comparison Plugin",
   description: "A WordPress plugin that captures user emails and displays a filterable comparison table of prop trading firm data scraped using a hybrid of AI-powered and manual techniques.",
   skills: [
@@ -118,7 +135,7 @@ const projects: Project[] = [
   }
 },
   {
-    id: 6,
+    id: 7,
     name: "Concurrent Systems",
     description: "Created advanced solutions for mutual exclusion and multithreaded programming challenges, demonstrating expertise in systems-level programming and concurrency.",
     skills: ["Concurrency", "Semaphores", "Systems Programming"],
@@ -130,7 +147,7 @@ const projects: Project[] = [
     }
   },
   {
-  id: 7,
+  id: 8,
   name: "Python AutoClicker",
   description: "Built a customizable Python-based auto-clicker with GUI controls for automating mouse and keyboard inputs using time intervals, positions, and hotkeys.",
   skills: ["Tkinter", "Input Automation", "User Interface Design"],
@@ -145,7 +162,7 @@ const projects: Project[] = [
     }
   },
   {
-  id: 8,
+  id: 9,
   name: "Longest Palindromic Subsequence",
   description: "Built a dynamic programming algorithm in Java to compute the longest palindromic subsequence (LPS) in a given string using a custom table with directional pointers.",
   skills: ["Dynamic Programming", "Algorithm Design", "Java"],
@@ -161,7 +178,7 @@ const projects: Project[] = [
   }
 },
   {
-  id: 9,
+  id: 10,
   name: "Bernoulli Number Calculator",
   description: "Implemented a Java program to compute Bernoulli numbers using rational arithmetic and recursive binomial coefficient relations for accurate fractional results.",
   skills: ["Java", "Recursion", "Rational Arithmetic", "Number Theory"],
@@ -177,7 +194,7 @@ const projects: Project[] = [
   }
 },
   {
-  id: 10,
+  id: 11,
   name: "Multithreaded Sudoku Solver",
   description: "Enhanced a recursive Sudoku solver by implementing multithreading to parallelize the search space and accelerate solution discovery.",
   skills: ["C", "Multithreading", "Bitmasking", "Backtracking", "Recursion"],
@@ -194,7 +211,7 @@ const projects: Project[] = [
   }
 },
   {
-  id: 11,
+  id: 12,
   name: "Train Car Sorting Simulation",
   description: "Developed a simulation to process and sort custom train car objects (PassengerCar, CargoCar, MailCar) based on destination and class priority.",
   skills: ["Java", "Object-Oriented Programming", "Sorting Algorithms", "Simulation"],
@@ -210,7 +227,7 @@ const projects: Project[] = [
   }
 },
   {
-    id: 12,
+    id: 13,
     name: "SubMachine App",
     description: "Designed and prototyped a fast-food ordering application as a semester-long software engineering project, emphasizing intuitive user interface and functional design.",
     skills: ["Prototype Development", "UI/UX", "Mobile Design"],
@@ -222,7 +239,7 @@ const projects: Project[] = [
     }
   },
   {
-    id: 13,
+    id: 14,
     name: "Machine Learning Engine",
     description: "Implemented a custom machine learning engine for linear regression, demonstrating deep understanding of mathematical modeling and algorithmic implementation.",
     skills: ["Machine Learning", "NumPy", "Linear Regression"],
@@ -234,7 +251,7 @@ const projects: Project[] = [
     }
   },
   {
-    id: 14,
+    id: 15,
     name: "Sorting Algorithms Benchmark",
     description: "Developed a comprehensive benchmarking tool to analyze and compare performance of various sorting algorithms, providing insights into computational efficiency.",
     skills: ["Java", "Algorithms", "Performance Analysis"],
