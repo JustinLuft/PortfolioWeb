@@ -64,6 +64,7 @@ const projects: Project[] = [
   description: "Built a full-stack note-taking application with secure authentication, real-time sync indicators, and PDF export functionality, showcasing expertise in scalable web architecture and modern UI design.",
   skills: ["React", "Node.js", "Express.js", "PostgreSQL", "Tailwind CSS"],
   githubLink: "https://github.com/JustinLuft/notecore",
+  websiteLink: "https://notecore.vercel.app/",
   icon: <Cloud className="w-8 h-8 text-primary" />,
   fullDetails: {
     technologies: ["React", "Vite", "Tailwind CSS", "Lucide-React", "Node.js", "Express.js", "PostgreSQL", "Render", "Vercel"],
@@ -81,7 +82,7 @@ const projects: Project[] = [
   description: "A React-based web app that lets users manage their movie collections and generate customized movie recommendation prompts, integrating Firebase Authentication and Firestore for secure data storage.",
   skills: ["React", "TypeScript", "Firebase Authentication", "Firestore", "UI Design", "State Management"],
   githubLink: "https://github.com/JustinLuft/CinemaCache",
-  websiteLink: "https://cinema-cache.vercel.app/", // add your live URL here
+  websiteLink: "https://cinema-cache.vercel.app/", 
   icon: <Clapperboard className="w-8 h-8 text-primary" />,
   fullDetails: {
     technologies: ["React", "TypeScript", "Firebase", "Tailwind CSS", "Vite"],
