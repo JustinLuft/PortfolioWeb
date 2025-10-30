@@ -56,7 +56,7 @@ const LandingPage: FC = () => {
     {
       icon: <FileText className="mr-2 w-5 h-5" />,
       label: "Resume",
-      url: "/resume.pdf"
+      url: "/JustinLuftResume.pdf"
     },
     {
       icon: <Github className="mr-2 w-5 h-5" />,
@@ -68,7 +68,7 @@ const LandingPage: FC = () => {
   // Function to trigger resume download
   const downloadResume = () => {
     const a = document.createElement('a');
-    a.href = '/resume.pdf'; // Make sure this file is publicly accessible
+    a.href = '/JustinLuftResume.pdf'; // Make sure this file is publicly accessible
     a.download = 'Justin_Luft_Resume.pdf';
     document.body.appendChild(a);
     a.click();
