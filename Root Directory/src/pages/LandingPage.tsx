@@ -4,16 +4,16 @@ import { Linkedin, FileText, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const terminalWelcomeSequence = [
-  ">BOOTING PORTFOLIO SYSTEM v1.2.3",
-  ">Initializing core modules...",
-  ">Checking system integrity...",
-  ">Loading personal interface...",
-  ">Connecting neural networks...",
-  ">>> SYSTEM ONLINE <<<",
-  ">Welcome, User",
-  `Current Time: ${new Date().toLocaleString()}`,
-  ">Network Status: SECURE",
-  ">Ready for interaction..."
+  "  >BOOTING PORTFOLIO SYSTEM v1.2.3",
+  "  >Initializing core modules...",
+  "  >Checking system integrity...",
+  "  >Loading personal interface...",
+  "  >Connecting neural networks...",
+  "  >>> SYSTEM ONLINE <<<",
+  "  >Welcome, User",
+  `  Current Time: ${new Date().toLocaleString()}`,
+  "  >Network Status: SECURE",
+  "  >Ready for interaction..."
 ];
 
 const LandingPage: FC = () => {
@@ -38,6 +38,7 @@ const LandingPage: FC = () => {
     terminalWelcomeSequence.forEach((line, index) => {
       setTimeout(() => {
         setTerminalLines(prev => [...prev, line]);
+
         if (index === terminalWelcomeSequence.length - 1) {
           setTimeout(() => setIsSystemReady(true), 300);
         }
@@ -47,8 +48,8 @@ const LandingPage: FC = () => {
 
   const socialLinks = [
     { icon: <Linkedin className="mr-2 w-5 h-5" />, label: "LinkedIn", url: "http://www.linkedin.com/in/justinnl" },
-    { icon: <FileText className="mr-2 w-5 h-5" />, label: "Resume", url: "/JustinLuftResume.pdf" },
-    { icon: <Github className="mr-2 w-5 h-5" />, label: "GitHub", url: "https://github.com/JustinLuft" }
+    { icon: <Github className="mr-2 w-5 h-5" />, label: "GitHub", url: "https://github.com/JustinLuft" },
+    { icon: <FileText className="mr-2 w-5 h-5" />, label: "Resume", url: "/JustinLuftResume.pdf" }
   ];
 
   const downloadResume = () => {
@@ -62,17 +63,8 @@ const LandingPage: FC = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
-      {/* Terminal Background */}
       <div className="absolute inset-0 bg-black/90 pointer-events-none z-0 overflow-hidden">
-        <div
-  className="
-    absolute inset-0 font-mono text-xs md:text-sm text-green-400
-    pt-3 pr-3 pb-3 pl-2 md:pt-6 md:pr-6 md:pb-6 md:pl-4
-    overflow-y-auto
-    break-words
-  "
->
-
+<div className="absolute inset-0 font-mono text-xs md:text-sm text-green-400 pt-2 pr-2 pb-2 pl-1 md:pt-4 md:pr- md:pb-4 md:pl-2 whitespace-pre-wrap overflow-y-auto">
           {terminalLines.map((line, index) => (
             <motion.div
               key={index}
@@ -92,7 +84,6 @@ const LandingPage: FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
         <motion.h1
           className="text-3xl md:text-6xl font-press-start text-primary text-center mb-8 text-glitch"
@@ -118,13 +109,13 @@ const LandingPage: FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-12">
+            <div className="flex gap-8 mb-12">
               {socialLinks.map((link, index) => (
                 link.label === 'Resume' ? (
                   <motion.div key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <Button
                       variant="outline"
-                      className="font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
+                      className="font-press-start text-primary border-primary hover:bg-primary/20 hover:text-primary neon-border"
                       onClick={downloadResume}
                     >
                       {link.icon}
@@ -135,7 +126,7 @@ const LandingPage: FC = () => {
                   <motion.div key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <Button
                       variant="outline"
-                      className="font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
+                      className="font-press-start text-primary border-primary hover:bg-primary/20 hover:text-primary neon-border"
                       onClick={() => window.open(link.url, '_blank')}
                     >
                       {link.icon}
@@ -148,7 +139,6 @@ const LandingPage: FC = () => {
           </motion.div>
         )}
 
-        {/* Custom Mouse Pointer */}
         <motion.div
           className="pointer-events-none fixed top-0 left-0 w-6 h-6 rounded-full bg-primary/50 mix-blend-screen"
           animate={{ x: mousePosition.x - 12, y: mousePosition.y - 12 }}
