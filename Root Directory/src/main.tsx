@@ -15,12 +15,12 @@ import './index.css';
 const App = () => {
   return (
     <Router>
-      <div className="flex">
+      <div className="flex flex-col md:flex-row min-h-screen relative">
         {/* Navigation Menu */}
         <NavigationMenu />
-        
+
         {/* Main Content Area */}
-        <div className="flex-grow ml-20">
+        <div className="flex-grow md:ml-24 pb-16 md:pb-0">
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/skills" element={<SkillsPage />} />
@@ -29,7 +29,7 @@ const App = () => {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
-        
+
         {/* Interactive Background Elements */}
         <InteractiveElements />
       </div>

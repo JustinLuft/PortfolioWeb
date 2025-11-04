@@ -4,16 +4,16 @@ import { Linkedin, FileText, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const terminalWelcomeSequence = [
-  "  >BOOTING PORTFOLIO SYSTEM v1.2.3",
-  "  >Initializing core modules...",
-  "  >Checking system integrity...",
-  "  >Loading personal interface...",
-  "  >Connecting neural networks...",
-  "  >>> SYSTEM ONLINE <<<",
-  "  >Welcome, User",
-  `  Current Time: ${new Date().toLocaleString()}`,
-  "  >Network Status: SECURE",
-  "  >Ready for interaction..."
+  ">BOOTING PORTFOLIO SYSTEM v1.2.3",
+  ">Initializing core modules...",
+  ">Checking system integrity...",
+  ">Loading personal interface...",
+  ">Connecting neural networks...",
+  ">>> SYSTEM ONLINE <<<",
+  ">Welcome, User",
+  `Current Time: ${new Date().toLocaleString()}`,
+  ">Network Status: SECURE",
+  ">Ready for interaction..."
 ];
 
 const LandingPage: FC = () => {
@@ -38,7 +38,6 @@ const LandingPage: FC = () => {
     terminalWelcomeSequence.forEach((line, index) => {
       setTimeout(() => {
         setTerminalLines(prev => [...prev, line]);
-
         if (index === terminalWelcomeSequence.length - 1) {
           setTimeout(() => setIsSystemReady(true), 300);
         }
@@ -63,8 +62,17 @@ const LandingPage: FC = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
+      {/* Terminal Background */}
       <div className="absolute inset-0 bg-black/90 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute inset-0 font-mono text-xs md:text-sm text-green-400 p-2 md:p-4 whitespace-pre-wrap overflow-y-auto">
+        <div
+  className="
+    absolute inset-0 font-mono text-xs md:text-sm text-green-400
+    pt-3 pr-3 pb-3 pl-2 md:pt-6 md:pr-6 md:pb-6 md:pl-4
+    overflow-y-auto
+    break-words
+  "
+>
+
           {terminalLines.map((line, index) => (
             <motion.div
               key={index}
@@ -84,6 +92,7 @@ const LandingPage: FC = () => {
         </div>
       </div>
 
+      {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
         <motion.h1
           className="text-3xl md:text-6xl font-press-start text-primary text-center mb-8 text-glitch"
@@ -139,6 +148,7 @@ const LandingPage: FC = () => {
           </motion.div>
         )}
 
+        {/* Custom Mouse Pointer */}
         <motion.div
           className="pointer-events-none fixed top-0 left-0 w-6 h-6 rounded-full bg-primary/50 mix-blend-screen"
           animate={{ x: mousePosition.x - 12, y: mousePosition.y - 12 }}

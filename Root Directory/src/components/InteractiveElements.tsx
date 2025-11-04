@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 interface TrailDot {
@@ -17,20 +17,20 @@ export function InteractiveElements() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     // Update canvas size
     const updateCanvasSize = () => {
+      const navbarHeight = window.innerWidth < 768 ? 64 : 0; // mobile navbar
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.height = window.innerHeight - navbarHeight;
     };
 
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
 
-    // Particle class for more complex effects
+    // Particle class
     class Particle {
       x: number;
       y: number;
@@ -64,21 +64,16 @@ export function InteractiveElements() {
       }
     }
 
-    // Enhanced mouse trail and particle system
+    // Animate
     const animate = () => {
       if (!ctx || !canvas) return;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw trail dots
       trailDotsRef.current = trailDotsRef.current
-        .map(dot => ({
-          ...dot,
-          age: dot.age + 1,
-        }))
+        .map(dot => ({ ...dot, age: dot.age + 1 }))
         .filter(dot => dot.age < 25);
 
-      trailDotsRef.current.forEach((dot) => {
+      trailDotsRef.current.forEach(dot => {
         const opacity = 1 - dot.age / 25;
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, 3, 0, Math.PI * 2);
@@ -86,65 +81,43 @@ export function InteractiveElements() {
         ctx.fill();
       });
 
-      // Update and draw particles
       particlesRef.current = particlesRef.current
-        .filter(particle => particle.opacity > 0)
-        .map(particle => {
-          particle.update();
-          particle.draw(ctx);
-          return particle;
+        .filter(p => p.opacity > 0)
+        .map(p => {
+          p.update();
+          p.draw(ctx);
+          return p;
         });
 
       requestRef.current = requestAnimationFrame(animate);
     };
 
-    // Mouse event handlers
+    // Mouse events
     const handleMouseMove = (e: MouseEvent) => {
-      trailDotsRef.current.push({
-        x: e.clientX,
-        y: e.clientY,
-        age: 0,
-        color: 'rgba(0, 255, 209, 1)'
-      });
-
-      // Spawn particles on mouse move
-      if (Math.random() < 0.5) {
-        particlesRef.current.push(new Particle(e.clientX, e.clientY));
-      }
+      trailDotsRef.current.push({ x: e.clientX, y: e.clientY, age: 0, color: 'rgba(0, 255, 209, 1)' });
+      if (Math.random() < 0.5) particlesRef.current.push(new Particle(e.clientX, e.clientY));
     };
 
     const handleClick = (e: MouseEvent) => {
-      // Burst of particles on click
-      for (let i = 0; i < 20; i++) {
-        particlesRef.current.push(new Particle(e.clientX, e.clientY));
-      }
+      for (let i = 0; i < 20; i++) particlesRef.current.push(new Particle(e.clientX, e.clientY));
     };
 
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('click', handleClick);
-
     requestRef.current = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener('resize', updateCanvasSize);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('click', handleClick);
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current);
-      }
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[9999]">
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 z-10 mix-blend-screen"
-      />
-      {/* Scanline effect */}
+    <div className="fixed top-0 left-0 right-0 bottom-16 md:bottom-0 pointer-events-none z-[9999]">
+      <canvas ref={canvasRef} className="absolute inset-0 mix-blend-screen" />
       <div className="scanline absolute inset-0 pointer-events-none" />
-      
-      {/* Subtle grid overlay */}
       <div className="absolute inset-0 opacity-10 bg-grid-subtle pointer-events-none" />
     </div>
   );
