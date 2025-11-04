@@ -72,7 +72,7 @@ const NavigationMenu = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 h-screen w-24 bg-[#0B0C10] border-r-2 border-primary/30 flex flex-col items-center py-8 z-[9999] overflow-hidden">
+    <nav className="fixed top-0 left-0 h-screen w-24 bg-black border-r-2 border-primary/30 flex flex-col items-center py-8 z-[9999] overflow-hidden">
       {/* Cyber Lines Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {cyberLines.map((line, index) => (

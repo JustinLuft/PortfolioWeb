@@ -73,7 +73,7 @@ const AboutPage: React.FC = () => {
         <div className="scanline absolute inset-0 pointer-events-none z-10" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 md:px-8 py-12 relative z-20 space-y-12">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 py-12 relative z-20 space-y-12 ml-2">
         {/* Page Header */}
         <motion.div className="text-center" initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <h1 className="font-press-start text-primary mb-4" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}>About Me</h1>

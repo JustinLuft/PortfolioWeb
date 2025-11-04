@@ -410,7 +410,7 @@ const ProjectShowcasePage: React.FC = () => {
         <div className="scanline absolute inset-0 pointer-events-none z-10" />
       </div>
 
-      <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-12 relative z-20 max-w-7xl">
+      <div className="container mx-auto px-2 py-8 sm:py-12 relative z-20 max-w-7xl">
         {/* Header */}
         <div className="mb-6 sm:mb-8 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-press-start mb-2 sm:mb-3 text-primary leading-tight">
@@ -450,9 +450,11 @@ const ProjectShowcasePage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 sm:gap-2">
+
           {/* Project List */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 px-4 sm:px-4">
+
             <div className="flex items-center justify-between mb-3 sm:mb-4 px-1 sm:px-2">
               <h2 className="font-press-start text-[10px] sm:text-xs text-primary/60">
                 {filteredProjects.length} Project{filteredProjects.length !== 1 ? 's' : ''}

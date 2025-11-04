@@ -31,7 +31,8 @@ const SkillsPage: React.FC = () => {
         <div className="scanline absolute inset-0 pointer-events-none z-10" />
       </div>
 
-      <div className="container mx-auto px-4 py-16 relative z-20">
+<div className="container mx-auto px-4 py-16 relative z-20 pl-10">
+
         <motion.div 
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
