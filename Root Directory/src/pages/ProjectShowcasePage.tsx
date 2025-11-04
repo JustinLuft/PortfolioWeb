@@ -90,28 +90,12 @@ const projects: Project[] = [
     }
   },
   {
-    id: 6,
-    name: "WP Prop Firm Comparison Plugin",
-    description: "WordPress plugin with email capture and filterable comparison table of prop trading firm data.",
-    skills: ["WordPress", "PHP", "Web Scraping", "JavaScript"],
-    githubLink: "https://github.com/JustinLuft/wppropscraper2",
-    icon: <Table className="w-5 h-5" />,
-    category: 'web',
-    fullDetails: {
-      technologies: ["PHP", "JavaScript", "WordPress", "BeautifulSoup", "Firecrawl API"],
-      challenges: [
-        "Gating access with email submission form",
-        "Parsing and storing structured comparison data",
-        "Building responsive UI within WordPress shortcode architecture"
-      ]
-    }
-  },
-  {
     id: 2,
     name: "SC Bills Web Scraper",
     description: "Robust web scraping solution for collecting and searching South Carolina legislative bills.",
     skills: ["Web Scraping", "Python", "Data Management"],
     githubLink: "https://github.com/JustinLuft/scbillscraper",
+    websiteLink: "https://billtracker-website-8czsp93cr-justinlufts-projects.vercel.app/",
     icon: <Server className="w-5 h-5" />,
     category: 'web',
     fullDetails: {
@@ -275,6 +259,44 @@ const projects: Project[] = [
       ],
     }
   },
+  {
+    id: 6,
+    name: "WP Prop Firm Comparison Plugin",
+    description: "WordPress plugin with email capture and filterable comparison table of prop trading firm data.",
+    skills: ["WordPress", "PHP", "Web Scraping", "JavaScript"],
+    githubLink: "https://github.com/JustinLuft/wppropscraper2",
+    icon: <Table className="w-5 h-5" />,
+    category: 'tools',
+    fullDetails: {
+      technologies: ["PHP", "JavaScript", "WordPress", "BeautifulSoup", "Firecrawl API"],
+      challenges: [
+        "Gating access with email submission form",
+        "Parsing and storing structured comparison data",
+        "Building responsive UI within WordPress shortcode architecture"
+      ]
+    }
+  },
+  {
+  id: 7,
+  name: "SpotLight: Spotify Stats Dashboard 🎵",
+  description: "A modern, interactive dashboard to explore your Spotify listening habits. Visualize your top tracks and top artists through Spotify API integration.",
+  skills: ["Next.js", "React", "Node.js", "Spotify API", "CSS"],
+  githubLink: "https://github.com/JustinLuft/spotifyapi",
+  websiteLink: "https://spotifyapi-omega.vercel.app/",
+  icon: <Globe className="w-5 h-5" />,
+  category: 'web',
+  fullDetails: {
+    technologies: ["Next.js", "React", "Node.js", "Spotify API", "OAuth 2.0", "CSS", "Particle.js"],
+    challenges: [
+      "Implementing Spotify OAuth 2.0 login flow securely",
+      "Fetching and caching real-time user data from Spotify API",
+      "Designing a responsive, visually engaging cyberpunk/art-deco UI",
+      "Adding particle effects and radial glow with noise texture",
+      "Creating interactive visualizations for top tracks and top artists"
+    ]
+  }
+},
+
 ];
 
 type Category = 'web' | 'algorithms' | 'systems' | 'tools';
