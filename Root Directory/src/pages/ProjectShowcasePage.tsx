@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Github,
   Code, 
@@ -10,11 +10,15 @@ import {
   Camera,
   MousePointerClick,
   Code2,
-  CalculatorIcon,
   Train,
   Clapperboard,
   Users,
-  Table
+  Table,
+  Globe,
+  Terminal,
+  Layers,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -26,270 +30,353 @@ interface Project {
   githubLink: string;
   websiteLink?: string;
   icon: React.ReactNode;
+  category: 'web' | 'algorithms' | 'systems' | 'tools';
   fullDetails: {
     technologies: string[];
     challenges: string[];
   };
 }
 
-
 const projects: Project[] = [
+  // Web Applications
   {
-    id: 1,
-    name: "Photo Booth Experience",
-    description: "Developed a comprehensive photo booth application for College of Charleston using agile methodologies, focusing on user experience and collaborative development.",
-    skills: ["Scrum", "Team Collaboration", "UI/UX Design"],
-    githubLink: "https://github.com/JustinLuft/UnityProject",
-    icon: <Camera className="w-8 h-8 text-primary" />,
+    id: 3,
+    name: "NoteCore",
+    description: "Full-stack note-taking app with secure authentication, real-time sync indicators, and PDF export functionality.",
+    skills: ["React", "Node.js", "Express.js", "PostgreSQL", "Tailwind CSS"],
+    githubLink: "https://github.com/JustinLuft/notecore",
+    websiteLink: "https://notecore.vercel.app/",
+    icon: <Cloud className="w-5 h-5" />,
+    category: 'web',
     fullDetails: {
-      technologies: ["Unity", "C", "SMTP", "Raspberry PI"],
-      challenges: ["Real-time photo processing", "User experience design", "Team coordination"],
+      technologies: ["React", "Vite", "Tailwind CSS", "Node.js", "Express.js", "PostgreSQL", "Render", "Vercel"],
+      challenges: [
+        "Designing modular backend architecture with Express controllers",
+        "Implementing user authentication and secure CRUD operations",
+        "Building responsive and dynamic React components with live sync states"
+      ],
+    }
+  },
+  {
+    id: 4,
+    name: "CinemaCache",
+    description: "React-based app for managing movie collections and generating customized recommendation prompts.",
+    skills: ["React", "TypeScript", "Firebase", "Firestore"],
+    githubLink: "https://github.com/JustinLuft/CinemaCache",
+    websiteLink: "https://cinema-cache.vercel.app/", 
+    icon: <Clapperboard className="w-5 h-5" />,
+    category: 'web',
+    fullDetails: {
+      technologies: ["React", "TypeScript", "Firebase", "Tailwind CSS", "Vite"],
+      challenges: ["Real-time data fetching", "User authentication and security", "Dynamic prompt generation"],
+    }
+  },
+  {
+    id: 5,
+    name: "BuildCarolina Graduate Showcase",
+    description: "Responsive web application showcasing BuildCarolina graduates, built during CharlestonHacks hackathon.",
+    skills: ["TypeScript", "React.js", "Tailwind CSS", "Firebase"],
+    githubLink: "https://github.com/JustinLuft/GradShowcase",
+    websiteLink: "https://grad-showcase.vercel.app/",
+    icon: <Users className="w-5 h-5" />,
+    category: 'web',
+    fullDetails: {
+      technologies: ["TypeScript", "React.js", "Tailwind CSS", "Vite", "Firebase", "Framer Motion"],
+      challenges: [
+        "Building during a fixed one-month hackathon timeline",
+        "Creating admin and graduate user flows",
+        "Implementing fast search and filter features"
+      ],
+    }
+  },
+  {
+    id: 6,
+    name: "WP Prop Firm Comparison Plugin",
+    description: "WordPress plugin with email capture and filterable comparison table of prop trading firm data.",
+    skills: ["WordPress", "PHP", "Web Scraping", "JavaScript"],
+    githubLink: "https://github.com/JustinLuft/wppropscraper2",
+    icon: <Table className="w-5 h-5" />,
+    category: 'web',
+    fullDetails: {
+      technologies: ["PHP", "JavaScript", "WordPress", "BeautifulSoup", "Firecrawl API"],
+      challenges: [
+        "Gating access with email submission form",
+        "Parsing and storing structured comparison data",
+        "Building responsive UI within WordPress shortcode architecture"
+      ]
     }
   },
   {
     id: 2,
     name: "SC Bills Web Scraper",
-    description: "Created a robust web scraping solution to collect, store, and enable searching of South Carolina legislative bills using advanced data extraction techniques.",
+    description: "Robust web scraping solution for collecting and searching South Carolina legislative bills.",
     skills: ["Web Scraping", "Python", "Data Management"],
     githubLink: "https://github.com/JustinLuft/scbillscraper",
-    icon: <Server className="w-8 h-8 text-primary" />,
+    icon: <Server className="w-5 h-5" />,
+    category: 'web',
     fullDetails: {
       technologies: ["Python", "BeautifulSoup", "Firebase", "Pandas"],
       challenges: ["Data extraction", "Parsing complex web structures", "Data normalization"],
     }
   },
   {
-  id: 3,
-  name: "NoteCore - Themed Note-Taking App",
-  description: "Built a full-stack note-taking application with secure authentication, real-time sync indicators, and PDF export functionality, showcasing expertise in scalable web architecture and modern UI design.",
-  skills: ["React", "Node.js", "Express.js", "PostgreSQL", "Tailwind CSS"],
-  githubLink: "https://github.com/JustinLuft/notecore",
-  websiteLink: "https://notecore.vercel.app/",
-  icon: <Cloud className="w-8 h-8 text-primary" />,
-  fullDetails: {
-    technologies: ["React", "Vite", "Tailwind CSS", "Lucide-React", "Node.js", "Express.js", "PostgreSQL", "Render", "Vercel"],
-    challenges: [
-      "Designing modular backend architecture with Express controllers",
-      "Implementing user authentication and secure CRUD operations",
-      "Building responsive and dynamic React components with live sync states",
-      "Deploying full-stack application across Render and Vercel with environment configuration"
-    ],
-  }
-},
+    id: 13,
+    name: "SubMachine App",
+    description: "Fast-food ordering application prototype with intuitive UI, developed as semester-long project.",
+    skills: ["Prototype Development", "UI/UX", "Mobile Design"],
+    githubLink: "https://github.com/justinluft/submachine-app",
+    icon: <Database className="w-5 h-5" />,
+    category: 'web',
+    fullDetails: {
+      technologies: ["Figma", "JavaScript", "MySQL"],
+      challenges: ["User interface design", "State management", "Prototype iteration"],
+    }
+  },
+
+  // Algorithms & Data Structures
   {
-  id: 4,
-  name: "CinemaCache - Personalized Movie Prompt Generator",
-  description: "A React-based web app that lets users manage their movie collections and generate customized movie recommendation prompts, integrating Firebase Authentication and Firestore for secure data storage.",
-  skills: ["React", "TypeScript", "Firebase Authentication", "Firestore", "UI Design", "State Management"],
-  githubLink: "https://github.com/JustinLuft/CinemaCache",
-  websiteLink: "https://cinema-cache.vercel.app/", 
-  icon: <Clapperboard className="w-8 h-8 text-primary" />,
-  fullDetails: {
-    technologies: ["React", "TypeScript", "Firebase", "Tailwind CSS", "Vite"],
-    challenges: ["Real-time data fetching", "User authentication and security", "Dynamic prompt generation", "Responsive UI design"],
-  }
-},
-{
-  id: 5,
-  name: "BuildCarolina Graduate Showcase",
-  description: "A sleek, responsive web application designed to showcase BuildCarolina graduates and their portfolios, built during the CharlestonHacks Innovation Engine Hackathon.",
-  skills: ["TypeScript", "React.js", "Tailwind CSS", "Vite", "Firebase", "UI/UX Design", "Team Collaboration", "Responsive Design", "Hackathon"],
-  githubLink: "https://github.com/JustinLuft/GradShowcase", // Replace with your actual repo URL
-  websiteLink: "https://grad-showcase.vercel.app/",
-  icon: <Users className="w-8 h-8 text-primary" />,
-  fullDetails: {
-    technologies: ["TypeScript", "React.js", "Tailwind CSS", "Vite", "Firebase", "Framer Motion"],
-    challenges: [
-      "Building during a fixed one-month hackathon timeline",
-      "Designing for both mobile and desktop responsiveness",
-      "Creating admin and graduate user flows",
-      "Implementing fast search and filter features",
-      "Embedding external links while maintaining UX quality"],
-  }
-},
-{
-  id: 6,
-  name: "WP Prop Firm Comparison Plugin",
-  description: "A WordPress plugin that captures user emails and displays a filterable comparison table of prop trading firm data scraped using a hybrid of AI-powered and manual techniques.",
-  skills: [
-    "WordPress Plugin Development",
-    "PHP", 
-    "Web Scraping", 
-    "BeautifulSoup", 
-    "JavaScript", 
-    "Email Capture", 
-    "Database Storage", 
-    "UI/UX Design", 
-    "Firecrawl API"
-  ],
-  githubLink: "https://github.com/JustinLuft/wppropscraper2", // update if needed
-  icon: <Table className="w-8 h-8 text-primary" />,
-  fullDetails: {
-    technologies: ["PHP", "JavaScript", "WordPress", "BeautifulSoup", "Firecrawl API", "HTML/CSS"],
-    challenges: [
-      "Gating access with an email submission form tied to a custom database table",
-      "Parsing and storing structured comparison data from multiple sources",
-      "Combining AI-generated and hand-tuned scraping logic",
-      "Building a clean, responsive UI within WordPress shortcode architecture",
-      "Ensuring scalability and usability for end-users exploring firm options"
-    ]
-  }
-},
+    id: 9,
+    name: "Longest Palindromic Subsequence",
+    description: "Dynamic programming algorithm computing longest palindromic subsequence with custom table structure.",
+    skills: ["Dynamic Programming", "Algorithm Design", "Java"],
+    githubLink: "https://github.com/JustinLuft/LPS",
+    icon: <Code2 className="w-5 h-5" />,
+    category: 'algorithms',
+    fullDetails: {
+      technologies: ["Java", "2D ArrayList", "Custom Element Class"],
+      challenges: [
+        "Designing pointer-based DP table to track subsequences",
+        "Reverse traversal of table to reconstruct solution",
+        "Edge-case handling for empty inputs"
+      ],
+    }
+  },
+  {
+    id: 10,
+    name: "Bernoulli Number Calculator",
+    description: "Java program computing Bernoulli numbers using rational arithmetic and recursive relations.",
+    skills: ["Java", "Recursion", "Rational Arithmetic", "Number Theory"],
+    githubLink: "https://github.com/JustinLuft/BSF",
+    icon: <Code className="w-5 h-5" />,
+    category: 'algorithms',
+    fullDetails: {
+      technologies: ["Java", "Custom Rational Class", "Recursion", "Binomial Coefficients"],
+      challenges: [
+        "Designing Rational class with full arithmetic and fraction reduction",
+        "Implementing recursive computation with binomial coefficients",
+        "Managing large integer operations"
+      ],
+    }
+  },
+  {
+    id: 12,
+    name: "Train Car Sorting Simulation",
+    description: "Simulation processing and sorting custom train car objects based on destination and priority.",
+    skills: ["Java", "OOP", "Sorting Algorithms", "Simulation"],
+    githubLink: "https://github.com/JustinLuft/traincarsorting",
+    icon: <Train className="w-5 h-5" />,
+    category: 'algorithms',
+    fullDetails: {
+      technologies: ["Java", "Custom Classes", "Comparable Interface", "Priority Sorting"],
+      challenges: [
+        "Designing flexible class hierarchy for different train cars",
+        "Implementing sorting logic based on destination and priority",
+        "Type-safe handling of mixed car objects"
+      ],
+    }
+  },
+  {
+    id: 15,
+    name: "Sorting Algorithms Benchmark",
+    description: "Comprehensive benchmarking tool analyzing performance of various sorting algorithms.",
+    skills: ["Java", "Algorithms", "Performance Analysis"],
+    githubLink: "https://github.com/JustinLuft/sort-comparison-analyzer",
+    icon: <Layers className="w-5 h-5" />,
+    category: 'algorithms',
+    fullDetails: {
+      technologies: ["Java", "IntelliJ", "Performance Profiling"],
+      challenges: ["Algorithm complexity", "Performance measurement", "Comparative analysis"],
+    }
+  },
+  {
+    id: 14,
+    name: "Machine Learning Engine",
+    description: "Custom machine learning engine for linear regression with mathematical modeling.",
+    skills: ["Machine Learning", "NumPy", "Linear Regression"],
+    githubLink: "https://github.com/JustinLuft/linearregressionhw",
+    icon: <Cpu className="w-5 h-5" />,
+    category: 'algorithms',
+    fullDetails: {
+      technologies: ["Python", "NumPy", "Scikit-learn"],
+      challenges: ["Algorithm implementation", "Mathematical modeling", "Performance optimization"],
+    }
+  },
+
+  // Systems & Concurrency
   {
     id: 7,
     name: "Concurrent Systems",
-    description: "Created advanced solutions for mutual exclusion and multithreaded programming challenges, demonstrating expertise in systems-level programming and concurrency.",
+    description: "Advanced solutions for mutual exclusion and multithreaded programming challenges.",
     skills: ["Concurrency", "Semaphores", "Systems Programming"],
     githubLink: "https://github.com/JustinLuft/semaphore-assignment",
-    icon: <Code className="w-8 h-8 text-primary" />,
+    icon: <Code className="w-5 h-5" />,
+    category: 'systems',
     fullDetails: {
       technologies: ["C", "POSIX Threads", "Semaphores"],
       challenges: ["Deadlock prevention", "Race condition mitigation", "Synchronization"],
     }
   },
   {
-  id: 8,
-  name: "Python AutoClicker",
-  description: "Built a customizable Python-based auto-clicker with GUI controls for automating mouse and keyboard inputs using time intervals, positions, and hotkeys.",
-  skills: ["Tkinter", "Input Automation", "User Interface Design"],
-  githubLink: "https://github.com/JustinLuft/autoclicker", 
-  icon: <MousePointerClick className="w-8 h-8 text-primary" />,
-  fullDetails: {
-    technologies: ["Python", "Tkinter", "pynput", "keyboard"],
-    challenges: [
-      "Building a flexible and intuitive GUI",
-      "Managing real-time input automation with precise timing",
-      "Implementing global hotkeys across systems"],
+    id: 11,
+    name: "Multithreaded Sudoku Solver",
+    description: "Enhanced recursive Sudoku solver with multithreading to parallelize search space.",
+    skills: ["C", "Multithreading", "Bitmasking", "Backtracking"],
+    githubLink: "https://github.com/JustinLuft/sudokuthread",
+    icon: <Code2 className="w-5 h-5" />,
+    category: 'systems',
+    fullDetails: {
+      technologies: ["C", "POSIX Threads", "Bitmask Optimization", "Recursive Backtracking"],
+      challenges: [
+        "Implementing thread-level parallelism by branching on ambiguous cells",
+        "Managing shared state and avoiding data races",
+        "Synchronizing threads and handling early termination"
+      ],
     }
   },
-  {
-  id: 9,
-  name: "Longest Palindromic Subsequence",
-  description: "Built a dynamic programming algorithm in Java to compute the longest palindromic subsequence (LPS) in a given string using a custom table with directional pointers.",
-  skills: ["Dynamic Programming", "Algorithm Design", "Java"],
-  githubLink: "https://github.com/JustinLuft/LPS", 
-  icon: <Code2 className="w-8 h-8 text-primary" />,
-  fullDetails: {
-    technologies: ["Java", "2D ArrayList", "Custom Element Class"],
-    challenges: [
-      "Designing a pointer-based DP table to track subsequences",
-      "Reverse traversal of the table to reconstruct the solution",
-      "Edge-case handling for empty or one-character inputs"
-    ],
-  }
-},
-  {
-  id: 10,
-  name: "Bernoulli Number Calculator",
-  description: "Implemented a Java program to compute Bernoulli numbers using rational arithmetic and recursive binomial coefficient relations for accurate fractional results.",
-  skills: ["Java", "Recursion", "Rational Arithmetic", "Number Theory"],
-  githubLink: "https://github.com/JustinLuft/BSF",
-  icon: <CalculatorIcon className="w-8 h-8 text-primary" />,
-  fullDetails: {
-    technologies: ["Java", "Custom Rational Class", "Recursion", "Binomial Coefficients"],
-    challenges: [
-      "Designing a Rational number class with full arithmetic and fraction reduction",
-      "Implementing recursive computation of Bernoulli numbers using binomial coefficients",
-      "Managing large integer operations and preventing overflow in factorial calculations"
-    ],
-  }
-},
-  {
-  id: 11,
-  name: "Multithreaded Sudoku Solver",
-  description: "Enhanced a recursive Sudoku solver by implementing multithreading to parallelize the search space and accelerate solution discovery.",
-  skills: ["C", "Multithreading", "Bitmasking", "Backtracking", "Recursion"],
-  githubLink: "https://github.com/JustinLuft/sudokuthread",
-  icon: <CalculatorIcon className="w-8 h-8 text-primary" />,
-  fullDetails: {
-    technologies: ["C", "POSIX Threads (pthreads)", "Bitmask Optimization", "Recursive Backtracking"],
-    challenges: [
-      "Implementing thread-level parallelism by branching on the most ambiguous cell choices",
-      "Managing shared state and avoiding data races without sacrificing performance",
-      "Ensuring correct and efficient bitmask operations for candidate numbers",
-      "Synchronizing threads and cleanly handling early termination when a solution is found"
-    ],
-  }
-},
-  {
-  id: 12,
-  name: "Train Car Sorting Simulation",
-  description: "Developed a simulation to process and sort custom train car objects (PassengerCar, CargoCar, MailCar) based on destination and class priority.",
-  skills: ["Java", "Object-Oriented Programming", "Sorting Algorithms", "Simulation"],
-  githubLink: "https://github.com/JustinLuft/traincarsorting",
-  icon: <Train className="w-8 h-8 text-primary" />,
-  fullDetails: {
-    technologies: ["Java", "Custom Classes", "Comparable Interface", "Priority Sorting"],
-    challenges: [
-      "Designing a flexible class hierarchy for different train cars",
-      "Implementing sorting logic based on destination and priority rules",
-      "Ensuring type-safe and efficient handling of mixed car objects"
-    ],
-  }
-},
-  {
-    id: 13,
-    name: "SubMachine App",
-    description: "Designed and prototyped a fast-food ordering application as a semester-long software engineering project, emphasizing intuitive user interface and functional design.",
-    skills: ["Prototype Development", "UI/UX", "Mobile Design"],
-    githubLink: "https://github.com/justinluft/submachine-app",
-    icon: <Database className="w-8 h-8 text-primary" />,
-    fullDetails: {
-      technologies: ["Figma", "JavaScript", "MySQL"],
-      challenges: ["User interface design", "State management", "Prototype iteration"],
-    }
-  },
-  {
-    id: 14,
-    name: "Machine Learning Engine",
-    description: "Implemented a custom machine learning engine for linear regression, demonstrating deep understanding of mathematical modeling and algorithmic implementation.",
-    skills: ["Machine Learning", "NumPy", "Linear Regression"],
-    githubLink: "https://github.com/JustinLuft/linearregressionhw",
-    icon: <Cpu className="w-8 h-8 text-primary" />,
-    fullDetails: {
-      technologies: ["Python", "NumPy", "Scikit-learn"],
-      challenges: ["Algorithm implementation", "Mathematical modeling", "Performance optimization"],
-    }
-  },
-  {
-    id: 15,
-    name: "Sorting Algorithms Benchmark",
-    description: "Developed a comprehensive benchmarking tool to analyze and compare performance of various sorting algorithms, providing insights into computational efficiency.",
-    skills: ["Java", "Algorithms", "Performance Analysis"],
-    githubLink: "https://github.com/JustinLuft/sort-comparison-analyzer",
-    icon: <Cloud className="w-8 h-8 text-primary" />,
-    fullDetails: {
-      technologies: ["Java", "IntelliJ", "Performance Profiling"],
-      challenges: ["Algorithm complexity", "Performance measurement", "Comparative analysis"],
-    }
-  }
 
+  // Tools & Utilities
+  {
+    id: 1,
+    name: "Photo Booth Experience",
+    description: "Comprehensive photo booth application using agile methodologies and collaborative development.",
+    skills: ["Scrum", "Team Collaboration", "UI/UX Design"],
+    githubLink: "https://github.com/JustinLuft/UnityProject",
+    icon: <Camera className="w-5 h-5" />,
+    category: 'tools',
+    fullDetails: {
+      technologies: ["Unity", "C#", "SMTP", "Raspberry PI"],
+      challenges: ["Real-time photo processing", "User experience design", "Team coordination"],
+    }
+  },
+  {
+    id: 8,
+    name: "Python AutoClicker",
+    description: "Customizable auto-clicker with GUI controls for automating mouse and keyboard inputs.",
+    skills: ["Tkinter", "Input Automation", "UI Design"],
+    githubLink: "https://github.com/JustinLuft/autoclicker",
+    icon: <MousePointerClick className="w-5 h-5" />,
+    category: 'tools',
+    fullDetails: {
+      technologies: ["Python", "Tkinter", "pynput", "keyboard"],
+      challenges: [
+        "Building flexible and intuitive GUI",
+        "Managing real-time input automation with precise timing",
+        "Implementing global hotkeys across systems"
+      ],
+    }
+  },
 ];
 
+type Category = 'web' | 'algorithms' | 'systems' | 'tools';
+
+const categoryInfo = {
+  web: {
+    label: 'Web Apps',
+    fullLabel: 'Web Applications',
+    icon: <Globe className="w-4 h-4" />,
+    description: 'Full-stack applications, web scrapers, and interactive platforms'
+  },
+  algorithms: {
+    label: 'Algorithms',
+    fullLabel: 'Algorithms & DS',
+    icon: <Layers className="w-4 h-4" />,
+    description: 'Data structures, algorithmic solutions, and computational problems'
+  },
+  systems: {
+    label: 'Systems',
+    fullLabel: 'Systems Programming',
+    icon: <Terminal className="w-4 h-4" />,
+    description: 'Low-level programming, concurrency, and systems-level solutions'
+  },
+  tools: {
+    label: 'Tools',
+    fullLabel: 'Tools & Utilities',
+    icon: <Cpu className="w-4 h-4" />,
+    description: 'Desktop applications, automation tools, and utilities'
+  }
+};
+
 const ProjectShowcasePage: React.FC = () => {
-  const projectsPerPage = 7;
-  const [currentPage, setCurrentPage] = useState(0);
-  const [selectedProject, setSelectedProject] = useState<Project>(projects[0]);
+  const PROJECTS_PER_PAGE = 5;
+  const [selectedCategory, setSelectedCategory] = useState<Category>('web');
+  const [selectedProject, setSelectedProject] = useState<Project>(projects.find(p => p.category === 'web') || projects[0]);
   const [activeTab, setActiveTab] = useState<'overview' | 'technologies' | 'challenges'>('overview');
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const filteredProjects = projects.filter(p => p.category === selectedCategory);
+  const totalPages = Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE);
+  const paginatedProjects = filteredProjects.slice(
+    currentPage * PROJECTS_PER_PAGE,
+    (currentPage + 1) * PROJECTS_PER_PAGE
+  );
+
+  const handleCategoryChange = (category: Category) => {
+    setSelectedCategory(category);
+    setCurrentPage(0);
+    const firstProject = projects.find(p => p.category === category);
+    if (firstProject) {
+      setSelectedProject(firstProject);
+      setActiveTab('overview');
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(prev => prev - 1);
+    }
+  };
+
+  // Reset page when category changes
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [selectedCategory]);
 
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
         return (
           <div>
-            <h3 className="font-press-start text-lg mb-2 text-primary">Project Overview</h3>
-            <p className="font-vt323 text-2xl md:text-3xl text-primary/80">{selectedProject.description}</p>
+            <h3 className="font-press-start text-xs mb-3 text-primary">Overview</h3>
+            <p className="font-vt323 text-lg md:text-xl text-primary/80 leading-relaxed">
+              {selectedProject.description}
+            </p>
+            <div className="flex flex-wrap gap-2 mt-4">
+              {selectedProject.skills.map((skill, index) => (
+                <span 
+                  key={index} 
+                  className="bg-secondary/20 text-secondary px-2 py-1 rounded text-xs font-press-start"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
           </div>
         );
       case 'technologies':
         return (
           <div>
-            <h3 className="font-press-start text-lg mb-2 text-primary">Technologies Used</h3>
+            <h3 className="font-press-start text-xs mb-3 text-primary">Tech Stack</h3>
             <div className="flex flex-wrap gap-2">
               {selectedProject.fullDetails.technologies.map((tech, index) => (
                 <span 
                   key={index} 
-                  className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs"
+                  className="bg-primary/10 text-primary px-2.5 py-1.5 rounded-full text-sm font-vt323"
                 >
                   {tech}
                 </span>
@@ -300,10 +387,13 @@ const ProjectShowcasePage: React.FC = () => {
       case 'challenges':
         return (
           <div>
-            <h3 className="font-press-start text-lg mb-2 text-primary">Project Challenges</h3>
-            <ul className="list-disc list-inside font-vt323 text-2xl md:text-3xl text-primary/80">
+            <h3 className="font-press-start text-xs mb-3 text-primary">Challenges</h3>
+            <ul className="space-y-2">
               {selectedProject.fullDetails.challenges.map((challenge, index) => (
-                <li key={index}>{challenge}</li>
+                <li key={index} className="flex gap-2">
+                  <span className="text-secondary mt-0.5 text-sm">▸</span>
+                  <span className="font-vt323 text-base md:text-lg text-primary/80 leading-snug">{challenge}</span>
+                </li>
               ))}
             </ul>
           </div>
@@ -313,95 +403,163 @@ const ProjectShowcasePage: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-black overflow-hidden">
-      {/* Cyberpunk Background Layer */}
+      {/* Background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0B0C10] to-[#1A1E23] opacity-90" />
         <div className="absolute inset-0 bg-grid-subtle opacity-10 pointer-events-none" />
         <div className="scanline absolute inset-0 pointer-events-none z-10" />
       </div>
 
-      <div className="container mx-auto px-4 py-16 relative z-20">
-        <div className="mb-12 text-center">
-          <h1 className="text-4xl font-press-start mb-4 text-primary">
+      <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-12 relative z-20 max-w-7xl">
+        {/* Header */}
+        <div className="mb-6 sm:mb-8 text-center">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-press-start mb-2 sm:mb-3 text-primary leading-tight">
             Project Showcase
           </h1>
-          <p className="text-xl font-vt323 text-primary/80">
-            Explore innovative projects that showcase technical expertise
+          <p className="text-base sm:text-lg md:text-xl font-vt323 text-primary/80 px-4">
+            Welcome To My Project Collection
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Category Tabs */}
+        <div className="mb-6 sm:mb-8 flex flex-wrap justify-center gap-2">
+          {(Object.keys(categoryInfo) as Category[]).map((category) => (
+            <button
+            key={category}
+            onClick={() => handleCategoryChange(category)}
+            className={`
+              flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg 
+              font-press-start text-xs sm:text-sm
+              transition-all duration-300 border-2
+              ${selectedCategory === category 
+                ? 'bg-primary/20 border-primary text-primary shadow-lg shadow-primary/20' 
+                : 'bg-background/50 border-primary/20 text-primary/60 hover:border-primary/40 hover:text-primary'}
+            `}
+          >
+            {categoryInfo[category].icon}
+            <span>{categoryInfo[category].label}</span>
+          </button>
+
+          ))}
+        </div>
+
+        {/* Category Description - Hidden on mobile */}
+        <div className="text-center mb-4 sm:mb-6 hidden sm:block">
+          <p className="font-vt323 text-base sm:text-lg text-primary/70 px-4">
+            {categoryInfo[selectedCategory].description}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Project List */}
-         {/* Paginated Project List */}
-            <div className="space-y-4">
-              {projects
-                .slice(currentPage * projectsPerPage, (currentPage + 1) * projectsPerPage)
-                .map((project) => (
-                  <motion.div
-                    key={project.id}
-                    whileHover={{ scale: 1.05 }}
-                    onClick={() => setSelectedProject(project)}
-                    className={`cursor-pointer p-4 rounded-lg transition-all duration-300 ${
-                      selectedProject.id === project.id
-                        ? 'bg-primary/20 border border-primary'
-                        : 'bg-background/50 hover:bg-primary/10'
+          <div className="lg:col-span-1">
+            <div className="flex items-center justify-between mb-3 sm:mb-4 px-1 sm:px-2">
+              <h2 className="font-press-start text-[10px] sm:text-xs text-primary/60">
+                {filteredProjects.length} Project{filteredProjects.length !== 1 ? 's' : ''}
+              </h2>
+              {totalPages > 1 && (
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <button
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 0}
+                    className={`p-1 sm:p-1.5 rounded border transition-all ${
+                      currentPage === 0
+                        ? 'border-primary/20 text-primary/20 cursor-not-allowed'
+                        : 'border-primary/40 text-primary/60 hover:border-primary hover:text-primary'
                     }`}
                   >
-                    <div className="flex items-center gap-4">
-                      {project.icon}
-                      <h3 className="font-press-start text-lg text-primary">{project.name}</h3>
+                    <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+                  </button>
+                  <span className="font-press-start text-[10px] text-primary/60 min-w-[40px] sm:min-w-[50px] text-center">
+                    {currentPage + 1}/{totalPages}
+                  </span>
+                  <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages - 1}
+                    className={`p-1 sm:p-1.5 rounded border transition-all ${
+                      currentPage === totalPages - 1
+                        ? 'border-primary/20 text-primary/20 cursor-not-allowed'
+                        : 'border-primary/40 text-primary/60 hover:border-primary hover:text-primary'
+                    }`}
+                  >
+                    <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                  </button>
+                </div>
+              )}
+            </div>
+            
+            <div className="space-y-2 sm:space-y-3">
+              <AnimatePresence mode="wait">
+                {paginatedProjects.map((project, index) => (
+                  <motion.div
+                    key={project.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ delay: index * 0.05 }}
+                    whileHover={{ scale: 1.02 }}
+                    onClick={() => {
+                      setSelectedProject(project);
+                      setActiveTab('overview');
+                    }}
+                    className={`
+                      cursor-pointer p-3 sm:p-4 rounded-lg transition-all duration-300
+                      ${selectedProject.id === project.id
+                        ? 'bg-primary/20 border-2 border-primary shadow-lg shadow-primary/10'
+                        : 'bg-background/50 border-2 border-primary/10 hover:bg-primary/10 hover:border-primary/30'}
+                    `}
+                  >
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className={`
+                        flex-shrink-0
+                        ${selectedProject.id === project.id ? 'text-primary' : 'text-primary/60'}
+                      `}>
+                        {project.icon}
+                      </div>
+                      <h3 className={`
+                        font-press-start text-[10px] sm:text-xs leading-tight
+                        ${selectedProject.id === project.id ? 'text-primary' : 'text-primary/80'}
+                      `}>
+                        {project.name}
+                      </h3>
                     </div>
                   </motion.div>
-              ))}
-            
-              {/* Pagination Controls */}
-              <div className="flex justify-between mt-4">
-                <Button 
-                  variant="outline"
-                  className="font-press-start text-sm text-primary border-primary hover:bg-primary/10"
-                  disabled={currentPage === 0}
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
-                >
-                  Previous
-                </Button>
-                
-                <Button 
-                  variant="outline"
-                  className="font-press-start text-sm text-primary border-primary hover:bg-primary/10"
-                  disabled={(currentPage + 1) * projectsPerPage >= projects.length}
-                  onClick={() => setCurrentPage((prev) => prev + 1)}
-                >
-                  Next
-                </Button>
-              </div>
+                ))}
+              </AnimatePresence>
             </div>
+          </div>
 
           {/* Project Details */}
           <motion.div
             key={selectedProject.id}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-background/80 backdrop-blur-sm border border-primary/20 rounded-lg p-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="lg:col-span-2 bg-background/80 backdrop-blur-sm border-2 border-primary/20 rounded-lg p-4 sm:p-6"
           >
-            <div className="flex items-center mb-6">
-              {selectedProject.icon}
-              <h2 className="ml-4 font-press-start text-4xl text-primary">
-                {selectedProject.name}
-              </h2>
+            {/* Project Header */}
+            <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-primary/20">
+              <div className="text-primary mt-0.5 flex-shrink-0">
+                {selectedProject.icon}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h2 className="font-press-start text-sm sm:text-lg md:text-xl text-primary mb-2 leading-tight break-words">
+                  {selectedProject.name}
+                </h2>
+              </div>
             </div>
 
             {/* Tab Navigation */}
-            <div className="flex mb-6 border-b border-primary/20">
+            <div className="flex gap-1.5 sm:gap-2 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-primary/20 overflow-x-auto">
               {['overview', 'technologies', 'challenges'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab as any)}
                   className={`
-                    font-press-start text-sm px-4 py-2 transition-colors
+                    font-press-start text-[10px] sm:text-xs px-2.5 sm:px-4 py-1.5 sm:py-2 rounded transition-all whitespace-nowrap
                     ${activeTab === tab 
-                      ? 'text-secondary border-b-2 border-secondary' 
-                      : 'text-primary/60 hover:text-primary'}
+                      ? 'bg-secondary/20 text-secondary border border-secondary' 
+                      : 'text-primary/60 hover:text-primary hover:bg-primary/5'}
                   `}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -410,26 +568,39 @@ const ProjectShowcasePage: React.FC = () => {
             </div>
 
             {/* Tab Content */}
-            <div className="mb-6">
-              {renderTabContent()}
+            <div className="mb-4 sm:mb-6 min-h-[180px] sm:min-h-[200px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {renderTabContent()}
+                </motion.div>
+              </AnimatePresence>
             </div>
 
-            <Button 
-              variant="outline" 
-              className="w-full flex items-center gap-2 border-primary text-primary hover:bg-primary/10"
-              onClick={() => window.open(selectedProject.githubLink, '_blank')}
-            >
-              <Github className="w-4 h-4" /> View on GitHub
-            </Button>
-            {selectedProject.websiteLink && (
-              <Button
-                variant="outline"
-                className="w-full flex items-center gap-2 border-primary text-primary hover:bg-primary/10 mt-2"
-                onClick={() => window.open(selectedProject.websiteLink, '_blank')}
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+              <Button 
+                variant="outline" 
+                className="flex-1 flex items-center justify-center gap-2 border-primary text-primary hover:bg-primary/10 font-press-start text-[10px] sm:text-xs h-10 sm:h-12"
+                onClick={() => window.open(selectedProject.githubLink, '_blank')}
               >
-                <MousePointerClick className="w-4 h-4" /> Visit Website
+                <Github className="w-3 h-3 sm:w-4 sm:h-4" /> View Code
               </Button>
-            )}
+              {selectedProject.websiteLink && (
+                <Button
+                  variant="outline"
+                  className="flex-1 flex items-center justify-center gap-2 border-secondary text-secondary hover:bg-secondary/10 font-press-start text-[10px] sm:text-xs h-10 sm:h-12"
+                  onClick={() => window.open(selectedProject.websiteLink, '_blank')}
+                >
+                  <Globe className="w-3 h-3 sm:w-4 sm:h-4" /> Live Demo
+                </Button>
+              )}
+            </div>
           </motion.div>
         </div>
       </div>
