@@ -56,6 +56,13 @@
     scrollbar-color: #00FFD1 #1A1E23;
     cursor: var(--cursor-normal) !important; /* cursor on scrollbar container */
   }
+  /* Make entire page background black and text readable */
+body {
+  background-color: #000; /* black background */
+  color: #fff;            /* default text color white */
+  margin: 0;
+  padding: 0;
+}
 
   @keyframes scanline {
     0% {
