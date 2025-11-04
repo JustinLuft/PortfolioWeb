@@ -1,162 +1,87 @@
-import React, { FC, useEffect, useState, useRef } from 'react';
+import React from 'react';
+import { Code, Server, Database, Cpu, Cloud, Layers, Lock, Globe, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Linkedin, FileText, Github } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
-const terminalWelcomeSequence = [
-  ">BOOTING PORTFOLIO SYSTEM v1.2.3",
-  ">Initializing core modules...",
-  ">Checking system integrity...",
-  ">Loading personal interface...",
-  ">Connecting neural networks...",
-  ">>> SYSTEM ONLINE <<<",
-  ">Welcome, User",
-  `Current Time: ${new Date().toLocaleString()}`,
-  ">Network Status: SECURE",
-  ">Ready for interaction..."
-];
-
-const LandingPage: FC = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [terminalLines, setTerminalLines] = useState<string[]>([]);
-  const [isSystemReady, setIsSystemReady] = useState(false);
-  const hasRun = useRef(false);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  useEffect(() => {
-    if (hasRun.current) return;
-    hasRun.current = true;
-
-    terminalWelcomeSequence.forEach((line, index) => {
-      setTimeout(() => {
-        setTerminalLines(prev => [...prev, line]);
-        if (index === terminalWelcomeSequence.length - 1) {
-          setTimeout(() => setIsSystemReady(true), 300);
-        }
-      }, 250 * (index + 1));
-    });
-  }, []);
-
-  const socialLinks = [
-    { icon: <Linkedin className="mr-2 w-5 h-5" />, label: "LinkedIn", url: "http://www.linkedin.com/in/justinnl" },
-    { icon: <FileText className="mr-2 w-5 h-5" />, label: "Resume", url: "/JustinLuftResume.pdf" },
-    { icon: <Github className="mr-2 w-5 h-5" />, label: "GitHub", url: "https://github.com/JustinLuft" }
+const SkillsPage: React.FC = () => {
+  const skillCategories = [
+    { title: "Programming Languages", skills: [ { name: "Java", level: "Advanced" }, { name: "Python", level: "Advanced" }, { name: "C", level: "Intermediate" }, { name: "Typescript", level: "Basic" }, { name: "JavaScript", level: "Intermediate" }, { name: "MIPS Assembly", level: "Basic" }, { name: "Prolog", level: "Basic" } ], icon: <Code className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
+    { title: "Web & Software Development", skills: [ { name: "React", level: "Intermediate" }, { name: "Next.js", level: "Intermediate" }, { name: "Firebase", level: "Intermediate" }, { name: "HTML/CSS/JS", level: "Advanced" }, { name: "GET/POST Handling in C", level: "Intermediate" }, { name: "Node.js & Express.js", level: "Intermediate" } ], icon: <Globe className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
+    { title: "Databases", skills: [ { name: "PostgreSQL", level: "Intermediate" }, { name: "MySQL", level: "Intermediate" }, { name: "SQLite", level: "Intermediate" }, { name: "Firebase Realtime DB", level: "Intermediate" } ], icon: <Database className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
+    { title: "Computer Science Concepts", skills: [ { name: "Data Structures", level: "Advanced" }, { name: "Algorithms", level: "Advanced" }, { name: "Multithreading", level: "Intermediate" }, { name: "Dynamic Programming", level: "Advanced" } ], icon: <Cpu className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
+    { title: "Development Practices", skills: [ { name: "Agile", level: "Advanced" }, { name: "Scrum", level: "Advanced" }, { name: "Waterfall", level: "Intermediate" }, { name: "Git & Version Control", level: "Advanced" } ], icon: <Layers className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
+    { title: "Business Intelligence & Productivity Tools", skills: [ { name: "Power BI", level: "Advanced" }, { name: "Power Apps", level: "Intermediate" }, { name: "Excel (Formulas, VBA, Data Modeling)", level: "Advanced" }, { name: "SharePoint & Power Automate", level: "Intermediate" }, { name: "Data Visualization & Dashboard Design", level: "Advanced" } ], icon: <BarChart3 className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
+    { title: "Soft Skills", skills: [ { name: "Adaptability", level: "Advanced" }, { name: "Problem Solving", level: "Advanced" }, { name: "Team Collaboration", level: "Advanced" }, { name: "UI/UX Prototyping (Figma)", level: "Intermediate" } ], icon: <Server className="w-10 h-10 md:w-12 md:h-12 text-primary" /> }
   ];
 
-  const downloadResume = () => {
-    const a = document.createElement('a');
-    a.href = '/JustinLuftResume.pdf';
-    a.download = 'Justin_Luft_Resume.pdf';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  const getLevelColor = (level: string) => {
+    switch (level) {
+      case "Advanced": return "bg-green-500/20 text-green-400";
+      case "Intermediate": return "bg-yellow-500/20 text-yellow-400";
+      case "Basic": return "bg-red-500/20 text-red-400";
+      default: return "bg-primary/10 text-primary";
+    }
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background">
-      {/* Terminal Background */}
-      <div className="absolute inset-0 bg-black/90 pointer-events-none z-0 overflow-hidden">
-        <div
-  className="
-    absolute inset-0 font-mono text-xs md:text-sm text-green-400
-    pt-3 pr-3 pb-3 pl-2 md:pt-6 md:pr-6 md:pb-6 md:pl-4
-    overflow-y-auto
-    break-words
-  "
->
-
-          {terminalLines.map((line, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2 }}
-              dangerouslySetInnerHTML={{ __html: line }}
-              className="terminal-line"
-            />
-          ))}
-        </div>
-
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />
-          <div className="absolute inset-0 opacity-10 bg-grid-subtle" />
-          <div className="scanline absolute inset-0" />
-        </div>
+    <div className="relative min-h-screen bg-background overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-[#0B0C10] to-[#1A1E23] opacity-90" />
+        <div className="absolute inset-0 bg-grid-subtle opacity-10 pointer-events-none" />
+        <div className="scanline absolute inset-0 pointer-events-none z-10" />
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-        <motion.h1
-          className="text-3xl md:text-6xl font-press-start text-primary text-center mb-8 text-glitch"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isSystemReady ? 1 : 0, y: isSystemReady ? 0 : 20 }}
+<div className="container mx-auto px-4 md:pl-10 py-16 relative z-20">
+        <motion.div 
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          className="text-center mb-12"
         >
-          JUSTIN LUFT
-        </motion.h1>
+          <h1 className="text-3xl md:text-4xl font-press-start text-primary mb-4">
+            Technical Skillset
+          </h1>
+          <p className="text-base md:text-xl font-vt323 text-primary/80 max-w-full md:max-w-2xl mx-auto">
+            A breakdown of my computer science and technology stack — from algorithms to analytics and automation.
+          </p>
+        </motion.div>
 
-        <motion.p
-          className="text-lg md:text-2xl font-vt323 text-primary mb-12 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isSystemReady ? 1 : 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          Computer Scientist
-        </motion.p>
-
-        {isSystemReady && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-12">
-              {socialLinks.map((link, index) => (
-                link.label === 'Resume' ? (
-                  <motion.div key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                    <Button
-                      variant="outline"
-                      className="font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
-                      onClick={downloadResume}
-                    >
-                      {link.icon}
-                      {link.label}
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <motion.div key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                    <Button
-                      variant="outline"
-                      className="font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
-                      onClick={() => window.open(link.url, '_blank')}
-                    >
-                      {link.icon}
-                      {link.label}
-                    </Button>
-                  </motion.div>
-                )
-              ))}
-            </div>
-          </motion.div>
-        )}
-
-        {/* Custom Mouse Pointer */}
-        <motion.div
-          className="pointer-events-none fixed top-0 left-0 w-6 h-6 rounded-full bg-primary/50 mix-blend-screen"
-          animate={{ x: mousePosition.x - 12, y: mousePosition.y - 12 }}
-          transition={{ duration: 0.1 }}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {skillCategories.map((category, index) => (
+            <motion.div
+              key={category.title}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <Card className="bg-background/80 backdrop-blur-sm border border-primary/20 p-4 sm:p-6 h-full hover:scale-105 transition-transform duration-300">
+                <div className="flex items-center mb-4 sm:mb-6">
+                  {category.icon}
+                  <h2 className="ml-3 sm:ml-4 font-press-start text-lg sm:text-xl text-primary">
+                    {category.title}
+                  </h2>
+                </div>
+                <div className="space-y-2 sm:space-y-3">
+                  {category.skills.map((skill) => (
+                    <div key={skill.name} className="flex justify-between items-center">
+                      <span className="font-vt323 text-sm sm:text-base text-primary/90">
+                        {skill.name}
+                      </span>
+                      <span 
+                        className={`px-2 py-1 rounded-full text-xs sm:text-sm font-press-start ${getLevelColor(skill.level)}`}
+                      >
+                        {skill.level}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-export default LandingPage;
+export default SkillsPage;
