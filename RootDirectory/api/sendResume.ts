@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import path from 'path';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
@@ -12,6 +11,7 @@ export default async function handler(req: any, res: any) {
     return res.status(400).json({ error: 'Email is required' });
   }
 
+  // Create transporter
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -23,49 +23,32 @@ export default async function handler(req: any, res: any) {
   });
 
   try {
+    // Send email
     await transporter.sendMail({
       from: process.env.SMTP_FROM,
       to: email,
       subject: "Justin Luft – Resume",
       html: `
-        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #111; line-height: 1.7; max-width: 600px; margin: auto; padding: 26px; border: 1px solid #dcdcdc; border-radius: 8px; background-color: #ffffff;">
-          
-          <h2 style="font-weight: 600; font-size: 22px; margin-bottom: 16px;">
-            Hello,
-          </h2>
-
+        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #000000; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #000000; border-radius: 8px; background-color: #ffffff;">
+          <h2 style="color:#000000; font-weight: 600;">Hello,</h2>
           <p style="font-size: 16px;">
-            Thank you for requesting my resume. You can download it using the button below, and it is also attached to this email.
+            Thank you for requesting my resume. You can download it directly using the button below or find it attached to this email:
           </p>
 
-          <a href="${process.env.SITE_URL}/JustinLuftResume.pdf"
-            style="
-              display:inline-block; 
-              padding: 12px 24px; 
-              margin: 24px 0; 
-              font-size: 15px; 
-              font-weight: 600; 
-              color: #ffffff !important; 
-              background-color: #000000 !important; 
-              border: 2px solid #000000 !important; 
-              text-decoration: none; 
-              border-radius: 6px;
-            "
-          >
+          <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
+             style="display:inline-block; padding: 12px 24px; margin: 20px 0; font-size: 16px; color: #ffffff; background-color: #000000; text-decoration: none; border-radius: 6px; font-weight: 500;">
             Download Resume
           </a>
 
           <p style="font-size: 16px;">
-            <strong>Note:</strong> This is an automated email. Please do not reply to this address.
+            <strong>Important:</strong> This is an automated email. Please do not reply directly to this address.
           </p>
-
-          <p style="font-size: 16px; margin-top: 24px;">
+          <p style="font-size: 16px;">
             Best regards,<br/>
-            <span style="font-weight: 600;">Justin Luft</span>
+            <span style="color:#000000; font-weight: 500;">Justin Luft</span>
           </p>
-
-          <hr style="border: none; border-top: 1px solid #e7e7e7; margin: 28px 0;">
-          <p style="font-size: 12px; color: #777;">
+          <hr style="border: none; border-top: 1px solid #000000; margin: 20px 0;">
+          <p style="font-size: 12px; color: #555555;">
             You received this email because you requested a copy of Justin Luft's resume.
           </p>
         </div>
@@ -74,9 +57,9 @@ export default async function handler(req: any, res: any) {
         Hello,
 
         Thank you for requesting my resume. You can download it here: ${process.env.SITE_URL}/JustinLuftResume.pdf
-        The resume is also attached to this email.
+        or find it attached to this email.
 
-        Note: This is an automated email. Please do not reply.
+        IMPORTANT: This is an automated email. Please do not reply directly to this address.
 
         Best regards,
         Justin Luft
@@ -84,7 +67,7 @@ export default async function handler(req: any, res: any) {
       attachments: [
         {
           filename: "JustinLuftResume.pdf",
-          path: path.join(process.cwd(), 'public', 'JustinLuftResume.pdf'),
+          path: `${process.env.SITE_URL}/JustinLuftResume.pdf`,
         },
       ],
     });
