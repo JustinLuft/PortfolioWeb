@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-export function usePageTracking() {
+export const usePageTracking = () => {
   const location = useLocation();
 
   useEffect(() => {
     if (window.gtag) {
-      window.gtag("config", "G-PQZ1RGMR8S", {
-        page_path: location.pathname,
-      });
+      window.gtag("event", "page_view", { page_path: location.pathname });
     }
   }, [location]);
-}
+};
