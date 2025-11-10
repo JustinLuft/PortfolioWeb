@@ -6,7 +6,7 @@
     <!-- Primary Meta Tags -->
     <title>Justin Luft | Full-Stack Developer & Computer Scientist</title>
     <meta name="title" content="Justin Luft | Software Developer & Computer Scientist" />
-    <meta name="description" content="Hi, I'm Justin Luft — a passionate software engineer and computer scientist with a love for full-stack development, creative problem-solving, and innovative tech. " />
+    <meta name="description" content="Hi, I'm Justin Luft — a passionate software engineer and computer scientist with a love for full-stack development, creative problem-solving, and innovative tech." />
     <meta name="author" content="Justin Luft" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#0B0C10" />
@@ -32,6 +32,19 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQZ1RGMR8S"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+
+      gtag('js', new Date());
+      gtag('config', 'G-PQZ1RGMR8S', { anonymize_ip: true });
+    </script>
+
+    <!-- Vite Main Entry -->
     <script type="module" src="/src/main.tsx"></script>
   </head>
 
