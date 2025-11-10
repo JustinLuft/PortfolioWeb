@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import path from 'path';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
@@ -38,7 +39,19 @@ export default async function handler(req: any, res: any) {
           </p>
 
           <a href="${process.env.SITE_URL}/JustinLuftResume.pdf"
-            style="display:inline-block; padding: 12px 24px; margin: 24px 0; font-size: 15px; color: #fff; background-color: #000; text-decoration: none; border-radius: 6px; font-weight: 500;">
+            style="
+              display:inline-block; 
+              padding: 12px 24px; 
+              margin: 24px 0; 
+              font-size: 15px; 
+              font-weight: 600; 
+              color: #ffffff !important; 
+              background-color: #000000 !important; 
+              border: 2px solid #000000 !important; 
+              text-decoration: none; 
+              border-radius: 6px;
+            "
+          >
             Download Resume
           </a>
 
@@ -71,7 +84,7 @@ export default async function handler(req: any, res: any) {
       attachments: [
         {
           filename: "JustinLuftResume.pdf",
-          path: `${process.env.SITE_URL}/JustinLuftResume.pdf`,
+          path: path.join(process.cwd(), 'public', 'JustinLuftResume.pdf'),
         },
       ],
     });
