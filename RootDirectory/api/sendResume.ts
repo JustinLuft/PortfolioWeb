@@ -29,26 +29,30 @@ export default async function handler(req: any, res: any) {
       to: email,
       subject: "Justin Luft – Resume",
       html: `
-        <div style="font-family: Arial, sans-serif; color: #0af; line-height: 1.5;">
-          <h2 style="color:#ff1493;">Hello,</h2>
-          <p>
-            Thank you for requesting my resume. Please find it attached to this email.
+        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9;">
+          <h2 style="color:#1a73e8; font-weight: 600;">Hello,</h2>
+          <p style="font-size: 16px;">
+            Thank you for requesting my resume. I have attached the PDF for your convenience.
           </p>
-          <p>
-            <strong>Note:</strong> This is not my main email account. Please do not reply to this address.
+          <p style="font-size: 16px;">
+            <strong>Important:</strong> This is an automated email. Please do not reply directly to this address.
           </p>
-          <p>
+          <p style="font-size: 16px;">
             Best regards,<br/>
-            <span style="color:#ff1493;">Justin Luft</span>
+            <span style="color:#1a73e8; font-weight: 500;">Justin Luft</span>
+          </p>
+          <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;">
+          <p style="font-size: 12px; color: #777;">
+            You received this email because you requested a copy of Justin Luft's resume.
           </p>
         </div>
       `,
       text: `
         Hello,
 
-        Thank you for requesting my resume. Please find it attached.
+        Thank you for requesting my resume. I have attached the PDF for your convenience.
 
-        NOTE: This is not my main email account. Please do not reply to this address.
+        IMPORTANT: This is an automated email. Please do not reply directly to this address.
 
         Best regards,
         Justin Luft
