@@ -183,7 +183,13 @@ const LandingPage: FC = () => {
               >
                 {/* Close Button */}
                 <button
-                  onClick={() => { setResumeModalOpen(false); setIsEmailMode(false); setEmail(''); setStatusMessage(''); setStatusType(''); }}
+                  onClick={() => {
+                    setResumeModalOpen(false);
+                    setIsEmailMode(false);
+                    setEmail('');
+                    setStatusMessage('');
+                    setStatusType('');
+                  }}
                   className="absolute top-3 right-3 text-pink-500 font-bold text-xl hover:text-pink-400"
                 >
                   &times;
@@ -200,7 +206,8 @@ const LandingPage: FC = () => {
                   </p>
                 )}
 
-                {!isEmailMode ? (
+                {/* Only show buttons if resume not yet sent */}
+                {statusType !== 'success' && !isEmailMode && (
                   <div className="flex gap-4 justify-center">
                     <Button
                       className="flex-1 font-press-start bg-pink-500 text-white border-primary hover:bg-pink-600"
@@ -215,14 +222,17 @@ const LandingPage: FC = () => {
                       Email Me
                     </Button>
                   </div>
-                ) : (
+                )}
+
+                {/* Email Mode */}
+                {isEmailMode && (
                   <div className="flex flex-col gap-3 mt-2">
                     <input
                       type="email"
                       placeholder="Enter your email"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
-                      className="p-3 border border-primary bg-black/80 text-primary placeholder:text-primary font-vt323 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary focus:shadow-[0_0_10px_rgba(0,123,255,0.5)]"
+                      className="p-3 border border-primary bg-black/80 text-primary placeholder:text-primary font-vt323 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary focus:shadow-[0_0_10px_rgba(0,123,255,0.5)] rounded-none"
                     />
                     <Button
                       className="font-press-start bg-pink-500 text-white border-primary hover:bg-pink-600"
