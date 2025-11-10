@@ -29,26 +29,30 @@ export default async function handler(req: any, res: any) {
       to: email,
       subject: "Justin Luft – Resume",
       html: `
-        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9;">
-          <h2 style="color:#000000; font-weight: 600;">Hello,</h2>
-          <p style="font-size: 16px;">
+        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #ffffff;">
+          <h2 style="color:#000000; color-scheme: light; font-weight: 600;">Hello,</h2>
+          <p style="font-size: 16px; color: #333333; color-scheme: light;">
             Thank you for requesting my resume. You can download it directly using the button below or find it attached to this email:
           </p>
-
-          <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
-             style="display:inline-block; padding: 12px 24px; margin: 20px 0; font-size: 16px; color: #ffffff; background-color: #000000; text-decoration: none; border-radius: 6px; font-weight: 500;">
-            Download Resume
-          </a>
-
-          <p style="font-size: 16px;">
-            <strong>Important:</strong> This is an automated email. Please do not reply directly to this address.
+          <table cellpadding="0" cellspacing="0" border="0" style="margin: 20px 0;">
+            <tr>
+              <td style="background-color: #000000; border-radius: 6px; color-scheme: light;">
+                <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
+                   style="display:inline-block; padding: 12px 24px; font-size: 16px; color: #ffffff !important; background-color: #000000; text-decoration: none; border-radius: 6px; font-weight: 500; color-scheme: light;">
+                  Download Resume
+                </a>
+              </td>
+            </tr>
+          </table>
+          <p style="font-size: 16px; color: #333333; color-scheme: light;">
+            <strong style="color: #000000; color-scheme: light;">Important:</strong> This is an automated email. Please do not reply directly to this address.
           </p>
-          <p style="font-size: 16px;">
+          <p style="font-size: 16px; color: #333333; color-scheme: light;">
             Best regards,<br/>
-            <span style="color:#000000; font-weight: 500;">Justin Luft</span>
+            <span style="color:#000000; font-weight: 500; color-scheme: light;">Justin Luft</span>
           </p>
           <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;">
-          <p style="font-size: 12px; color: #777;">
+          <p style="font-size: 12px; color: #777777; color-scheme: light;">
             You received this email because you requested a copy of Justin Luft's resume.
           </p>
         </div>
