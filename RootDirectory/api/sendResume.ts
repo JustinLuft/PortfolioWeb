@@ -36,23 +36,23 @@ export default async function handler(req: any, res: any) {
           </p>
 
           <table role="presentation" border="0" cellspacing="0" cellpadding="0" align="center" style="margin:20px 0;">
-  <tr>
-    <td align="center" bgcolor="#000000" style="border-radius:6px;">
-      <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" target="_blank" 
-         style="
-           font-size:16px;
-           font-weight:500;
-           font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-           color:#ffffff !important;
-           text-decoration:none;
-           padding:12px 24px;
-           display:inline-block;
-         ">
-        Download Resume
-      </a>
-    </td>
-  </tr>
-</table>
+  <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
+   style="
+     display: inline-block;
+     padding: 12px 24px;
+     margin: 20px 0;
+     font-size: 16px;
+     font-weight: 500;
+     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+     color: #ffffff !important;
+     background-color: #000000 !important;
+     text-decoration: none !important;
+     border-radius: 6px;
+   " 
+   target="_blank">
+   Download Resume
+</a>
+
 
 
 
