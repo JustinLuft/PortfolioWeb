@@ -35,10 +35,18 @@ export default async function handler(req: any, res: any) {
             Thank you for requesting my resume. You can download it directly using the button below or find it attached to this email:
           </p>
 
-          <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
-             style="display:inline-block; padding: 12px 24px; margin: 20px 0; font-size: 16px; color: #ffffff; background-color: #000000; text-decoration: none; border-radius: 6px; font-weight: 500;">
-            Download Resume
-          </a>
+          <!-- Table-based button for email client compatibility -->
+          <table border="0" cellspacing="0" cellpadding="0" style="margin: 20px 0;">
+            <tr>
+              <td align="center" bgcolor="#000000" style="border-radius: 6px;">
+                <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
+                   target="_blank" 
+                   style="display:inline-block; padding:12px 24px; font-size:16px; color:#ffffff !important; text-decoration:none; font-weight:500; border-radius:6px;">
+                  Download Resume
+                </a>
+              </td>
+            </tr>
+          </table>
 
           <p style="font-size: 16px;">
             <strong>Important:</strong> This is an automated email. Please do not reply directly to this address.
