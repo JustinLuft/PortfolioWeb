@@ -30,7 +30,7 @@ export default async function handler(req: any, res: any) {
       text: "Hello! Here’s my resume as requested.",
       attachments: [
         {
-          filename: "Justin_Luft_Resume.pdf",
+          filename: "JustinLuftResume.pdf",
           path: path.join(process.cwd(), 'public', 'JustinLuftResume.pdf'),
         },
       ],
