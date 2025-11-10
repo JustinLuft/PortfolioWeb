@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import path from 'path';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
@@ -31,7 +30,8 @@ export default async function handler(req: any, res: any) {
       attachments: [
         {
           filename: "JustinLuftResume.pdf",
-          path: path.join(process.cwd(), 'public', 'JustinLuftResume.pdf'),
+          // Use the public URL (replace with your deployed domain)
+          path: `${process.env.SITE_URL}/JustinLuftResume.pdf`,
         },
       ],
     });
