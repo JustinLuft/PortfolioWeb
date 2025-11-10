@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { 
   LandingPage, 
   SkillsPage, 
@@ -13,13 +13,27 @@ import InteractiveElements from '@/components/InteractiveElements';
 import './index.css';
 
 import { initAnalytics } from './analytics';
-import { usePageTracking } from './usePageTracking';
 
-// Initialize Google Analytics once at startup
-initAnalytics();
+// SPA-safe page tracking hook
+const usePageTracking = (gaReady: boolean) => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (gaReady && window.gtag) {
+      window.gtag('event', 'page_view', { page_path: location.pathname });
+    }
+  }, [location, gaReady]);
+};
 
 const App = () => {
-  usePageTracking(); // Tracks route changes ✅
+  const [gaReady, setGaReady] = useState(false);
+
+  // Initialize GA once on mount
+  useEffect(() => {
+    initAnalytics(() => setGaReady(true)); // callback sets GA ready
+  }, []);
+
+  usePageTracking(gaReady); // tracks route changes after GA is ready
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen relative">
