@@ -1,5 +1,5 @@
 export const initAnalytics = () => {
-  const id = "G-PQZ1RGMR8S"; 
+  const id = "G-PQZ1RGMR8S"; // your measurement ID
 
   // Load GA script
   const script = document.createElement("script");
