@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { 
@@ -12,28 +12,19 @@ import NavigationMenu from '@/components/NavigationMenu';
 import InteractiveElements from '@/components/InteractiveElements';
 import './index.css';
 
-import { initAnalytics } from './analytics';
-
-// SPA-safe page tracking hook
-const usePageTracking = (gaReady: boolean) => {
+// SPA-safe hook to track pageviews
+const usePageTracking = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (gaReady && window.gtag) {
+    if (window.gtag) {
       window.gtag('event', 'page_view', { page_path: location.pathname });
     }
-  }, [location, gaReady]);
+  }, [location]);
 };
 
 const App = () => {
-  const [gaReady, setGaReady] = useState(false);
-
-  // Initialize GA once on mount
-  useEffect(() => {
-    initAnalytics(() => setGaReady(true)); // callback sets GA ready
-  }, []);
-
-  usePageTracking(gaReady); // tracks route changes after GA is ready
+  usePageTracking(); // Tracks all route changes
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen relative">
