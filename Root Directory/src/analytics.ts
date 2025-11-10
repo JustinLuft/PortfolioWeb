@@ -5,7 +5,6 @@ export const initAnalytics = () => {
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
 
-  // Wait for script to load before firing first pageview
   script.onload = () => {
     window.dataLayer = window.dataLayer || [];
     function gtag(...args: any[]) {
@@ -16,8 +15,10 @@ export const initAnalytics = () => {
     gtag("js", new Date());
     gtag("config", id, { anonymize_ip: true });
 
-    // Force initial pageview
-    gtag("event", "page_view", { page_path: window.location.pathname });
+    // Force first pageview AFTER GA script is fully loaded
+    setTimeout(() => {
+      gtag("event", "page_view", { page_path: window.location.pathname });
+    }, 50); // slight delay ensures GA is hooked in
   };
 
   document.head.appendChild(script);
