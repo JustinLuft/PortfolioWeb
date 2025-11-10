@@ -32,8 +32,14 @@ export default async function handler(req: any, res: any) {
         <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9;">
           <h2 style="color:#1a73e8; font-weight: 600;">Hello,</h2>
           <p style="font-size: 16px;">
-            Thank you for requesting my resume. I have attached the PDF for your convenience.
+            Thank you for requesting my resume. You can download it directly using the button below or find it attached to this email:
           </p>
+
+          <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
+             style="display:inline-block; padding: 12px 24px; margin: 20px 0; font-size: 16px; color: #ffffff; background-color: #1a73e8; text-decoration: none; border-radius: 6px; font-weight: 500;">
+            Download Resume
+          </a>
+
           <p style="font-size: 16px;">
             <strong>Important:</strong> This is an automated email. Please do not reply directly to this address.
           </p>
@@ -50,7 +56,8 @@ export default async function handler(req: any, res: any) {
       text: `
         Hello,
 
-        Thank you for requesting my resume. I have attached the PDF for your convenience.
+        Thank you for requesting my resume. You can download it here: ${process.env.SITE_URL}/JustinLuftResume.pdf
+        or find it attached to this email.
 
         IMPORTANT: This is an automated email. Please do not reply directly to this address.
 
