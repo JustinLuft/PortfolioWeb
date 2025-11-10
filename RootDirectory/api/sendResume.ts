@@ -35,22 +35,25 @@ export default async function handler(req: any, res: any) {
             Thank you for requesting my resume. You can download it directly using the button below or find it attached to this email:
           </p>
 
-          <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
-          style="
-            display: inline-block;
-            padding: 12px 24px;
-            margin: 20px 0;
-            font-size: 16px;
-            font-weight: 500;
-            color: #ffffff !important;
-            background-color: #000000 !important;
-            text-decoration: none;
-            border-radius: 6px;
-            border: 2px solid #000000;
-          " 
-          target="_blank">
-          Download Resume
-        </a>
+          <table role="presentation" border="0" cellspacing="0" cellpadding="0" align="center" style="margin:20px 0;">
+  <tr>
+    <td align="center" bgcolor="#000000" style="border-radius:6px;">
+      <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" target="_blank" 
+         style="
+           font-size:16px;
+           font-weight:500;
+           font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+           color:#ffffff !important;
+           text-decoration:none;
+           padding:12px 24px;
+           display:inline-block;
+         ">
+        Download Resume
+      </a>
+    </td>
+  </tr>
+</table>
+
 
 
 
