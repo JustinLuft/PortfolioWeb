@@ -11,6 +11,7 @@ export default async function handler(req: any, res: any) {
     return res.status(400).json({ error: 'Email is required' });
   }
 
+  // Create transporter
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -22,6 +23,7 @@ export default async function handler(req: any, res: any) {
   });
 
   try {
+    // Send email
     await transporter.sendMail({
       from: process.env.SMTP_FROM,
       to: email,
@@ -30,30 +32,21 @@ export default async function handler(req: any, res: any) {
         <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333; line-height: 1.6; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9;">
           <h2 style="color:#000000; font-weight: 600;">Hello,</h2>
           <p style="font-size: 16px;">
-            Thank you for requesting my resume. You can download it directly using the link below or find it attached to this email:
+            Thank you for requesting my resume. You can download it directly using the button below or find it attached to this email:
           </p>
 
-          <!-- Stylish link that looks like a button -->
-          <p style="margin: 20px 0;">
-            <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
-               target="_blank"
-               style="
-                  display:inline-block;
-                  padding: 14px 28px;
-                  background-color:#000000;
-                  color:#ffffff !important;
-                  text-decoration:none;
-                  font-weight:500;
-                  font-size:16px;
-                  border-radius:8px;
-                  transition: background-color 0.3s ease;
-               "
-               onmouseover="this.style.backgroundColor='#333333';"
-               onmouseout="this.style.backgroundColor='#000000';"
-            >
-              Download Resume
-            </a>
-          </p>
+          <!-- Table-based button for email client compatibility -->
+          <table border="0" cellspacing="0" cellpadding="0" style="margin: 20px 0;">
+            <tr>
+              <td align="center" bgcolor="#000000" style="border-radius: 6px;">
+                <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
+                   target="_blank" 
+                   style="display:inline-block; padding:12px 24px; font-size:16px; color:#ffffff !important; text-decoration:none; font-weight:500; border-radius:6px;">
+                  Download Resume
+                </a>
+              </td>
+            </tr>
+          </table>
 
           <p style="font-size: 16px;">
             <strong>Important:</strong> This is an automated email. Please do not reply directly to this address.
