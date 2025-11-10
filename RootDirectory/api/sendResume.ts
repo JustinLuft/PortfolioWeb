@@ -36,20 +36,22 @@ export default async function handler(req: any, res: any) {
           </p>
 
           <a href="${process.env.SITE_URL}/JustinLuftResume.pdf" 
-            style="
-              display: inline-block; 
-              padding: 12px 24px; 
-              margin: 20px 0; 
-              font-size: 16px; 
-              color: #ffffff; 
-              background-color: #000000; 
-              text-decoration: none; 
-              border-radius: 6px; 
-              font-weight: 500;
-              border: 2px solid #000000;
-            ">
-            Download Resume
-</a>
+          style="
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 20px 0;
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff !important;
+            background-color: #000000 !important;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 2px solid #000000;
+          " 
+          target="_blank">
+          Download Resume
+        </a>
+
 
 
           <p style="font-size: 16px;">
