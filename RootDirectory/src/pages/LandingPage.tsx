@@ -208,21 +208,24 @@ const LandingPage: FC = () => {
 
                 {/* Only show buttons if resume not yet sent */}
                 {statusType !== 'success' && !isEmailMode && (
-                  <div className="flex gap-4 justify-center">
-                    <Button
-                      className="flex-1 font-press-start bg-pink-500 text-white border-primary hover:bg-pink-600"
-                      onClick={downloadResume}
-                    >
-                      Download
-                    </Button>
-                    <Button
-                      className="flex-1 font-press-start bg-pink-500 text-white border-primary hover:bg-pink-600"
-                      onClick={() => { setIsEmailMode(true); setStatusMessage(''); setStatusType(''); }}
-                    >
-                      Email Me
-                    </Button>
-                  </div>
-                )}
+  <div className="flex gap-4 justify-center">
+    <Button
+      variant="outline"
+      className="flex-1 font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
+      onClick={downloadResume}
+    >
+      Download
+    </Button>
+    <Button
+      variant="outline"
+      className="flex-1 font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
+      onClick={() => { setIsEmailMode(true); setStatusMessage(''); setStatusType(''); }}
+    >
+      Email Me
+    </Button>
+  </div>
+)}
+
 
                 {/* Email Mode */}
                 {isEmailMode && (
@@ -235,12 +238,14 @@ const LandingPage: FC = () => {
                       className="p-3 border border-primary bg-black/80 text-primary placeholder:text-primary font-vt323 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary focus:shadow-[0_0_10px_rgba(0,123,255,0.5)] rounded-none"
                     />
                     <Button
-                      className="font-press-start bg-pink-500 text-white border-primary hover:bg-pink-600"
+                      variant="outline"
+                      className="font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
                       onClick={sendResume}
                       disabled={sending}
                     >
                       {sending ? 'Sending...' : 'Send'}
                     </Button>
+
                     <Button
                       variant="ghost"
                       className="text-sm text-primary hover:text-primary/80"
