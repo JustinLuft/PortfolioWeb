@@ -14,25 +14,37 @@ const LandingPage: FC = () => {
   const [statusMessage, setStatusMessage] = useState('');
   const [statusType, setStatusType] = useState<'success' | 'error' | ''>('');
   const hasRun = useRef(false);
+  const [flashResume, setFlashResume] = useState(false);
 
-  const terminalWelcomeSequence = [
-    ">BOOTING PORTFOLIO SYSTEM v1.2.3",
-    ">Initializing core modules...",
-    ">Checking system integrity...",
-    ">Loading personal interface...",
-    ">Connecting neural networks...",
-    ">>> SYSTEM ONLINE <<<",
-    ">Welcome, User",
-    `Current Time: ${new Date().toLocaleString()}`,
-    ">Network Status: SECURE",
-    ">Ready for interaction..."
-  ];
+
+const terminalWelcomeSequence = [
+  "> Deploying Vite + React build to Vercel",
+  "> Initializing TypeScript environment",
+  "> Verifying build integrity",
+  "> Loading portfolio modules",
+  "> Compiling interactive UI renderer",
+  ">>> DEPLOYMENT ONLINE <<<",
+  "> Production: https://justinluftportfolio.vercel.app/",
+  `> Build Time: ${new Date().toLocaleTimeString()}`,
+  "> Network Status: Secure",
+  "> Awaiting user interaction..."
+];
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => setMousePosition({ x: e.clientX, y: e.clientY });
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+  useEffect(() => {
+  if (!isSystemReady) return; // only start flashing after system ready
+
+  const interval = setInterval(() => {
+    setFlashResume(prev => !prev);
+  }, 10000); // flash 7s
+
+  return () => clearInterval(interval);
+}, [isSystemReady]);
+
 
   useEffect(() => {
     if (hasRun.current) return;
@@ -127,15 +139,23 @@ const LandingPage: FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-        <motion.h1
-          className="text-3xl md:text-6xl font-press-start text-primary text-center mb-8 text-glitch"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isSystemReady ? 1 : 0, y: isSystemReady ? 0 : 20 }}
-          transition={{ duration: 0.5 }}
-        >
-          JUSTIN LUFT
-        </motion.h1>
+     <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+  <motion.h1
+    className="text-3xl md:text-6xl font-press-start text-primary text-center mb-8"
+    style={{
+      textShadow: `
+           1px 1px 0 #ff4db8,
+        2px 2px 0 #ff1fe1ff,
+        3px 3px 0 #e60096,
+        4px 4px 0 #00FFD1
+      `
+    }}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: isSystemReady ? 1 : 0, y: isSystemReady ? 0 : 20 }}
+    transition={{ duration: 0.5 }}
+  >
+    JUSTIN LUFT
+  </motion.h1>
 
         <motion.p
           className="text-lg md:text-2xl font-vt323 text-primary mb-12 text-center"
@@ -150,15 +170,27 @@ const LandingPage: FC = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
             <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-12">
               {socialLinks.map((link, index) => (
-                <motion.div key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  <Button
-                    variant="outline"
-                    className="font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
-                    onClick={() => link.action ? link.action() : window.open(link.url, '_blank')}
-                  >
-                    {link.icon}
-                    {link.label}
-                  </Button>
+                <motion.div
+  key={index}
+  whileHover={{ scale: 1.1 }}
+  whileTap={{ scale: 0.9 }}
+  animate={link.label === "Resume" ? {
+    boxShadow: flashResume
+      ? '0 0 20px rgba(255,0,128,1), 0 0 30px rgba(255,0,128,0.7)'
+      : '0 0 10px rgba(255,0,128,0.3), 0 0 15px rgba(0, 0, 0, 0.2)'
+  } : {}}
+  transition={link.label === "Resume" ? { duration: .5, ease: 'easeInOut', repeat: 0, repeatType: 'mirror' } : {}}
+>
+  <Button
+    variant="outline"
+    className="font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
+    onClick={() => link.action ? link.action() : window.open(link.url, '_blank')}
+  >
+    {link.icon}
+    {link.label}
+  </Button>
+
+
                 </motion.div>
               ))}
             </div>
