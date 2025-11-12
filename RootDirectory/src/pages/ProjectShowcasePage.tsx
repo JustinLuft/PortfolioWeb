@@ -174,7 +174,19 @@ const handleTouchEnd = () => {
       setSelectedProject(firstProject);
       setActiveTab('overview');
     }
-    setTargetRotation(categoryRotations[category]);
+setTargetRotation(prev => {
+  const newTarget = categoryRotations[category];
+
+  // Calculate the shortest path for Y rotation
+  let newY = newTarget.y;
+  let deltaY = newY - prev.y;
+
+  // Normalize to shortest spin direction
+  if (deltaY > 180) newY -= 360;
+  else if (deltaY < -180) newY += 360;
+
+  return { x: newTarget.x, y: newY };
+});
   };
 
   // -------------------------------
@@ -300,7 +312,7 @@ const handleTouchEnd = () => {
                 <span className="animate-pulse"></span>
               </div>
                 <div className="mb-1 font-vt323 text-primary/60 text-sm flex items-center gap-2">
-                  <span className="text-secondary">user@justinluftportfolionav</span>
+                  <span className="text-secondary">user@justinluftportfolion</span>
                   <span>&tilde;</span>
                   <span className="text-primary">$</span>
                   <span className="text-primary/80">npm run</span>
