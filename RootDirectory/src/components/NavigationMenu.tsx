@@ -32,12 +32,14 @@ const NavigationMenu = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const menuItems: MenuItem[] = [
-    { label: 'Home', path: '/', icon: <CirclePower size={20} /> },
-    { label: 'Projects', path: '/projects', icon: <Folder size={20} /> },
-    { label: 'Skills', path: '/skills', icon: <Code size={20} /> },
+const menuItems: MenuItem[] = [
+  { label: 'Home', path: '/', icon: <CirclePower size={20} /> },
     { label: 'About', path: '/about', icon: <User size={20} /> },
-  ];
+  { label: 'Projects', path: '/projects', icon: <Folder size={20} /> },
+  { label: 'Skills', path: '/skills', icon: <Code size={20} /> },
+  { label: 'SkillGame', path: '/skill-game', icon: <Code size={20} /> }, 
+];
+
 
   const handleNavigation = (path: string) => {
     setActiveItem(path);
@@ -83,61 +85,66 @@ const NavigationMenu = () => {
       </div>
 
       {/* Menu Items */}
-<div className="flex relative z-10 gap-4 md:flex-col md:gap-6 md:mt-0 w-full md:w-auto justify-center md:justify-start items-center px-2 md:px-0">
-        {menuItems.map((item) => (
-          <motion.div
-            key={item.path}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative group flex flex-col items-center md:items-center"
-          >
-            <button
-              onClick={() => handleNavigation(item.path)}
-              className={`
-group flex items-center justify-center w-10 h-10 md:w-12 md:h-12 transition-all duration-300 relative overflow-hidden border-2                ${activeItem === item.path
-                  ? 'border-secondary text-secondary shadow-[0_0_10px_rgba(255,20,147,0.5)]'
-                  : 'border-primary/50 text-primary hover:border-secondary hover:text-secondary'}
-                hover:shadow-[0_0_10px_rgba(255,20,147,0.3)]
-                rounded-none bg-black
-              `}
-              style={{ position: 'relative', zIndex: 20 }}
-            >
-              {/* Icon */}
-              <div className="relative z-20 flex items-center justify-center w-6 h-6">
-                {React.cloneElement(item.icon, { className: 'inline-block align-middle' })}
-              </div>
+<div className="flex relative z-10 w-full h-full 
+  flex-row justify-evenly items-center  /* mobile: centered */
+  md:flex-col md:gap-6 md:items-center md:h-auto md:w-auto"
+>
+  {menuItems.map((item) => (
+    <motion.div
+      key={item.path}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="relative group flex flex-col items-center md:items-center w-10 md:w-auto"
+    >
+      <button
+        onClick={() => handleNavigation(item.path)}
+        className={`
+          group flex items-center justify-center w-10 h-10 md:w-12 md:h-12 transition-all duration-300 relative overflow-hidden border-2
+          ${activeItem === item.path
+            ? 'border-secondary text-secondary shadow-[0_0_10px_rgba(255,20,147,0.5)]'
+            : 'border-primary/50 text-primary hover:border-secondary hover:text-secondary'}
+          hover:shadow-[0_0_10px_rgba(255,20,147,0.3)]
+          rounded-none bg-black
+          focus:outline-none
+        `}
+        style={{ position: 'relative', zIndex: 20 }}
+      >
+        {/* Icon */}
+        <div className="relative z-20 flex items-center justify-center w-6 h-6">
+          {React.cloneElement(item.icon, { className: 'inline-block align-middle' })}
+        </div>
 
-              {/* Active Indicator */}
-              <AnimatePresence>
-                {activeItem === item.path && (
-                  <motion.div
-  layoutId="active-indicator"
-  initial={{ width: 0, height: 0 }}
-  animate={{
-    width: '100%',
-    height: '2px',
-    transition: { duration: 10, repeat: Infinity, repeatType: 'reverse' },
-  }}
-  className="
-    absolute 
-    bottom-0 left-0
-    md:bottom-0 md:left-0 md:w-full md:h-[2px]   /* desktop: horizontal line at bottom */
-    bg-secondary
-    z-10
-  "
-/>
+        {/* Active Indicator */}
+        <AnimatePresence>
+          {activeItem === item.path && (
+            <motion.div
+              layoutId="active-indicator"
+              initial={{ width: 0, height: 0 }}
+              animate={{
+                width: '100%',
+                height: '2px',
+                transition: { duration: 10, repeat: Infinity, repeatType: 'reverse' },
+              }}
+              className="
+                absolute 
+                bottom-0 left-0
+                md:bottom-0 md:left-0 md:w-full md:h-[2px]
+                bg-secondary
+                z-10
+              "
+            />
+          )}
+        </AnimatePresence>
+      </button>
 
-                )}
-              </AnimatePresence>
-            </button>
+      {/* Label */}
+      <span className="block font-press-start text-[8px] text-primary/70 mt-1 md:mt-1 text-center md:text-center relative z-20">
+        {item.label}
+      </span>
+    </motion.div>
+  ))}
+</div>
 
-            {/* Label */}
-            <span className="block font-press-start text-[8px] text-primary/70 mt-1 md:mt-1 text-center md:text-center relative z-20">
-              {item.label}
-            </span>
-          </motion.div>
-        ))}
-      </div>
     </nav>
   );
 };

@@ -4,18 +4,19 @@
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
+    "skipLibCheck": true,            // already good
+    "esModuleInterop": true,         // required for Drei / Three imports
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node",      // essential for node_modules resolution
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "types": ["node"],               // add this for Node typings
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
@@ -30,7 +31,8 @@
     "src",
     "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/**/*.tsx"
-, "api"  ],
+    "src/**/*.tsx",
+    "api"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
