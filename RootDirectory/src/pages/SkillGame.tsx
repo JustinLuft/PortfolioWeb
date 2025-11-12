@@ -7,7 +7,7 @@ import * as THREE from "three";
 // ============ CUSTOMIZATION SETTINGS ============
 const SETTINGS = {
   CAR_SPEED: 0.03,
-  CAR_TURN_SPEED: 0.05,
+  CAR_TURN_SPEED: 0.03,
   CAR_REVERSE_SPEED: 0.6,
   CUBE_TEXT_SIZE: "text-base",
   CUBE_TEXT_DISTANCE: 12,
@@ -20,17 +20,11 @@ const SETTINGS = {
 const skills = [
   "Java", "Python", "C", "React",
   "Next.js", "Node.js", "PostgreSQL", "MySQL",
-  "Algorithms", "DataStruct", "Agile",
+  "Algorithms", "Data Structures", "Agile",
   "Power BI", "Teamwork",
-  "TypeScript", "JavaScript", "MIPSAsm", "Prolog",
-  "Firebase", "HTML/CSS/JS", "GET/POST C", "Node/Express",
-  "SQLite", "FirebaseDB",
-  "Multithread", "DynProg",
-  "Scrum", "Waterfall", "Git",
-  "PowerApps", "Excel/VBA", "SharePoint", "DashVisual",
-  "Adaptable", "ProbSolve", "TeamCollab", "UI/UX Figma"
+  // Add more skills below:
+  // "Your Skill", "Another Skill",
 ];
-
 // ==============================================
 
 // Physics Ball
@@ -95,8 +89,8 @@ const Ball: React.FC<{ pos: [number, number, number]; skill: string; carPos: THR
       />
       <Html distanceFactor={SETTINGS.CUBE_TEXT_DISTANCE} center>
         <div
-          className={`bg-black/80 px-3 py-1.5 rounded-lg ${SETTINGS.CUBE_TEXT_SIZE} font-bold whitespace-nowrap pointer-events-none border border-[#00FFD1]/30 shadow-lg`}
-          style={{ color: SETTINGS.THEME_COLOR }}
+          className={`bg-black/80 px-3 py-1.5 rounded-lg ${SETTINGS.CUBE_TEXT_SIZE} font-bold whitespace-nowrap border border-[#00FFD1]/30 shadow-lg`}
+          style={{ color: SETTINGS.THEME_COLOR, userSelect: 'none', pointerEvents: 'none' }}
         >
           {skill}
         </div>
@@ -424,8 +418,8 @@ export default function SkillsPage() {
 
       {/* Mobile Touch Controls */}
       {isMobile && (
-        <div className="absolute bottom-20 left-0 right-0 z-20 px-6 pb-4">
-          <div className="flex justify-between items-center gap-8 max-w-lg mx-auto">
+        <div className="absolute bottom-4 left-0 right-0 z-20 px-6 pb-2">
+          <div className="flex justify-between items-end gap-8 max-w-lg mx-auto">
             {/* Left side - D-pad for movement and turning */}
             <div className="relative w-44 h-44">
               {/* Up */}
@@ -457,11 +451,11 @@ export default function SkillsPage() {
                 className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-12"
               />
               {/* Center indicator */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 border border-[#00FFD1]/30" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 border border-[#00FFD1]/30 pointer-events-none" />
             </div>
 
             {/* Right side - Info */}
-            <div className="text-xs font-mono" style={{ color: SETTINGS.THEME_COLOR }}>
+            <div className="text-xs font-mono mb-2" style={{ color: SETTINGS.THEME_COLOR }}>
               <div className="bg-black/70 backdrop-blur-sm border border-[#00FFD1]/50 rounded-lg px-3 py-2">
                 <div className="font-bold mb-1">CONTROLS</div>
                 <div className="text-[10px] opacity-80">
