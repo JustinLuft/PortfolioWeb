@@ -7,7 +7,7 @@ import * as THREE from "three";
 // ============ CUSTOMIZATION SETTINGS ============
 const SETTINGS = {
   CAR_SPEED: 0.03,
-  CAR_TURN_SPEED: 0.03,
+  CAR_TURN_SPEED: 0.05,
   CAR_REVERSE_SPEED: 0.6,
   CUBE_TEXT_SIZE: "text-base",
   CUBE_TEXT_DISTANCE: 12,
@@ -20,60 +20,130 @@ const SETTINGS = {
 const skills = [
   "Java", "Python", "C", "React",
   "Next.js", "Node.js", "PostgreSQL", "MySQL",
-  "Algorithms", "Data Structures", "Agile",
+  "Algorithms", "DataStruct", "Agile",
   "Power BI", "Teamwork",
-  // Add more skills below:
-  // "Your Skill", "Another Skill",
+  "TypeScript", "JavaScript", "MIPSAsm", "Prolog",
+  "Firebase", "HTML/CSS/JS", "GET/POST C", "Node/Express",
+  "SQLite", "FirebaseDB",
+  "Multithread", "DynProg",
+  "Scrum", "Waterfall", "Git",
+  "PowerApps", "Excel/VBA", "SharePoint", "DashVisual",
+  "Adaptable", "ProbSolve", "TeamCollab", "UI/UX Figma"
 ];
+
 // ==============================================
 
 // Physics Ball
-const Ball: React.FC<{ pos: [number, number, number]; skill: string; carPos: THREE.Vector3 }> = ({ pos, skill, carPos }) => {
+const Ball: React.FC<{ 
+  pos: [number, number, number]; 
+  skill: string; 
+  carPos: THREE.Vector3;
+  allBalls: React.MutableRefObject<THREE.Mesh[]>;
+  index: number;
+}> = ({ pos, skill, carPos, allBalls, index }) => {
   const ref = useRef<THREE.Mesh>(null);
   const vel = useRef(new THREE.Vector3(0, 0, 0));
+  const angVel = useRef(new THREE.Vector3(0, 0, 0));
   const tempVec = useRef(new THREE.Vector3());
   const radius = 0.6;
+
+  useEffect(() => {
+    if (ref.current) {
+      allBalls.current[index] = ref.current;
+    }
+  }, [allBalls, index]);
 
   useFrame(() => {
     if (!ref.current) return;
     const ball = ref.current;
 
+    // ----- Collision with car -----
     const dist = ball.position.distanceTo(carPos);
-    if (dist < 1.8) {
+    if (dist < 2.0) {
       const pushDir = tempVec.current.subVectors(ball.position, carPos).normalize();
-      const pushStrength = Math.min((1.8 - dist) * 0.5, 0.5);
-      vel.current.add(pushDir.multiplyScalar(pushStrength));
+      const overlap = 2.0 - dist;
+      
+      const pushForce = overlap * 0.8;
+      vel.current.add(pushDir.multiplyScalar(pushForce));
+      vel.current.y += 0.1;
     }
 
-    vel.current.y -= 0.015;
-    vel.current.multiplyScalar(0.98);
+    // ----- Ball to ball collision -----
+    allBalls.current.forEach((otherBall, otherIndex) => {
+      if (!otherBall || otherIndex === index) return;
+      
+      const ballDist = ball.position.distanceTo(otherBall.position);
+      const minDist = radius * 2;
+      
+      if (ballDist < minDist && ballDist > 0.01) {
+        const collisionDir = tempVec.current.subVectors(ball.position, otherBall.position).normalize();
+        const overlap = minDist - ballDist;
+        
+        // Push balls apart
+        const separationForce = overlap * 0.5;
+        ball.position.add(collisionDir.clone().multiplyScalar(separationForce * 0.5));
+        
+        // Transfer momentum
+        const relativeVel = vel.current.length();
+        if (relativeVel > 0.01) {
+          vel.current.add(collisionDir.multiplyScalar(overlap * 0.3));
+        }
+      }
+    });
+
+    // ----- Gravity -----
+    vel.current.y -= 0.012;
+
+    // ----- Air resistance (lighter damping) -----
+    vel.current.multiplyScalar(0.995);
+
+    // ----- Update position -----
     ball.position.add(vel.current);
 
+    // ----- Ground collision with bounce -----
     if (ball.position.y < radius) {
       ball.position.y = radius;
-      vel.current.y = Math.abs(vel.current.y) * 0.6;
-      vel.current.x *= 0.80;
-      vel.current.z *= 0.80;
-      if (Math.abs(vel.current.x) < 0.001) vel.current.x = 0;
-      if (Math.abs(vel.current.z) < 0.001) vel.current.z = 0;
+      
+      if (vel.current.y < -0.01) {
+        vel.current.y = -vel.current.y * 0.5;
+      } else {
+        vel.current.y = 0;
+      }
+
+      const horizontalSpeed = Math.sqrt(vel.current.x ** 2 + vel.current.z ** 2);
+      if (horizontalSpeed > 0.001) {
+        vel.current.x *= 0.92;
+        vel.current.z *= 0.92;
+      } else {
+        vel.current.x = 0;
+        vel.current.z = 0;
+      }
     }
 
+    // ----- Boundaries with proper bounce -----
     if (Math.abs(ball.position.x) > 22) {
       ball.position.x = Math.sign(ball.position.x) * 22;
-      vel.current.x = Math.abs(vel.current.x) > 0.01 ? -vel.current.x * 0.5 : 0;
+      vel.current.x = -vel.current.x * 0.6;
     }
     if (Math.abs(ball.position.z) > 22) {
       ball.position.z = Math.sign(ball.position.z) * 22;
-      vel.current.z = Math.abs(vel.current.z) > 0.01 ? -vel.current.z * 0.5 : 0;
+      vel.current.z = -vel.current.z * 0.6;
     }
 
-    const horizontalVel = vel.current.clone();
-    horizontalVel.y = 0;
-    if (horizontalVel.length() > 0.0001) {
-      const distance = horizontalVel.length();
-      const axis = new THREE.Vector3(horizontalVel.z, 0, -horizontalVel.x).normalize();
-      const angle = distance / radius;
-      ball.rotateOnAxis(axis, angle);
+    // ----- Realistic rolling rotation -----
+    const horizontalVel = new THREE.Vector3(vel.current.x, 0, vel.current.z);
+    const speed = horizontalVel.length();
+    
+    if (speed > 0.001) {
+      const axis = new THREE.Vector3(-vel.current.z, 0, vel.current.x).normalize();
+      const angularSpeed = speed / radius;
+      ball.rotateOnAxis(axis, angularSpeed);
+      
+      if (speed > 0.1) {
+        angVel.current.y += (Math.random() - 0.5) * 0.01;
+        ball.rotation.y += angVel.current.y;
+        angVel.current.y *= 0.95;
+      }
     }
   });
 
@@ -207,9 +277,7 @@ const Car: React.FC<{
     
     // Update trail every 3 frames
     frameCount.current++;
-    if (frameCount.current % 3 === 0) {
-      onTrailUpdate(car.position.clone());
-    }
+    onTrailUpdate(car.position.clone());
 
     if (onDebug) {
       const spd = Math.sqrt(vel.current.x ** 2 + vel.current.z ** 2);
@@ -277,6 +345,7 @@ const Scene: React.FC<{
   const [carPos, setCarPos] = useState(new THREE.Vector3(0, 0, 0));
   const [trailPositions, setTrailPositions] = useState<THREE.Vector3[]>([]);
   const cubePositions = useRef(skills.map(() => [(Math.random() - 0.5) * 18, 2 + Math.random() * 3, (Math.random() - 0.5) * 18] as [number, number, number]));
+  const ballRefs = useRef<THREE.Mesh[]>([]);
 
   const handleTrailUpdate = (pos: THREE.Vector3) => {
     setTrailPositions(prev => {
@@ -294,7 +363,16 @@ const Scene: React.FC<{
       <CameraFollow target={carPos} />
       <Car onDebug={onDebug} onPosChange={setCarPos} touchControls={touchControls} onTrailUpdate={handleTrailUpdate} />
       <Trail positions={trailPositions} />
-      {skills.map((skill, i) => <Ball key={skill} pos={cubePositions.current[i]} skill={skill} carPos={carPos} />)}
+      {skills.map((skill, i) => (
+        <Ball 
+          key={skill} 
+          pos={cubePositions.current[i]} 
+          skill={skill} 
+          carPos={carPos}
+          allBalls={ballRefs}
+          index={i}
+        />
+      ))}
       
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[50, 50]} />
