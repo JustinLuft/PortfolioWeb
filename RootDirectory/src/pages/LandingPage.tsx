@@ -38,9 +38,12 @@ const terminalWelcomeSequence = [
   useEffect(() => {
   if (!isSystemReady) return; // only start flashing after system ready
 
-  const interval = setInterval(() => {
-    setFlashResume(prev => !prev);
-  }, 10000); // flash 7s
+const interval = setInterval(() => {
+    setFlashResume(true); // start flash
+    const timeout = setTimeout(() => setFlashResume(false), 4000); // end flash 
+
+    return () => clearTimeout(timeout); // clean up timeout if needed
+  }, 10000); // toggle every 10s
 
   return () => clearInterval(interval);
 }, [isSystemReady]);
