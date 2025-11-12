@@ -315,6 +315,24 @@ export const projects: Project[] = [
     }
   },
   {
+  id: 7,
+  name: "Mercedes-Benz Power BI Heatmap Visual",
+  description: "A custom Power BI visual that displays production defect data as an interactive heatmap for Mercedes-Benz.",
+  skills: ["Power BI", "Data Visualization", "TypeScript", "GitHub Actions"],
+  githubLink: "https://github.com/JustinLuft/VanDefectHeatmap", 
+  icon: <Table className="w-5 h-5" />,
+  category: 'tools',
+  fullDetails: {
+    technologies: ["Power BI", "TypeScript", "HTML5 Canvas", "D3.js"],
+    challenges: [
+      "Density-based heatmap rendering optimization",
+      "Custom visual configuration in Power BI",
+      "Balancing performance and visual accuracy",
+      "Integration with automated GitHub Action builds"
+    ],
+  }
+},
+  {
     id: 8,
     name: "Python AutoClicker",
     description: "Customizable auto-clicker with GUI controls for automating mouse and keyboard inputs.",
