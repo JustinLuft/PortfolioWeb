@@ -247,12 +247,13 @@ const LandingPage: FC = () => {
                     </Button>
 
                     <Button
-                      variant="ghost"
-                      className="text-sm text-primary hover:text-primary/80"
-                      onClick={() => { setIsEmailMode(false); setStatusMessage(''); setStatusType(''); }}
-                    >
-                      Back
-                    </Button>
+  variant="ghost"
+  className="font-press-start text-sm text-primary hover:text-primary/80"
+  onClick={() => { setIsEmailMode(false); setStatusMessage(''); setStatusType(''); }}
+>
+  Back
+</Button>
+
                   </div>
                 )}
               </motion.div>

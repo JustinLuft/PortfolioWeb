@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -14,21 +14,133 @@ import {
 } from './ProjectsData';
 
 const ProjectShowcasePage: React.FC = () => {
-  const PROJECTS_PER_PAGE = 5;
+  // -------------------------------
+  // State
+  // -------------------------------
   const [selectedCategory, setSelectedCategory] = useState<Category>('web');
   const [selectedProject, setSelectedProject] = useState<Project>(
     getFirstProjectByCategory('web') || projects[0]
   );
   const [activeTab, setActiveTab] = useState<'overview' | 'technologies' | 'challenges'>('overview');
   const [currentPage, setCurrentPage] = useState(0);
+  const [cubeRotation, setCubeRotation] = useState({ x: 0, y: 0 });
+  const [targetRotation, setTargetRotation] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
 
-  const filteredProjects = getProjectsByCategory(selectedCategory);
-  const totalPages = Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE);
-  const paginatedProjects = filteredProjects.slice(
-    currentPage * PROJECTS_PER_PAGE,
-    (currentPage + 1) * PROJECTS_PER_PAGE
-  );
+  // -------------------------------
+  // Refs
+  // -------------------------------
+  const cubeRef = useRef<HTMLDivElement>(null);
+  const lastMousePos = useRef({ x: 0, y: 0 });
+  const animationFrameRef = useRef<number>();
 
+  // -------------------------------
+  // Categories & rotation mapping
+  // -------------------------------
+  const categories = Object.keys(categoryInfo) as Category[];
+
+  const categoryRotations: Record<Category, { x: number; y: number }> = {} as any;
+  categories.forEach((cat, index) => {
+    categoryRotations[cat] = { x: 0, y: index * 90 };
+  });
+
+  // -------------------------------
+  // Mouse / Drag Handlers
+  // -------------------------------
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    lastMousePos.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+
+    const deltaX = e.clientX - lastMousePos.current.x;
+    const deltaY = e.clientY - lastMousePos.current.y;
+
+    setTargetRotation(prev => ({
+      x: prev.x - deltaY * 0.8,
+      y: prev.y + deltaX * 0.8,
+    }));
+
+    lastMousePos.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleMouseUp = (e?: MouseEvent) => {
+    if (!isDragging) return;
+
+    const normalizedY = ((cubeRotation.y % 360) + 360) % 360;
+    let closestCategory: Category = 'web';
+    let minDiff = Infinity;
+
+    Object.entries(categoryRotations).forEach(([cat, rot]) => {
+      const diff = Math.min(
+        Math.abs(normalizedY - rot.y),
+        Math.abs(normalizedY - rot.y - 360),
+        Math.abs(normalizedY - rot.y + 360)
+      );
+      if (diff < minDiff) {
+        minDiff = diff;
+        closestCategory = cat as Category;
+      }
+    });
+
+    if (closestCategory !== selectedCategory) {
+      handleCategoryChange(closestCategory);
+    }
+    setIsDragging(false);
+  };
+
+  // -------------------------------
+  // Attach mouseup listener when dragging
+  // -------------------------------
+  useEffect(() => {
+    if (!isDragging) return;
+
+    document.addEventListener('mouseup', handleMouseUp);
+    return () => document.removeEventListener('mouseup', handleMouseUp);
+  }, [isDragging, selectedCategory]);
+
+  // -------------------------------
+  // Cube rotation animation
+  // -------------------------------
+  useEffect(() => {
+    const animate = () => {
+      setCubeRotation(prev => {
+        const dx = targetRotation.x - prev.x;
+        const dy = targetRotation.y - prev.y;
+        const ease = 0.1;
+
+        if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+          return targetRotation;
+        }
+
+        return {
+          x: prev.x + dx * ease,
+          y: prev.y + dy * ease,
+        };
+      });
+
+      animationFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animationFrameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+    };
+  }, [targetRotation]);
+
+  // -------------------------------
+  // Pagination reset when category changes
+  // -------------------------------
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [selectedCategory]);
+
+  // -------------------------------
+  // Category change
+  // -------------------------------
   const handleCategoryChange = (category: Category) => {
     setSelectedCategory(category);
     setCurrentPage(0);
@@ -37,24 +149,27 @@ const ProjectShowcasePage: React.FC = () => {
       setSelectedProject(firstProject);
       setActiveTab('overview');
     }
+    setTargetRotation(categoryRotations[category]);
   };
 
+  // -------------------------------
+  // Pagination handlers
+  // -------------------------------
+  const PROJECTS_PER_PAGE = 5;
+  const filteredProjects = getProjectsByCategory(selectedCategory);
+  const totalPages = Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE);
+  const paginatedProjects = filteredProjects.slice(
+    currentPage * PROJECTS_PER_PAGE,
+    (currentPage + 1) * PROJECTS_PER_PAGE
+  );
+
   const handleNextPage = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(prev => prev + 1);
-    }
+    if (currentPage < totalPages - 1) setCurrentPage(prev => prev + 1);
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(prev => prev - 1);
-    }
+    if (currentPage > 0) setCurrentPage(prev => prev - 1);
   };
-
-  // Reset page when category changes
-  useEffect(() => {
-    setCurrentPage(0);
-  }, [selectedCategory]);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -121,13 +236,120 @@ const ProjectShowcasePage: React.FC = () => {
 
       <div className="container mx-auto px-2 py-8 sm:py-12 relative z-20 max-w-7xl">
         {/* Header */}
-        <div className="mb-6 sm:mb-8 text-center">
+        <div className="mb-1 sm:mb-1 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-press-start mb-2 sm:mb-3 text-primary leading-tight">
             Project Showcase
           </h1>
           <p className="text-base sm:text-lg md:text-xl font-vt323 text-primary/80 px-4">
             Welcome To My Project Collection
           </p>
+        </div>
+
+        {/* Terminal-Style 3D Cube Container */}
+        <div className="flex justify-center mb-8 px-4">
+          <div className="relative w-full max-w-2xl">
+            {/* Terminal Window */}
+            <div className="bg-black/90 border-2 border-primary rounded-lg overflow-hidden shadow-2xl shadow-primary/20">
+              {/* Terminal Header */}
+              <div className="bg-primary/10 border-b-2 border-primary/30 px-4 py-2 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80 border border-red-600"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80 border border-yellow-600"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/80 border border-green-600"></div>
+                </div>
+                <div className="flex-1 text-center">
+                  <span className="font-press-start text-[10px] text-primary/70">
+                    http://localhost:5173/
+                  </span>
+                </div>
+              </div>
+
+              {/* Terminal Content */}
+              <div className="bg-black/50 p-6 sm:p-8">
+                {/* Terminal Prompt Line */}
+                <div className="mb-1 font-vt323 text-primary/60 text-sm flex items-center gap-2">
+                  <span className="text-secondary">user@justinluftportfolio</span>
+                  <span>&tilde;</span>
+                  <span className="text-primary">$</span>
+                <span className="text-primary/80">cd &tilde;/justin/portfolio</span>
+                  <span className="animate-pulse"></span>
+                </div>
+                <div className="mb-1 font-vt323 text-primary/60 text-sm flex items-center gap-2">
+                  <span className="text-secondary">user@justinluftportfolionav</span>
+                  <span>&tilde;</span>
+                  <span className="text-primary">$</span>
+                  <span className="text-primary/80">npm run</span>
+                  <span className="animate-pulse"></span>
+                </div>
+{/* Terminal-Style 3D Cube Container */}
+        <div className="flex justify-center mb-8 px-4">
+          <div
+            className="relative w-full max-w-2xl h-64 sm:h-80 flex items-center justify-center cursor-grab active:cursor-grabbing select-none"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            style={{ perspective: '1000px' }}
+          >
+            <div ref={cubeRef} className="relative w-48 h-48" style={{ transformStyle: 'preserve-3d', transform: `rotateX(${cubeRotation.x}deg) rotateY(${cubeRotation.y}deg)` }}>
+              {/* Front Face */}
+              <div className="absolute w-48 h-48 bg-gradient-to-br from-primary/40 to-primary/20 border-2 border-primary flex flex-col items-center justify-center font-press-start text-xs text-primary backdrop-blur-sm" style={{ transform: 'translateZ(96px)' }}>
+                {categoryInfo.web.icon}
+                <span className="mt-2">{categoryInfo.web.label}</span>
+              </div>
+              {/* Back Face */}
+              <div className="absolute w-48 h-48 bg-gradient-to-br from-secondary/40 to-secondary/20 border-2 border-secondary flex flex-col items-center justify-center font-press-start text-xs text-secondary backdrop-blur-sm" style={{ transform: 'rotateY(180deg) translateZ(96px)' }}>
+                {categoryInfo.systems.icon}
+                <span className="mt-2">{categoryInfo.systems.label}</span>
+              </div>
+              {/* Right Face */}
+              <div className="absolute w-48 h-48 bg-gradient-to-br from-primary/30 to-primary/10 border-2 border-primary/70 flex flex-col items-center justify-center font-press-start text-xs text-primary backdrop-blur-sm" style={{ transform: 'rotateY(90deg) translateZ(96px)' }}>
+                {categoryInfo.tools.icon}
+                <span className="mt-2">{categoryInfo.tools.label}</span>
+              </div>
+              {/* Left Face */}
+              <div className="absolute w-48 h-48 bg-gradient-to-br from-secondary/30 to-secondary/10 border-2 border-secondary/70 flex flex-col items-center justify-center font-press-start text-xs text-secondary backdrop-blur-sm" style={{ transform: 'rotateY(-90deg) translateZ(96px)' }}>
+                {categoryInfo.algorithms.icon}
+                <span className="mt-2">{categoryInfo.algorithms.label}</span>
+              </div>
+              {/* Top Face */}
+              <div className="absolute w-48 h-48 bg-gradient-to-br from-primary/50 to-primary/30 border-2 border-primary flex items-center justify-center font-press-start text-xl text-primary backdrop-blur-sm" style={{ transform: 'rotateX(90deg) translateZ(96px)' }}>
+                ↑
+              </div>
+              {/* Bottom Face */}
+              <div className="absolute w-48 h-48 bg-gradient-to-br from-secondary/50 to-secondary/30 border-2 border-secondary flex items-center justify-center font-press-start text-xl text-secondary backdrop-blur-sm" style={{ transform: 'rotateX(-90deg) translateZ(96px)' }}>
+                ↓
+              </div>
+            </div>
+            {/* Glow / Ambient Effect */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-48 h-48 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+                {/* Terminal Instructions */}
+                <div className="mt-6 space-y-2 font-vt323 text-sm text-primary/60">
+                  <div className="flex items-start gap-2">
+                    <span className="text-secondary">→</span>
+                    <span>Drag cube to rotate and explore categories</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-secondary">→</span>
+                    <span>Click on a face to select the category</span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-3">
+                    <span className="text-primary">Selected:</span>
+                    <span className="bg-primary/20 border border-primary px-2 py-0.5 rounded text-primary font-press-start text-[10px]">
+                      {categoryInfo[selectedCategory].label}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Category Tabs */}
