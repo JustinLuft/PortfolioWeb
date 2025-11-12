@@ -42,7 +42,7 @@ const SkillsPage: React.FC = () => {
             Technical Skillset
           </h1>
           <p className="text-base md:text-xl font-vt323 text-primary/80 max-w-full md:max-w-2xl mx-auto">
-            A breakdown of my computer science and technology stack — from algorithms to analytics and automation.
+            A breakdown of my computer science and technology stack — from algorithms to analytics and automation. Make sure to play the game!
           </p>
         </motion.div>
 
