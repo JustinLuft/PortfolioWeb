@@ -361,9 +361,7 @@ setTargetRotation(prev => {
               </div>
             </div>
             {/* Glow / Ambient Effect */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-48 h-48 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
-            </div>
+            
           </div>
         </div>
 
