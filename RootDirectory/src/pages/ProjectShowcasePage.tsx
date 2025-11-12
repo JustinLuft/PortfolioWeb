@@ -302,17 +302,17 @@ setTargetRotation(prev => {
               </div>
 
               {/* Terminal Content */}
-              <div className="bg-black/50 p-6 sm:p-8">
+<div className="bg-black/50 p-6 sm:p-8 pl-2 sm:pl-4">
                 {/* Terminal Prompt Line */}
                 <div className="mb-1 font-vt323 text-primary/60 text-sm flex items-center gap-2 whitespace-nowrap">
                 <span className="text-secondary">user@justinluftportfolio</span>
-                <span>-</span>
+                <span>&tilde;</span>
                 <span className="text-primary">$</span>
                 <span className="text-primary/80">cd /users/justin/portfolio</span>
                 <span className="animate-pulse"></span>
               </div>
                 <div className="mb-1 font-vt323 text-primary/60 text-sm flex items-center gap-2">
-                  <span className="text-secondary">user@justinluftportfolion</span>
+                  <span className="text-secondary">user@justinluftportfolio</span>
                   <span>&tilde;</span>
                   <span className="text-primary">$</span>
                   <span className="text-primary/80">npm run</span>
