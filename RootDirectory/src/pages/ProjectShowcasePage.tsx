@@ -90,6 +90,31 @@ const ProjectShowcasePage: React.FC = () => {
     }
     setIsDragging(false);
   };
+  // Touch Handlers (for mobile)
+const handleTouchStart = (e: React.TouchEvent) => {
+  setIsDragging(true);
+  const touch = e.touches[0];
+  lastMousePos.current = { x: touch.clientX, y: touch.clientY };
+};
+
+const handleTouchMove = (e: React.TouchEvent) => {
+  if (!isDragging) return;
+  const touch = e.touches[0];
+  const deltaX = touch.clientX - lastMousePos.current.x;
+  const deltaY = touch.clientY - lastMousePos.current.y;
+
+  setTargetRotation(prev => ({
+    x: prev.x - deltaY * 0.8,
+    y: prev.y + deltaX * 0.8,
+  }));
+
+  lastMousePos.current = { x: touch.clientX, y: touch.clientY };
+};
+
+const handleTouchEnd = () => {
+  handleMouseUp(); // reuse your existing snapping logic
+};
+
 
   // -------------------------------
   // Attach mouseup listener when dragging
@@ -267,13 +292,13 @@ const ProjectShowcasePage: React.FC = () => {
               {/* Terminal Content */}
               <div className="bg-black/50 p-6 sm:p-8">
                 {/* Terminal Prompt Line */}
-                <div className="mb-1 font-vt323 text-primary/60 text-sm flex items-center gap-2">
-                  <span className="text-secondary">user@justinluftportfolio</span>
-                  <span>&tilde;</span>
-                  <span className="text-primary">$</span>
-                <span className="text-primary/80">cd &tilde;/justin/portfolio</span>
-                  <span className="animate-pulse"></span>
-                </div>
+                <div className="mb-1 font-vt323 text-primary/60 text-sm flex items-center gap-2 whitespace-nowrap">
+                <span className="text-secondary">user@justinluftportfolio</span>
+                <span>-</span>
+                <span className="text-primary">$</span>
+                <span className="text-primary/80">cd /users/justin/portfolio</span>
+                <span className="animate-pulse"></span>
+              </div>
                 <div className="mb-1 font-vt323 text-primary/60 text-sm flex items-center gap-2">
                   <span className="text-secondary">user@justinluftportfolionav</span>
                   <span>&tilde;</span>
@@ -284,11 +309,15 @@ const ProjectShowcasePage: React.FC = () => {
 {/* Terminal-Style 3D Cube Container */}
         <div className="flex justify-center mb-8 px-4">
           <div
-            className="relative w-full max-w-2xl h-64 sm:h-80 flex items-center justify-center cursor-grab active:cursor-grabbing select-none"
+            className="relative w-full max-w-2xl h-64 sm:h-80 flex items-center justify-center cursor-grab active:cursor-grabbing select-none touch-none"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
             style={{ perspective: '1000px' }}
           >
+
             <div ref={cubeRef} className="relative w-48 h-48" style={{ transformStyle: 'preserve-3d', transform: `rotateX(${cubeRotation.x}deg) rotateY(${cubeRotation.y}deg)` }}>
               {/* Front Face */}
               <div className="absolute w-48 h-48 bg-gradient-to-br from-primary/40 to-primary/20 border-2 border-primary flex flex-col items-center justify-center font-press-start text-xs text-primary backdrop-blur-sm" style={{ transform: 'translateZ(96px)' }}>
