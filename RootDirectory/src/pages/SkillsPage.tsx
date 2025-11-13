@@ -1,17 +1,86 @@
-import React from 'react';
-import { Code, Server, Database, Cpu, Cloud, Layers, Lock, Globe, BarChart3 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { Code, Server, Database, Cpu, Layers, Globe, BarChart3 } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 
 const SkillsPage: React.FC = () => {
   const skillCategories = [
-    { title: "Programming Languages", skills: [ { name: "Java", level: "Advanced" }, { name: "Python", level: "Advanced" }, { name: "C", level: "Intermediate" }, { name: "Typescript", level: "Basic" }, { name: "JavaScript", level: "Intermediate" }, { name: "MIPS Assembly", level: "Basic" }, { name: "Prolog", level: "Basic" } ], icon: <Code className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
-    { title: "Web & Software Development", skills: [ { name: "React", level: "Intermediate" }, { name: "Next.js", level: "Intermediate" }, { name: "Firebase", level: "Intermediate" }, { name: "HTML/CSS/JS", level: "Advanced" }, { name: "GET/POST Handling in C", level: "Intermediate" }, { name: "Node.js & Express.js", level: "Intermediate" } ], icon: <Globe className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
-    { title: "Databases", skills: [ { name: "PostgreSQL", level: "Intermediate" }, { name: "MySQL", level: "Intermediate" }, { name: "SQLite", level: "Intermediate" }, { name: "Firebase Realtime DB", level: "Intermediate" } ], icon: <Database className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
-    { title: "Computer Science Concepts", skills: [ { name: "Data Structures", level: "Advanced" }, { name: "Algorithms", level: "Advanced" }, { name: "Multithreading", level: "Intermediate" }, { name: "Dynamic Programming", level: "Advanced" } ], icon: <Cpu className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
-    { title: "Development Practices", skills: [ { name: "Agile", level: "Advanced" }, { name: "Scrum", level: "Advanced" }, { name: "Waterfall", level: "Intermediate" }, { name: "Git & Version Control", level: "Advanced" } ], icon: <Layers className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
-    { title: "Business Intelligence & Productivity Tools", skills: [ { name: "Power BI", level: "Advanced" }, { name: "Power Apps", level: "Intermediate" }, { name: "Excel (Formulas, VBA, Data Modeling)", level: "Advanced" }, { name: "SharePoint & Power Automate", level: "Intermediate" }, { name: "Data Visualization & Dashboard Design", level: "Advanced" } ], icon: <BarChart3 className="w-10 h-10 md:w-12 md:h-12 text-primary" /> },
-    { title: "Soft Skills", skills: [ { name: "Adaptability", level: "Advanced" }, { name: "Problem Solving", level: "Advanced" }, { name: "Team Collaboration", level: "Advanced" }, { name: "UI/UX Prototyping (Figma)", level: "Intermediate" } ], icon: <Server className="w-10 h-10 md:w-12 md:h-12 text-primary" /> }
+    {
+      title: "Programming Languages",
+      skills: [
+        { name: "Java", level: "Advanced" },
+        { name: "Python", level: "Advanced" },
+        { name: "C", level: "Intermediate" },
+        { name: "Typescript", level: "Basic" },
+        { name: "JavaScript", level: "Intermediate" },
+        { name: "MIPS Assembly", level: "Basic" },
+        { name: "Prolog", level: "Basic" }
+      ],
+      icon: <Code className="w-10 h-10 md:w-12 md:h-12 text-primary" />
+    },
+    {
+      title: "Web & Software Development",
+      skills: [
+        { name: "React", level: "Intermediate" },
+        { name: "Next.js", level: "Intermediate" },
+        { name: "Firebase", level: "Intermediate" },
+        { name: "HTML/CSS/JS", level: "Advanced" },
+        { name: "GET/POST Handling in C", level: "Intermediate" },
+        { name: "Node.js & Express.js", level: "Intermediate" }
+      ],
+      icon: <Globe className="w-10 h-10 md:w-12 md:h-12 text-primary" />
+    },
+    {
+      title: "Databases",
+      skills: [
+        { name: "PostgreSQL", level: "Intermediate" },
+        { name: "MySQL", level: "Intermediate" },
+        { name: "SQLite", level: "Intermediate" },
+        { name: "Firebase Realtime DB", level: "Intermediate" }
+      ],
+      icon: <Database className="w-10 h-10 md:w-12 md:h-12 text-primary" />
+    },
+    {
+      title: "Computer Science Concepts",
+      skills: [
+        { name: "Data Structures", level: "Advanced" },
+        { name: "Algorithms", level: "Advanced" },
+        { name: "Multithreading", level: "Intermediate" },
+        { name: "Dynamic Programming", level: "Advanced" }
+      ],
+      icon: <Cpu className="w-10 h-10 md:w-12 md:h-12 text-primary" />
+    },
+    {
+      title: "Development Practices",
+      skills: [
+        { name: "Agile", level: "Advanced" },
+        { name: "Scrum", level: "Advanced" },
+        { name: "Waterfall", level: "Intermediate" },
+        { name: "Git & Version Control", level: "Advanced" }
+      ],
+      icon: <Layers className="w-10 h-10 md:w-12 md:h-12 text-primary" />
+    },
+    {
+      title: "Business Intelligence & Productivity Tools",
+      skills: [
+        { name: "Power BI", level: "Advanced" },
+        { name: "Power Apps", level: "Intermediate" },
+        { name: "Excel (Formulas, VBA, Data Modeling)", level: "Advanced" },
+        { name: "SharePoint & Power Automate", level: "Intermediate" },
+        { name: "Data Visualization & Dashboard Design", level: "Advanced" }
+      ],
+      icon: <BarChart3 className="w-10 h-10 md:w-12 md:h-12 text-primary" />
+    },
+    {
+      title: "Soft Skills",
+      skills: [
+        { name: "Adaptability", level: "Advanced" },
+        { name: "Problem Solving", level: "Advanced" },
+        { name: "Team Collaboration", level: "Advanced" },
+        { name: "UI/UX Prototyping (Figma)", level: "Intermediate" }
+      ],
+      icon: <Server className="w-10 h-10 md:w-12 md:h-12 text-primary" />
+    }
   ];
 
   const getLevelColor = (level: string) => {
@@ -23,6 +92,68 @@ const SkillsPage: React.FC = () => {
     }
   };
 
+  // Reusable TiltCard component for 3D hover effect
+  const TiltCard: React.FC<{children: React.ReactNode, delay?: number}> = ({children, delay = 0}) => {
+    const rotateX = useMotionValue(0);
+    const rotateY = useMotionValue(0);
+    const shadowX = useMotionValue(0);
+    const shadowY = useMotionValue(0);
+    const [isHovered, setIsHovered] = useState(false);
+
+    const rotateXSpring = useSpring(rotateX, { damping: 20, stiffness: 120 });
+    const rotateYSpring = useSpring(rotateY, { damping: 20, stiffness: 120 });
+    const shadowXSpring = useSpring(shadowX, { damping: 20, stiffness: 120 });
+    const shadowYSpring = useSpring(shadowY, { damping: 20, stiffness: 120 });
+
+    const boxShadow = useTransform(
+      [shadowXSpring, shadowYSpring],
+      ([x, y]) => `${x}px ${y}px 20px rgba(0, 255, 209, 0.5)`
+    );
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const offsetX = e.clientX - (rect.left + rect.width / 2);
+      const offsetY = e.clientY - (rect.top + rect.height / 2);
+
+      // Tilt toward cursor (max 15deg)
+      rotateX.set((-offsetY / (rect.height / 2)) * 15);
+      rotateY.set((offsetX / (rect.width / 2)) * 15);
+
+      // Shadow offset (max 10px)
+      shadowX.set((offsetX / (rect.width / 2)) * 10);
+      shadowY.set((offsetY / (rect.height / 2)) * 10);
+      
+      setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+      rotateX.set(0);
+      rotateY.set(0);
+      shadowX.set(0);
+      shadowY.set(0);
+      setIsHovered(false);
+    };
+
+    return (
+      <motion.div
+        style={{ 
+          rotateX: rotateXSpring,
+          rotateY: rotateYSpring,
+          perspective: 600
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      >
+        <motion.div style={{ boxShadow }}>
+          {children}
+        </motion.div>
+      </motion.div>
+    );
+  };
+
   return (
     <div className="relative min-h-screen bg-background overflow-hidden">
       <div className="absolute inset-0 z-0">
@@ -31,7 +162,7 @@ const SkillsPage: React.FC = () => {
         <div className="scanline absolute inset-0 pointer-events-none z-10" />
       </div>
 
-<div className="container mx-auto px-4 md:pl-10 py-16 relative z-20">
+      <div className="container mx-auto px-4 md:pl-10 py-16 relative z-20">
         <motion.div 
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -48,13 +179,8 @@ const SkillsPage: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {skillCategories.map((category, index) => (
-            <motion.div
-              key={category.title}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card className="bg-background/80 backdrop-blur-sm border border-primary/20 p-4 sm:p-6 h-full hover:scale-105 transition-transform duration-300">
+            <TiltCard key={category.title} delay={index * 0.1}>
+              <Card className="bg-background/80 backdrop-blur-sm border border-primary/20 p-4 sm:p-6 h-full">
                 <div className="flex items-center mb-4 sm:mb-6">
                   {category.icon}
                   <h2 className="ml-3 sm:ml-4 font-press-start text-lg sm:text-xl text-primary">
@@ -76,7 +202,7 @@ const SkillsPage: React.FC = () => {
                   ))}
                 </div>
               </Card>
-            </motion.div>
+            </TiltCard>
           ))}
         </div>
       </div>
