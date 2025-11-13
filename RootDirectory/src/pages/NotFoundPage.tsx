@@ -55,7 +55,7 @@ const NotFound: React.FC = () => {
               '0 0 5px rgba(255,255,255,0.2)'
             ],
             transition: {
-              duration: 0.3,
+              duration: 5.0,
               repeat: Infinity,
               repeatType: "reverse"
             }
@@ -83,7 +83,7 @@ const NotFound: React.FC = () => {
                 '0 0 5px rgba(255,255,255,0.2)'
               ],
               transition: {
-                duration: 0.3,
+                duration: 5.0,
                 repeat: Infinity,
                 repeatType: "reverse"
               }
@@ -104,7 +104,7 @@ const NotFound: React.FC = () => {
                 '0 0 5px rgba(255,255,255,0.2)'
               ],
               transition: {
-                duration: 0.3,
+                duration: 5.0,
                 repeat: Infinity,
                 repeatType: "reverse"
               }
@@ -146,11 +146,16 @@ const NotFound: React.FC = () => {
 
       {/* Terminal-like Error Log */}
       <div className="absolute bottom-4 left-4 right-4 z-20">
-        <pre className="bg-black/70 text-green-400 p-2 rounded font-mono text-xs overflow-x-auto">
-          {`> ERROR: ROUTE NOT FOUND
-  Path: ${location.pathname}
-  Timestamp: ${new Date().toLocaleString()}
-  Status: 404 - SYSTEM BLOCKED`}
+        <pre
+          className="bg-black/70 p-2 rounded font-mono text-xs overflow-x-auto"
+          style={{
+            color: '#00FFD1', // neon cyan/green
+          }}
+        >          {`
+> ERROR: ROUTE NOT FOUND
+Path: ${location.pathname}
+Timestamp: ${new Date().toLocaleString()}
+Status: 404 - SYSTEM BLOCKED`}
         </pre>
       </div>
     </div>

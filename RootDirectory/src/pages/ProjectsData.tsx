@@ -22,6 +22,8 @@ import {
 // TYPE DEFINITIONS
 // ============================================
 
+
+//new categories can be added, the the cube will have to be modified as right now it can only handle 4
 export type Category = 'web' | 'algorithms' | 'systems' | 'tools';
 
 export interface Project {

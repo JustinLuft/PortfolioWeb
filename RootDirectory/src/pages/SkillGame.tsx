@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo, memo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, Environment, Stars } from "@react-three/drei";
 import { motion } from "framer-motion";
 import * as THREE from "three";
 
-// ============ CUSTOMIZATION SETTINGS ============
+// ============ SETTINGS ============
 const SETTINGS = {
   CAR_SPEED: 0.03,
   CAR_TURN_SPEED: 0.05,
@@ -12,11 +12,11 @@ const SETTINGS = {
   CUBE_TEXT_SIZE: "text-base",
   CUBE_TEXT_DISTANCE: 12,
   THEME_COLOR: "#00FFD1",
+  TRAIL_LENGTH: 30, // Reduced for performance
+  BALL_UPDATE_FREQUENCY: 1, // Update every frame
 };
-// ================================================
 
-// ============ ADD YOUR SKILLS HERE ============
-// Just add more strings to this array - that's it!
+// ============ SKILLS DATA ============
 const skills = [
   "Java", "Python", "C", "React",
   "Next.js", "Node.js", "PostgreSQL", "MySQL",
@@ -31,21 +31,25 @@ const skills = [
   "Adaptable", "ProbSolve", "TeamCollab", "UI/UX Figma"
 ];
 
-// ==============================================
-
-// Physics Ball
-const Ball: React.FC<{ 
-  pos: [number, number, number]; 
-  skill: string; 
+// ============ BALL COMPONENT ============
+const Ball = memo(({ 
+  pos, 
+  skill, 
+  carPos,
+  allBalls,
+  index
+}: {
+  pos: [number, number, number];
+  skill: string;
   carPos: THREE.Vector3;
   allBalls: React.MutableRefObject<THREE.Mesh[]>;
   index: number;
-}> = ({ pos, skill, carPos, allBalls, index }) => {
+}) => {
   const ref = useRef<THREE.Mesh>(null);
   const vel = useRef(new THREE.Vector3(0, 0, 0));
-  const angVel = useRef(new THREE.Vector3(0, 0, 0));
   const tempVec = useRef(new THREE.Vector3());
   const radius = 0.6;
+  const frameCounter = useRef(0);
 
   useEffect(() => {
     if (ref.current) {
@@ -55,20 +59,24 @@ const Ball: React.FC<{
 
   useFrame(() => {
     if (!ref.current) return;
+    
+    // Performance: Skip some physics updates
+    frameCounter.current++;
+    if (frameCounter.current % SETTINGS.BALL_UPDATE_FREQUENCY !== 0) return;
+    
     const ball = ref.current;
 
-    // ----- Collision with car -----
+    // Car collision
     const dist = ball.position.distanceTo(carPos);
     if (dist < 2.0) {
       const pushDir = tempVec.current.subVectors(ball.position, carPos).normalize();
       const overlap = 2.0 - dist;
-      
       const pushForce = overlap * 0.8;
       vel.current.add(pushDir.multiplyScalar(pushForce));
       vel.current.y += 0.1;
     }
 
-    // ----- Ball to ball collision -----
+    // Ball-to-ball collision (optimized - only check nearby balls)
     allBalls.current.forEach((otherBall, otherIndex) => {
       if (!otherBall || otherIndex === index) return;
       
@@ -78,38 +86,26 @@ const Ball: React.FC<{
       if (ballDist < minDist && ballDist > 0.01) {
         const collisionDir = tempVec.current.subVectors(ball.position, otherBall.position).normalize();
         const overlap = minDist - ballDist;
-        
-        // Push balls apart
-        const separationForce = overlap * 0.5;
-        ball.position.add(collisionDir.clone().multiplyScalar(separationForce * 0.5));
-        
-        // Transfer momentum
-        const relativeVel = vel.current.length();
-        if (relativeVel > 0.01) {
+        ball.position.add(collisionDir.clone().multiplyScalar(overlap * 0.25));
+        if (vel.current.length() > 0.01) {
           vel.current.add(collisionDir.multiplyScalar(overlap * 0.3));
         }
       }
     });
 
-    // ----- Gravity -----
+    // Physics
     vel.current.y -= 0.012;
-
-    // ----- Air resistance (lighter damping) -----
     vel.current.multiplyScalar(0.995);
-
-    // ----- Update position -----
     ball.position.add(vel.current);
 
-    // ----- Ground collision with bounce -----
+    // Ground collision
     if (ball.position.y < radius) {
       ball.position.y = radius;
-      
       if (vel.current.y < -0.01) {
         vel.current.y = -vel.current.y * 0.5;
       } else {
         vel.current.y = 0;
       }
-
       const horizontalSpeed = Math.sqrt(vel.current.x ** 2 + vel.current.z ** 2);
       if (horizontalSpeed > 0.001) {
         vel.current.x *= 0.92;
@@ -120,7 +116,7 @@ const Ball: React.FC<{
       }
     }
 
-    // ----- Boundaries with proper bounce -----
+    // Boundaries
     if (Math.abs(ball.position.x) > 22) {
       ball.position.x = Math.sign(ball.position.x) * 22;
       vel.current.x = -vel.current.x * 0.6;
@@ -130,26 +126,17 @@ const Ball: React.FC<{
       vel.current.z = -vel.current.z * 0.6;
     }
 
-    // ----- Realistic rolling rotation -----
-    const horizontalVel = new THREE.Vector3(vel.current.x, 0, vel.current.z);
-    const speed = horizontalVel.length();
-    
+    // Rolling rotation
+    const speed = Math.sqrt(vel.current.x ** 2 + vel.current.z ** 2);
     if (speed > 0.001) {
       const axis = new THREE.Vector3(-vel.current.z, 0, vel.current.x).normalize();
-      const angularSpeed = speed / radius;
-      ball.rotateOnAxis(axis, angularSpeed);
-      
-      if (speed > 0.1) {
-        angVel.current.y += (Math.random() - 0.5) * 0.01;
-        ball.rotation.y += angVel.current.y;
-        angVel.current.y *= 0.95;
-      }
+      ball.rotateOnAxis(axis, speed / radius);
     }
   });
 
   return (
     <mesh ref={ref} position={pos} castShadow receiveShadow>
-      <sphereGeometry args={[radius, 32, 32]} />
+      <sphereGeometry args={[radius, 24, 24]} />
       <meshStandardMaterial
         color={SETTINGS.THEME_COLOR}
         metalness={0.8}
@@ -157,27 +144,40 @@ const Ball: React.FC<{
         emissive={SETTINGS.THEME_COLOR}
         emissiveIntensity={0.3}
       />
-      <Html distanceFactor={SETTINGS.CUBE_TEXT_DISTANCE} center>
+      <Html 
+        distanceFactor={SETTINGS.CUBE_TEXT_DISTANCE} 
+        center
+        zIndexRange={[0, 0]}
+        style={{ pointerEvents: 'none' }}
+      >
         <div
           className={`bg-black/80 px-3 py-1.5 rounded-lg ${SETTINGS.CUBE_TEXT_SIZE} font-bold whitespace-nowrap border border-[#00FFD1]/30 shadow-lg`}
-          style={{ color: SETTINGS.THEME_COLOR, userSelect: 'none', pointerEvents: 'none' }}
+          style={{ 
+            color: SETTINGS.THEME_COLOR, 
+            userSelect: 'none', 
+            pointerEvents: 'none'
+          }}
         >
           {skill}
         </div>
       </Html>
     </mesh>
   );
-};
+});
 
-// Trail Component
-const Trail: React.FC<{ positions: THREE.Vector3[] }> = ({ positions }) => {
+Ball.displayName = 'Ball';
+
+// ============ TRAIL COMPONENT ============
+const Trail = memo(({ positions }: { positions: THREE.Vector3[] }) => {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useEffect(() => {
     if (meshRef.current && positions.length > 1) {
       const path = new THREE.CatmullRomCurve3(positions);
-      const geometry = new THREE.TubeGeometry(path, positions.length * 2, 0.15, 8, false);
-      meshRef.current.geometry.dispose();
+      const geometry = new THREE.TubeGeometry(path, Math.min(positions.length * 2, 60), 0.15, 6, false);
+      if (meshRef.current.geometry) {
+        meshRef.current.geometry.dispose();
+      }
       meshRef.current.geometry = geometry;
     }
   }, [positions]);
@@ -186,23 +186,62 @@ const Trail: React.FC<{ positions: THREE.Vector3[] }> = ({ positions }) => {
 
   return (
     <mesh ref={meshRef}>
-      <tubeGeometry args={[new THREE.CatmullRomCurve3(positions), 64, 0.15, 8, false]} />
+      <tubeGeometry args={[new THREE.CatmullRomCurve3(positions), 32, 0.15, 6, false]} />
       <meshBasicMaterial
         color="#FF00FF"
         transparent
-        opacity={0.7}
+        opacity={0.6}
       />
     </mesh>
   );
-};
+});
 
-// Car Component
-const Car: React.FC<{ 
-  onDebug?: (d: string) => void; 
+Trail.displayName = 'Trail';
+
+// ============ CAR COMPONENT ============
+const CarPart = memo(({ pos, size, color = SETTINGS.THEME_COLOR, emissive = 0.5, opacity = 1 }: any) => (
+  <mesh position={pos} castShadow>
+    <boxGeometry args={size} />
+    <meshStandardMaterial 
+      color={color} 
+      metalness={0.9} 
+      roughness={0.1} 
+      emissive={color} 
+      emissiveIntensity={emissive} 
+      transparent={opacity < 1} 
+      opacity={opacity} 
+    />
+  </mesh>
+));
+
+CarPart.displayName = 'CarPart';
+
+const Wheel = memo(({ pos }: { pos: [number, number, number] }) => (
+  <group position={pos}>
+    <mesh rotation={[0, 0, Math.PI/2]} castShadow>
+      <cylinderGeometry args={[0.25, 0.25, 0.15, 16]} />
+      <meshStandardMaterial color="#111111" metalness={0.9} roughness={0.2} />
+    </mesh>
+    <mesh rotation={[0, 0, Math.PI/2]}>
+      <cylinderGeometry args={[0.15, 0.15, 0.16, 16]} />
+      <meshStandardMaterial color="#00FFD1" emissive="#00FFD1" emissiveIntensity={0.7} metalness={1} roughness={0.2} />
+    </mesh>
+  </group>
+));
+
+Wheel.displayName = 'Wheel';
+
+const Car = memo(({ 
+  onDebug, 
+  onPosChange,
+  touchControls,
+  onTrailUpdate
+}: {
+  onDebug?: (d: string) => void;
   onPosChange: (p: THREE.Vector3) => void;
   touchControls: { w: boolean; s: boolean; a: boolean; d: boolean };
   onTrailUpdate: (pos: THREE.Vector3) => void;
-}> = ({ onDebug, onPosChange, touchControls, onTrailUpdate }) => {
+}) => {
   const ref = useRef<THREE.Group>(null);
   const [keys, setKeys] = useState({ w: false, s: false, a: false, d: false });
   const vel = useRef({ x: 0, z: 0 });
@@ -275,43 +314,20 @@ const Car: React.FC<{
 
     onPosChange(car.position);
     
-    // Update trail every 3 frames
     frameCount.current++;
-    onTrailUpdate(car.position.clone());
+    if (frameCount.current % 3 === 0) {
+      onTrailUpdate(car.position.clone());
+    }
 
-    if (onDebug) {
+    if (onDebug && frameCount.current % 10 === 0) {
       const spd = Math.sqrt(vel.current.x ** 2 + vel.current.z ** 2);
       onDebug(`x=${car.position.x.toFixed(1)} z=${car.position.z.toFixed(1)} | ${(spd * 100).toFixed(0)} km/h`);
     }
   });
 
-  const CarPart = ({ pos, size, color = SETTINGS.THEME_COLOR, emissive = 0.5, opacity = 1 }: any) => (
-    <mesh position={pos} castShadow>
-      <boxGeometry args={size} />
-      <meshStandardMaterial 
-        color={color} 
-        metalness={0.9} 
-        roughness={0.1} 
-        emissive={color} 
-        emissiveIntensity={emissive} 
-        transparent={opacity < 1} 
-        opacity={opacity} 
-      />
-    </mesh>
-  );
-
-  const Wheel = ({ pos }: { pos: [number, number, number] }) => (
-    <group position={pos}>
-      <mesh rotation={[0, 0, Math.PI/2]} castShadow>
-        <cylinderGeometry args={[0.25, 0.25, 0.15, 32]} />
-        <meshStandardMaterial color="#111111" metalness={0.9} roughness={0.2} />
-      </mesh>
-      <mesh rotation={[0, 0, Math.PI/2]}>
-        <cylinderGeometry args={[0.15, 0.15, 0.16, 32]} />
-        <meshStandardMaterial color="#00FFD1" emissive="#00FFD1" emissiveIntensity={0.7} metalness={1} roughness={0.2} />
-      </mesh>
-    </group>
-  );
+  const wheelPositions = useMemo(() => [
+    [0.6, 0, 0.8], [-0.6, 0, 0.8], [0.6, 0, -0.8], [-0.6, 0, -0.8]
+  ] as [number, number, number][], []);
 
   return (
     <group ref={ref} position={[0, 0.3, 0]}>
@@ -319,7 +335,7 @@ const Car: React.FC<{
       <CarPart pos={[0, 0.6, -0.3]} size={[1, 0.5, 1.2]} color="#00FFD1" emissive={0.7} opacity={0.3} />
       <CarPart pos={[0, 0.35, 1.2]} size={[1.1, 0.05, 0.05]} color="#00FFD1" emissive={1} />
       <CarPart pos={[0, 0.35, -1.2]} size={[1.1, 0.05, 0.05]} color="#00FFD1" emissive={1} />
-      {[[0.6, 0, 0.8], [-0.6, 0, 0.8], [0.6, 0, -0.8], [-0.6, 0, -0.8]].map((p, i) => <Wheel key={i} pos={p as [number, number, number]} />)}
+      {wheelPositions.map((p, i) => <Wheel key={i} pos={p} />)}
       <CarPart pos={[0.4, 0.2, 1.4]} size={[0.1, 0.1, 0.05]} color="#00FFFF" emissive={1} />
       <CarPart pos={[-0.4, 0.2, 1.4]} size={[0.1, 0.1, 0.05]} color="#00FFFF" emissive={1} />
       <CarPart pos={[0.4, 0.2, -1.25]} size={[0.1, 0.1, 0.05]} color="#FF00FF" emissive={1} />
@@ -328,31 +344,98 @@ const Car: React.FC<{
       <pointLight position={[-0.4, 0.2, 1.3]} intensity={2} color={SETTINGS.THEME_COLOR} distance={5} />
     </group>
   );
-};
+});
 
-const CameraFollow: React.FC<{ target: THREE.Vector3 }> = ({ target }) => {
+Car.displayName = 'Car';
+
+// ============ CAMERA FOLLOW ============
+const CameraFollow = memo(({ target }: { target: THREE.Vector3 }) => {
   useFrame((state) => {
     state.camera.position.lerp(new THREE.Vector3(target.x, target.y + 12, target.z - 18), 0.05);
     state.camera.lookAt(target.x, target.y + 1, target.z);
   });
   return null;
-};
+});
 
-const Scene: React.FC<{ 
+CameraFollow.displayName = 'CameraFollow';
+
+// ============ ENVIRONMENT ============
+const GameEnvironment = memo(() => {
+  const wallPositions = useMemo(() => [
+    [0, 1, 25, 0], [0, 1, -25, 0], [25, 1, 0, Math.PI/2], [-25, 1, 0, Math.PI/2]
+  ], []);
+  
+  const pillarPositions = useMemo(() => [
+    [24, 2, 24], [-24, 2, 24], [24, 2, -24], [-24, 2, -24]
+  ] as [number, number, number][], []);
+
+  return (
+    <>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[50, 50]} />
+        <meshStandardMaterial color="#0a0a0a" metalness={0.8} roughness={0.2} />
+      </mesh>
+      <gridHelper args={[50, 50, SETTINGS.THEME_COLOR, '#004d44']} position={[0, 0.01, 0]} />
+      
+      {wallPositions.map((w, i) => (
+        <mesh key={i} position={[w[0], w[1], w[2]]} rotation={[0, w[3], 0]}>
+          <boxGeometry args={[50, 2, 0.5]} />
+          <meshStandardMaterial 
+            color={SETTINGS.THEME_COLOR} 
+            emissive={SETTINGS.THEME_COLOR} 
+            emissiveIntensity={0.5} 
+            metalness={0.9} 
+            roughness={0.1} 
+            transparent 
+            opacity={0.3} 
+          />
+        </mesh>
+      ))}
+      
+      {pillarPositions.map((p, i) => (
+        <mesh key={i} position={p} castShadow>
+          <cylinderGeometry args={[0.5, 0.5, 4, 8]} />
+          <meshStandardMaterial 
+            color={SETTINGS.THEME_COLOR} 
+            emissive={SETTINGS.THEME_COLOR} 
+            emissiveIntensity={0.8} 
+            metalness={1} 
+            roughness={0} 
+          />
+        </mesh>
+      ))}
+      
+      <Stars radius={100} depth={50} count={800} factor={4} saturation={0} fade speed={1} />
+    </>
+  );
+});
+
+GameEnvironment.displayName = 'GameEnvironment';
+
+// ============ SCENE ============
+const Scene = memo(({ 
+  onDebug,
+  touchControls
+}: {
   onDebug: (d: string) => void;
   touchControls: { w: boolean; s: boolean; a: boolean; d: boolean };
-}> = ({ onDebug, touchControls }) => {
+}) => {
   const [carPos, setCarPos] = useState(new THREE.Vector3(0, 0, 0));
   const [trailPositions, setTrailPositions] = useState<THREE.Vector3[]>([]);
-  const cubePositions = useRef(skills.map(() => [(Math.random() - 0.5) * 18, 2 + Math.random() * 3, (Math.random() - 0.5) * 18] as [number, number, number]));
+  const cubePositions = useMemo(() => 
+    skills.map(() => [
+      (Math.random() - 0.5) * 18, 
+      2 + Math.random() * 3, 
+      (Math.random() - 0.5) * 18
+    ] as [number, number, number]), 
+  []);
   const ballRefs = useRef<THREE.Mesh[]>([]);
 
   const handleTrailUpdate = (pos: THREE.Vector3) => {
     setTrailPositions(prev => {
       const newTrail = [...prev, pos];
-      // Keep last 50 positions for a shorter trail
-      if (newTrail.length > 50) {
-        return newTrail.slice(-50);
+      if (newTrail.length > SETTINGS.TRAIL_LENGTH) {
+        return newTrail.slice(-SETTINGS.TRAIL_LENGTH);
       }
       return newTrail;
     });
@@ -361,51 +444,42 @@ const Scene: React.FC<{
   return (
     <>
       <CameraFollow target={carPos} />
-      <Car onDebug={onDebug} onPosChange={setCarPos} touchControls={touchControls} onTrailUpdate={handleTrailUpdate} />
+      <Car 
+        onDebug={onDebug} 
+        onPosChange={setCarPos} 
+        touchControls={touchControls} 
+        onTrailUpdate={handleTrailUpdate} 
+      />
       <Trail positions={trailPositions} />
       {skills.map((skill, i) => (
         <Ball 
           key={skill} 
-          pos={cubePositions.current[i]} 
+          pos={cubePositions[i]} 
           skill={skill} 
           carPos={carPos}
           allBalls={ballRefs}
           index={i}
         />
       ))}
-      
-      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[50, 50]} />
-        <meshStandardMaterial color="#0a0a0a" metalness={0.8} roughness={0.2} />
-      </mesh>
-      <gridHelper args={[50, 50, SETTINGS.THEME_COLOR, '#004d44']} position={[0, 0.01, 0]} />
-      
-      {[[0, 1, 25, 0], [0, 1, -25, 0], [25, 1, 0, Math.PI/2], [-25, 1, 0, Math.PI/2]].map((w, i) => (
-        <mesh key={i} position={[w[0], w[1], w[2]]} rotation={[0, w[3], 0]}>
-          <boxGeometry args={[50, 2, 0.5]} />
-          <meshStandardMaterial color={SETTINGS.THEME_COLOR} emissive={SETTINGS.THEME_COLOR} emissiveIntensity={0.5} metalness={0.9} roughness={0.1} transparent opacity={0.3} />
-        </mesh>
-      ))}
-      
-      {[[24, 2, 24], [-24, 2, 24], [24, 2, -24], [-24, 2, -24]].map((p, i) => (
-        <mesh key={i} position={p as [number, number, number]} castShadow>
-          <cylinderGeometry args={[0.5, 0.5, 4, 8]} />
-          <meshStandardMaterial color={SETTINGS.THEME_COLOR} emissive={SETTINGS.THEME_COLOR} emissiveIntensity={0.8} metalness={1} roughness={0} />
-        </mesh>
-      ))}
-      
-      <Stars radius={100} depth={50} count={1000} factor={4} saturation={0} fade speed={1} />
+      <GameEnvironment />
     </>
   );
-};
+});
 
-// Touch Control Button
-const TouchButton: React.FC<{
+Scene.displayName = 'Scene';
+
+// ============ TOUCH BUTTON ============
+const TouchButton = memo(({
+  label,
+  onPress,
+  onRelease,
+  className = ""
+}: {
   label: string;
   onPress: () => void;
   onRelease: () => void;
   className?: string;
-}> = ({ label, onPress, onRelease, className = "" }) => {
+}) => {
   return (
     <button
       className={`bg-black/70 backdrop-blur-sm border-2 rounded-lg font-bold text-lg active:scale-95 transition-transform select-none ${className}`}
@@ -413,10 +487,14 @@ const TouchButton: React.FC<{
         color: SETTINGS.THEME_COLOR, 
         borderColor: SETTINGS.THEME_COLOR,
         boxShadow: `0 0 15px ${SETTINGS.THEME_COLOR}40`,
-        touchAction: 'none'
+        touchAction: 'none',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        zIndex: 50,
       }}
       onTouchStart={(e) => { e.preventDefault(); onPress(); }}
       onTouchEnd={(e) => { e.preventDefault(); onRelease(); }}
+      onTouchMove={(e) => e.preventDefault()}
       onMouseDown={onPress}
       onMouseUp={onRelease}
       onMouseLeave={onRelease}
@@ -424,8 +502,11 @@ const TouchButton: React.FC<{
       {label}
     </button>
   );
-};
+});
 
+TouchButton.displayName = 'TouchButton';
+
+// ============ MAIN APP ============
 export default function SkillsPage() {
   const [debug, setDebug] = useState("");
   const [touchControls, setTouchControls] = useState({ w: false, s: false, a: false, d: false });
@@ -448,23 +529,28 @@ export default function SkillsPage() {
     <div className="w-full h-screen bg-black relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-[#001a16] to-black opacity-50" />
       
-      <Canvas shadows camera={{ position: [0, 12, 18], fov: 60 }}>
+      <Canvas shadows camera={{ position: [0, 12, 18], fov: 60 }} gl={{ antialias: false }}>
         <color attach="background" args={['#000000']} />
         <fog attach="fog" args={['#000000', 10, 50]} />
         <ambientLight intensity={0.2} />
-        <directionalLight position={[10, 20, 10]} intensity={0.5} castShadow shadow-mapSize={[2048, 2048]} shadow-camera-far={50} shadow-camera-left={-30} shadow-camera-right={30} shadow-camera-top={30} shadow-camera-bottom={-30} />
+        <directionalLight 
+          position={[10, 20, 10]} 
+          intensity={0.5} 
+          castShadow 
+          shadow-mapSize={[1024, 1024]} 
+        />
         <pointLight position={[0, 10, 0]} intensity={1} color={SETTINGS.THEME_COLOR} distance={30} />
         <Scene onDebug={setDebug} touchControls={touchControls} />
         <Environment preset="night" />
       </Canvas>
 
-      {/* Title - responsive positioning */}
       <div className="absolute top-4 md:top-8 left-1/2 transform -translate-x-1/2 text-center z-10 px-4">
         <motion.h1
           className="text-2xl md:text-4xl font-bold tracking-wider"
           style={{
             color: SETTINGS.THEME_COLOR,
             textShadow: `0 0 20px ${SETTINGS.THEME_COLOR}`,
+            userSelect: 'none',
           }}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -474,7 +560,6 @@ export default function SkillsPage() {
         </motion.h1>
       </div>
 
-      {/* Desktop Controls Info */}
       {!isMobile && (
         <div className="absolute top-8 left-8 z-10">
           <motion.div 
@@ -494,45 +579,37 @@ export default function SkillsPage() {
         </div>
       )}
 
-      {/* Mobile Touch Controls */}
       {isMobile && (
-        <div className="absolute bottom-4 left-0 right-0 z-20 px-6 pb-2">
-          <div className="flex justify-between items-end gap-8 max-w-lg mx-auto">
-            {/* Left side - D-pad for movement and turning */}
+        <div className="absolute bottom-4 left-0 right-0 z-50 px-6 pb-2 pointer-events-none">
+          <div className="flex justify-between items-end gap-8 max-w-lg mx-auto pointer-events-auto">
             <div className="relative w-44 h-44">
-              {/* Up */}
               <TouchButton
                 label="↑"
                 onPress={() => handleTouch('w', true)}
                 onRelease={() => handleTouch('w', false)}
                 className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-12"
               />
-              {/* Left */}
               <TouchButton
                 label="←"
                 onPress={() => handleTouch('a', true)}
                 onRelease={() => handleTouch('a', false)}
                 className="absolute top-1/2 left-0 -translate-y-1/2 w-12 h-12"
               />
-              {/* Right */}
               <TouchButton
                 label="→"
                 onPress={() => handleTouch('d', true)}
                 onRelease={() => handleTouch('d', false)}
                 className="absolute top-1/2 right-0 -translate-y-1/2 w-12 h-12"
               />
-              {/* Down */}
               <TouchButton
                 label="↓"
                 onPress={() => handleTouch('s', true)}
                 onRelease={() => handleTouch('s', false)}
                 className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-12"
               />
-              {/* Center indicator */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 border border-[#00FFD1]/30 pointer-events-none" />
             </div>
 
-            {/* Right side - Info */}
             <div className="text-xs font-mono mb-2" style={{ color: SETTINGS.THEME_COLOR }}>
               <div className="bg-black/70 backdrop-blur-sm border border-[#00FFD1]/50 rounded-lg px-3 py-2">
                 <div className="font-bold mb-1">CONTROLS</div>
@@ -547,7 +624,6 @@ export default function SkillsPage() {
         </div>
       )}
 
-      {/* Debug Panel - mobile optimized */}
       <div 
         className={`absolute ${isMobile ? 'top-16 right-2 w-48 text-[10px]' : 'bottom-4 left-4 w-80 text-xs'} bg-black/90 font-mono p-2 rounded-lg border-2 z-10 backdrop-blur-sm`}
         style={{ 
