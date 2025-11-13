@@ -204,14 +204,14 @@ const Interactive3DCube: React.FC<Interactive3DCubeProps> = ({
               <span className="text-secondary">user@justinluftportfolio</span>
               <span>&tilde;</span>
               <span className="text-primary">$</span>
-              <span className="text-primary/80">cd /users/justin/portfolio</span>
+              <span className="text-primary/80">cd /users/justin/projects</span>
               <span className="animate-pulse"></span>
             </div>
             <div className="mb-4 font-vt323 text-primary/60 text-sm flex items-center gap-2">
               <span className="text-secondary">user@justinluftportfolio</span>
               <span>&tilde;</span>
               <span className="text-primary">$</span>
-              <span className="text-primary/80">npm run showcase</span>
+              <span className="text-primary/80">npm run dev</span>
               <span className="animate-pulse"></span>
             </div>
 
