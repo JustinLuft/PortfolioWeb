@@ -90,97 +90,138 @@ export const projects: Project[] = [
   {
     id: 3,
     name: "NoteCore",
-    description: "Full-stack note-taking app with secure authentication, real-time sync indicators, and PDF export functionality.",
+    description:
+      "A secure full-stack note platform featuring authentication, real-time sync indicators, and PDF export. Designed for reliability and seamless cross-device use.",
     skills: ["React", "Node.js", "Express.js", "PostgreSQL", "Tailwind CSS"],
     githubLink: "https://github.com/JustinLuft/notecore",
     websiteLink: "https://notecore.vercel.app/",
     icon: <Cloud className="w-5 h-5" />,
-    category: 'web',
+    category: "web",
     fullDetails: {
-      technologies: ["React", "Vite", "Tailwind CSS", "Node.js", "Express.js", "PostgreSQL", "Render", "Vercel"],
-      challenges: [
-        "Designing modular backend architecture with Express controllers",
-        "Implementing user authentication and secure CRUD operations",
-        "Building responsive and dynamic React components with live sync states"
+      technologies: [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js",
+        "PostgreSQL",
+        "Render",
+        "Vercel"
       ],
+      challenges: [
+        "Designed a modular Express architecture enabling secure user authentication and clean route separation.",
+        "Implemented reliable CRUD operations with PostgreSQL, focusing on data consistency and error tolerance.",
+        "Developed a real-time sync UX pattern to show unsaved changes and prevent accidental data loss."
+      ]
     }
   },
   {
     id: 4,
     name: "CinemaCache",
-    description: "React-based app for managing movie collections and generating customized recommendation prompts.",
+    description:
+      "A personalized movie catalog and recommendation-prompt generator powered by Firebase and real-time data sync.",
     skills: ["React", "TypeScript", "Firebase", "Firestore"],
     githubLink: "https://github.com/JustinLuft/CinemaCache",
-    websiteLink: "https://cinema-cache.vercel.app/", 
+    websiteLink: "https://cinema-cache.vercel.app/",
     icon: <Clapperboard className="w-5 h-5" />,
-    category: 'web',
+    category: "web",
     fullDetails: {
       technologies: ["React", "TypeScript", "Firebase", "Tailwind CSS", "Vite"],
-      challenges: ["Real-time data fetching", "User authentication and security", "Dynamic prompt generation"],
+      challenges: [
+        "Built a responsive React experience with real-time Firestore reads and updates.",
+        "Implemented Firebase Auth workflows with secure client-side routing.",
+        "Generated dynamic recommendation prompts based on user-selected metadata."
+      ]
     }
   },
   {
     id: 5,
     name: "BuildCarolina Graduate Showcase",
-    description: "Responsive web application showcasing BuildCarolina graduates, built during CharlestonHacks hackathon.",
+    description:
+      "A full responsive platform built for the BuildCarolina hackathon, enabling browsing, filtering, and managing graduate profiles.",
     skills: ["TypeScript", "React.js", "Tailwind CSS", "Firebase"],
     githubLink: "https://github.com/JustinLuft/GradShowcase",
     websiteLink: "https://grad-showcase.vercel.app/",
     icon: <Users className="w-5 h-5" />,
-    category: 'web',
+    category: "web",
     fullDetails: {
-      technologies: ["TypeScript", "React.js", "Tailwind CSS", "Vite", "Firebase", "Framer Motion"],
-      challenges: [
-        "Building during a fixed one-month hackathon timeline",
-        "Creating admin and graduate user flows",
-        "Implementing fast search and filter features"
+      technologies: [
+        "TypeScript",
+        "React.js",
+        "Tailwind CSS",
+        "Vite",
+        "Firebase",
+        "Framer Motion"
       ],
+      challenges: [
+        "Delivered the entire platform within a fixed hackathon timeline, balancing speed with maintainability.",
+        "Built parallel admin and graduate user flows with secure Firebase authentication.",
+        "Implemented fast search/filter logic to handle growing datasets efficiently."
+      ]
     }
   },
   {
     id: 2,
     name: "SC Bills Web Scraper",
-    description: "Robust web scraping solution for collecting and searching South Carolina legislative bills.",
+    description:
+      "An end-to-end scraping and indexing pipeline that collects and structures South Carolina legislative bill data.",
     skills: ["Web Scraping", "Python", "Data Management"],
     githubLink: "https://github.com/JustinLuft/scbillscraper",
-    websiteLink: "https://billtracker-website-8czsp93cr-justinlufts-projects.vercel.app/",
+    websiteLink:
+      "https://billtracker-website-8czsp93cr-justinlufts-projects.vercel.app/",
     icon: <Server className="w-5 h-5" />,
-    category: 'web',
+    category: "web",
     fullDetails: {
       technologies: ["Python", "BeautifulSoup", "Firebase", "Pandas"],
-      challenges: ["Data extraction", "Parsing complex web structures", "Data normalization"],
+      challenges: [
+        "Parsed complex and inconsistent HTML structures to extract reliable legislative records.",
+        "Normalized scraped data into consistent schema formats for downstream querying.",
+        "Built a web-facing interface enabling keyword lookup and bill detail retrieval."
+      ]
     }
   },
   {
     id: 13,
     name: "SubMachine App",
-    description: "Fast-food ordering application prototype with intuitive UI, developed as semester-long project.",
+    description:
+      "A mobile-first fast-food ordering prototype focused on smooth UX and straightforward customer navigation.",
     skills: ["Prototype Development", "UI/UX", "Mobile Design"],
     githubLink: "https://github.com/justinluft/submachine-app",
     icon: <Database className="w-5 h-5" />,
-    category: 'web',
+    category: "web",
     fullDetails: {
       technologies: ["Figma", "JavaScript", "MySQL"],
-      challenges: ["User interface design", "State management", "Prototype iteration"],
+      challenges: [
+        "Designed a clean ordering flow emphasizing simplicity and low-friction user decisions.",
+        "Managed application state and screen transitions based on menu interactions.",
+        "Iterated UI designs based on user feedback from prototype testing."
+      ]
     }
   },
   {
     id: 7,
-    name: "SpotLight: Spotify Stats Dashboard 🎵",
-    description: "A modern, interactive dashboard to explore your Spotify listening habits. Visualize your top tracks and top artists through Spotify API integration.",
+    name: "SpotLight: Spotify Stats Dashboard",
+    description:
+      "A modern dashboard that visualizes top tracks, artists, and listening patterns using Spotify's OAuth and analytics APIs.",
     skills: ["Next.js", "React", "Node.js", "Spotify API", "CSS"],
     githubLink: "https://github.com/JustinLuft/spotifyapi",
     websiteLink: "https://spotifyapi-omega.vercel.app/",
     icon: <Globe className="w-5 h-5" />,
-    category: 'web',
+    category: "web",
     fullDetails: {
-      technologies: ["Next.js", "React", "Node.js", "Spotify API", "OAuth 2.0", "CSS", "Particle.js"],
+      technologies: [
+        "Next.js",
+        "React",
+        "Node.js",
+        "Spotify API",
+        "OAuth 2.0",
+        "CSS",
+        "Particle.js"
+      ],
       challenges: [
-        "Implementing Spotify OAuth 2.0 login flow securely",
-        "Fetching and caching real-time user data from Spotify API",
-        "Designing a responsive, visually engaging cyberpunk/art-deco UI",
-        "Adding particle effects and radial glow with noise texture",
-        "Creating interactive visualizations for top tracks and top artists"
+        "Implemented a secure OAuth 2.0 login with Spotify to retrieve user-specific analytics.",
+        "Optimized API requests and caching to avoid rate limits and improve responsiveness.",
+        "Designed a custom cyberpunk-style UI with glow effects, particle animations, and dynamic charts."
       ]
     }
   },
@@ -191,78 +232,91 @@ export const projects: Project[] = [
   {
     id: 9,
     name: "Longest Palindromic Subsequence",
-    description: "Dynamic programming algorithm computing longest palindromic subsequence with custom table structure.",
+    description:
+      "A dynamic programming solution for computing palindromic subsequences, including reconstruction logic.",
     skills: ["Dynamic Programming", "Algorithm Design", "Java"],
     githubLink: "https://github.com/JustinLuft/LPS",
     icon: <Code2 className="w-5 h-5" />,
-    category: 'algorithms',
+    category: "algorithms",
     fullDetails: {
-      technologies: ["Java", "2D ArrayList", "Custom Element Class"],
+      technologies: ["Java", "2D ArrayList", "Custom Classes"],
       challenges: [
-        "Designing pointer-based DP table to track subsequences",
-        "Reverse traversal of table to reconstruct solution",
-        "Edge-case handling for empty inputs"
-      ],
+        "Built a pointer-driven DP table to track optimal subsequence decisions.",
+        "Designed a reconstruction algorithm to trace results back through the DP matrix.",
+        "Handled edge cases and empty inputs without degrading performance."
+      ]
     }
   },
   {
     id: 10,
     name: "Bernoulli Number Calculator",
-    description: "Java program computing Bernoulli numbers using rational arithmetic and recursive relations.",
+    description:
+      "A Java-based numerical engine that computes Bernoulli numbers using rational arithmetic and recurrence identities.",
     skills: ["Java", "Recursion", "Rational Arithmetic", "Number Theory"],
     githubLink: "https://github.com/JustinLuft/BSF",
     icon: <Code className="w-5 h-5" />,
-    category: 'algorithms',
+    category: "algorithms",
     fullDetails: {
-      technologies: ["Java", "Custom Rational Class", "Recursion", "Binomial Coefficients"],
+      technologies: ["Java", "Custom Rational Class", "Recursion"],
       challenges: [
-        "Designing Rational class with full arithmetic and fraction reduction",
-        "Implementing recursive computation with binomial coefficients",
-        "Managing large integer operations"
-      ],
+        "Developed a complete Rational class supporting accurate fraction operations.",
+        "Implemented recursive Bernoulli computation using binomial coefficient expansions.",
+        "Ensured numerical stability for large integer operations."
+      ]
     }
   },
   {
     id: 12,
     name: "Train Car Sorting Simulation",
-    description: "Simulation processing and sorting custom train car objects based on destination and priority.",
+    description:
+      "A simulation framework that organizes custom train-car objects by priority and destination.",
     skills: ["Java", "OOP", "Sorting Algorithms", "Simulation"],
     githubLink: "https://github.com/JustinLuft/traincarsorting",
     icon: <Train className="w-5 h-5" />,
-    category: 'algorithms',
+    category: "algorithms",
     fullDetails: {
-      technologies: ["Java", "Custom Classes", "Comparable Interface", "Priority Sorting"],
+      technologies: ["Java", "Custom Classes", "Comparable"],
       challenges: [
-        "Designing flexible class hierarchy for different train cars",
-        "Implementing sorting logic based on destination and priority",
-        "Type-safe handling of mixed car objects"
-      ],
+        "Created a flexible class hierarchy supporting multiple train-car types.",
+        "Implemented deterministic sorting logic using Comparable and custom comparators.",
+        "Processed mixed-type collections with full type safety."
+      ]
     }
   },
   {
     id: 15,
     name: "Sorting Algorithms Benchmark",
-    description: "Comprehensive benchmarking tool analyzing performance of various sorting algorithms.",
+    description:
+      "A Java-based benchmarking suite comparing performance across multiple sorting algorithms.",
     skills: ["Java", "Algorithms", "Performance Analysis"],
     githubLink: "https://github.com/JustinLuft/sort-comparison-analyzer",
     icon: <Layers className="w-5 h-5" />,
-    category: 'algorithms',
+    category: "algorithms",
     fullDetails: {
-      technologies: ["Java", "IntelliJ", "Performance Profiling"],
-      challenges: ["Algorithm complexity", "Performance measurement", "Comparative analysis"],
+      technologies: ["Java", "IntelliJ", "Profiling Tools"],
+      challenges: [
+        "Measured algorithmic performance using controlled test environments.",
+        "Analyzed time complexity patterns across varied input sizes.",
+        "Built extensible architecture to easily add new sorting algorithms."
+      ]
     }
   },
   {
     id: 14,
     name: "Machine Learning Engine",
-    description: "Custom machine learning engine for linear regression with mathematical modeling.",
+    description:
+      "A custom linear regression engine built from scratch using NumPy and mathematical modeling.",
     skills: ["Machine Learning", "NumPy", "Linear Regression"],
     githubLink: "https://github.com/JustinLuft/linearregressionhw",
     icon: <Cpu className="w-5 h-5" />,
-    category: 'algorithms',
+    category: "algorithms",
     fullDetails: {
       technologies: ["Python", "NumPy", "Scikit-learn"],
-      challenges: ["Algorithm implementation", "Mathematical modeling", "Performance optimization"],
+      challenges: [
+        "Implemented gradient-based linear regression from first principles.",
+        "Validated model correctness against scikit-learn outputs.",
+        "Optimized matrix operations for faster convergence."
+      ]
     }
   },
 
@@ -272,31 +326,37 @@ export const projects: Project[] = [
   {
     id: 11,
     name: "Concurrent Systems",
-    description: "Advanced solutions for mutual exclusion and multithreaded programming challenges.",
+    description:
+      "Thread-safe concurrency solutions implementing mutual exclusion, synchronization, and deadlock prevention.",
     skills: ["Concurrency", "Semaphores", "Systems Programming"],
     githubLink: "https://github.com/JustinLuft/semaphore-assignment",
     icon: <Code className="w-5 h-5" />,
-    category: 'systems',
+    category: "systems",
     fullDetails: {
       technologies: ["C", "POSIX Threads", "Semaphores"],
-      challenges: ["Deadlock prevention", "Race condition mitigation", "Synchronization"],
+      challenges: [
+        "Implemented semaphore-driven synchronization across parallel operations.",
+        "Eliminated race conditions using strict ordering and mutual exclusion primitives.",
+        "Developed deadlock-free concurrent patterns with predictable behavior."
+      ]
     }
   },
   {
     id: 16,
     name: "Multithreaded Sudoku Solver",
-    description: "Enhanced recursive Sudoku solver with multithreading to parallelize search space.",
+    description:
+      "A parallelized Sudoku solving engine that uses branching heuristics and POSIX threads to accelerate search time.",
     skills: ["C", "Multithreading", "Bitmasking", "Backtracking"],
     githubLink: "https://github.com/JustinLuft/sudokuthread",
     icon: <Code2 className="w-5 h-5" />,
-    category: 'systems',
+    category: "systems",
     fullDetails: {
-      technologies: ["C", "POSIX Threads", "Bitmask Optimization", "Recursive Backtracking"],
+      technologies: ["C", "POSIX Threads", "Bitmask Optimization"],
       challenges: [
-        "Implementing thread-level parallelism by branching on ambiguous cells",
-        "Managing shared state and avoiding data races",
-        "Synchronizing threads and handling early termination"
-      ],
+        "Parallelized the backtracking search by spawning threads at constraint-heavy branches.",
+        "Eliminated data races using thread-safe state management and clear ownership rules.",
+        "Integrated bitmasking to significantly reduce the computation required per cell."
+      ]
     }
   },
 
@@ -306,69 +366,77 @@ export const projects: Project[] = [
   {
     id: 1,
     name: "Photo Booth Experience",
-    description: "Comprehensive photo booth application using agile methodologies and collaborative development.",
+    description:
+      "A fully interactive photo booth system built with Unity, Raspberry Pi hardware, and real-time image processing.",
     skills: ["Scrum", "Team Collaboration", "UI/UX Design"],
     githubLink: "https://github.com/JustinLuft/UnityProject",
     icon: <Camera className="w-5 h-5" />,
-    category: 'tools',
+    category: "tools",
     fullDetails: {
-      technologies: ["Unity", "C#", "SMTP", "Raspberry PI"],
-      challenges: ["Real-time photo processing", "User experience design", "Team coordination"],
+      technologies: ["Unity", "C#", "SMTP", "Raspberry Pi"],
+      challenges: [
+        "Built real-time image capture and processing pipelines inside Unity.",
+        "Designed the complete touchscreen UI/UX for a frictionless user experience.",
+        "Managed multi-developer collaboration using Scrum methodologies."
+      ]
     }
   },
   {
-  id: 7,
-  name: "Mercedes-Benz Power BI Heatmap Visual",
-  description: "A custom Power BI visual that displays production defect data as an interactive heatmap for Mercedes-Benz.",
-  skills: ["Power BI", "Data Visualization", "TypeScript", "GitHub Actions"],
-  githubLink: "https://github.com/JustinLuft/VanDefectHeatmap", 
-  icon: <Table className="w-5 h-5" />,
-  category: 'tools',
-  fullDetails: {
-    technologies: ["Power BI", "TypeScript", "HTML5 Canvas", "D3.js"],
-    challenges: [
-      "Density-based heatmap rendering optimization",
-      "Custom visual configuration in Power BI",
-      "Balancing performance and visual accuracy",
-      "Integration with automated GitHub Action builds"
-    ],
-  }
-},
+    id: 7,
+    name: "Mercedes-Benz Power BI Heatmap Visual",
+    description:
+      "A custom enterprise Power BI visual used at Mercedes-Benz to analyze production-line defect patterns through an interactive heatmap.",
+    skills: ["Power BI", "Data Visualization", "TypeScript", "GitHub Actions"],
+    githubLink: "https://github.com/JustinLuft/VanDefectHeatmap",
+    icon: <Table className="w-5 h-5" />,
+    category: "tools",
+    fullDetails: {
+      technologies: ["Power BI", "TypeScript", "HTML Canvas", "D3.js"],
+      challenges: [
+        "Optimized high-density heatmap rendering for thousands of datapoints.",
+        "Configured complete Power BI capabilities including formatting, filters, and user-defined parameters.",
+        "Integrated automated build/deployment workflows using GitHub Actions."
+      ]
+    }
+  },
   {
     id: 8,
     name: "Python AutoClicker",
-    description: "Customizable auto-clicker with GUI controls for automating mouse and keyboard inputs.",
+    description:
+      "A customizable automation tool with a clean GUI for controlling mouse/keyboard macros.",
     skills: ["Tkinter", "Input Automation", "UI Design"],
     githubLink: "https://github.com/JustinLuft/autoclicker",
     icon: <MousePointerClick className="w-5 h-5" />,
-    category: 'tools',
+    category: "tools",
     fullDetails: {
       technologies: ["Python", "Tkinter", "pynput", "keyboard"],
       challenges: [
-        "Building flexible and intuitive GUI",
-        "Managing real-time input automation with precise timing",
-        "Implementing global hotkeys across systems"
-      ],
+        "Designed an intuitive GUI for configuring timing, modes, and automation behavior.",
+        "Executed high-precision input automation using low-level control libraries.",
+        "Added global hotkeys with reliable cross-platform support."
+      ]
     }
   },
   {
     id: 6,
     name: "WP Prop Firm Comparison Plugin",
-    description: "WordPress plugin with email capture and filterable comparison table of prop trading firm data.",
+    description:
+      "A WordPress plugin that scrapes, structures, and displays prop-trading firm data with a filterable comparison table.",
     skills: ["WordPress", "PHP", "Web Scraping", "JavaScript"],
     githubLink: "https://github.com/JustinLuft/wppropscraper2",
     icon: <Table className="w-5 h-5" />,
-    category: 'tools',
+    category: "tools",
     fullDetails: {
       technologies: ["PHP", "JavaScript", "WordPress", "BeautifulSoup", "Firecrawl API"],
       challenges: [
-        "Gating access with email submission form",
-        "Parsing and storing structured comparison data",
-        "Building responsive UI within WordPress shortcode architecture"
+        "Developed a gated content system requiring email submission before access.",
+        "Scraped and normalized pricing/feature data from multiple firm sites.",
+        "Built a WordPress-native UI with shortcode integration and responsive filtering."
       ]
     }
-  },
+  }
 ];
+
 
 // ============================================
 // HELPER FUNCTIONS
