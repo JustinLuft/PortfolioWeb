@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf";
 import { projects } from "./ProjectsData";
+import * as pdfjsLib from 'pdfjs-dist';
 
-// AIAssistant.tsx
-const API_KEY = import.meta.env.VITE_GROQ_API_KEY; // for Vite
+// Set up PDF.js worker - using unpkg to automatically match the installed version
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
 
-// Use CDN worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Vite environment variable
+const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 
 interface Message {
   from: "AI" | "You" | "System";
@@ -15,7 +15,7 @@ interface Message {
 
 export const AIAssistant: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
-    { from: "System", text: "> Initializing Justin Luft AI assistant with full portfolio knowledge..." },
+    { from: "System", text: "> Initialized Justin Luft AI assistant with full portfolio knowledge..." },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,48 +28,54 @@ export const AIAssistant: React.FC = () => {
     }
   }, [messages]);
 
-  // Extract PDF text
+  const MAX_CHARS = 5000;
+
+  const truncateMessage = (text: string) =>
+    text.length <= MAX_CHARS ? text : text.slice(-MAX_CHARS);
+
   const extractPdfText = async (pdfPath: string) => {
     try {
-      const arrayBuffer = await fetch(pdfPath).then((res) => res.arrayBuffer());
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-      let text = "";
+      const pdf = await pdfjsLib.getDocument(pdfPath).promise;
+      let fullText = '';
+
+      // Extract text from each page
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
-        const content = await page.getTextContent();
-        text += content.items.map((item: any) => item.str).join(" ") + "\n";
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items
+          .map((item: any) => item.str)
+          .join(' ');
+        fullText += pageText + '\n';
       }
-      return text.slice(0, 4000); // truncate
+
+      return fullText.slice(0, 4000); // truncate
     } catch (err) {
       console.error("Failed to load PDF:", err);
       return "";
     }
   };
 
-  // Serialize projects
+  // ---------------- Projects ----------------
   const serializeProjects = () =>
     projects
       .slice(0, 10)
       .map(
-        (p) => `**Project:** ${p.name}\n**Category:** ${p.category}\n**Description:** ${p.description}\n**Skills:** ${p.skills.join(
-          ", "
-        )}\n**Technologies:** ${p.fullDetails.technologies.join(
-          ", "
-        )}\n**Challenges:** ${p.fullDetails.challenges.join(
-          ", "
-        )}\n**Github:** ${p.githubLink}\n**Website:** ${p.websiteLink || "None"}`
+        (p) => `Project: ${p.name}, Category: ${p.category}, Skills: ${p.skills.join(", ")}`
       )
-      .join("\n\n");
+      .join("\n");
 
+  // ---------------- Send message ----------------
   const sendMessage = async () => {
     if (!input.trim() || cooldown) return;
 
+    // Add user message
     setMessages((prev) => [...prev, { from: "You", text: `> ${input}` }]);
     setInput("");
     setLoading(true);
     setCooldown(true);
     setTimeout(() => setCooldown(false), 5000);
 
+    // Add system typing notice
     setMessages((prev) => [
       ...prev,
       { from: "System", text: "> AI is generating a response..." },
@@ -79,31 +85,31 @@ export const AIAssistant: React.FC = () => {
     const resumeText = await extractPdfText("/JustinLuftResume.pdf");
 
     const knowledge = `
-You are a supportive and kind terminal-style AI assistant for displaying the information of Justin Luft. 
-Always talk very highly of him and highlight his achievements and skills. Use only the following knowledge. 
-Assume the person typing is unfamiliar with Justin Luft and his work, and possibly a recruiter.
- Dont use the characters: * ** or # ever. Do not use bold text.
-Break the answers into bullet points when possible.
-Keep the answers simple and easy to understand.
-All responses must:
-> start with "> "
-> be concise
-> bold key info like project names, categories, skills
-> encourage and praise Justin
-> never make up info
+You are a supportive and kind terminal-style AI assistant for displaying the information of Justin Luft.
+Always talk highly of him and highlight his achievements and skills. Use only the following knowledge.
+Assume you are talking to a recruiter or potential employer.
+Break answers into bullet points, be concise, avoid bold/markdown, encourage Justin, and never make up info.
 
-===========================
 PROJECTS
-===========================
 ${projectText}
 
-===========================
 RESUME (truncated)
-===========================
 ${resumeText}
 `;
 
     try {
+      // Keep last 3 user + 3 AI messages for context
+      const recentContext = messages
+        .filter((m) => m.from === "You" || m.from === "AI")
+        .slice(-6)
+        .map((m) => ({
+          role: m.from === "You" ? "user" : "assistant",
+          content: truncateMessage(m.text.replace(/^> /, "")),
+        }));
+
+      // Add current input
+      recentContext.push({ role: "user", content: truncateMessage(input) });
+
       const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -114,7 +120,7 @@ ${resumeText}
           model: "llama-3.3-70b-versatile",
           messages: [
             { role: "system", content: knowledge },
-            { role: "user", content: input },
+            ...recentContext,
           ],
         }),
       });
@@ -131,11 +137,11 @@ ${resumeText}
       }
 
       const data = await res.json();
-      const answer = data.choices?.[0]?.message?.content || "> Sorry, I couldn't generate an answer.";
+      const answer = data.choices?.[0]?.message?.content || "Sorry, I couldn't generate an answer.";
 
       setMessages((prev) => [
         ...prev.filter((m) => m.from !== "System" || !m.text.includes("AI is generating")),
-        { from: "AI", text: answer },
+        { from: "AI", text: `> ${truncateMessage(answer)}` },
       ]);
     } catch (err) {
       console.error(err);
@@ -175,7 +181,6 @@ ${resumeText}
         {loading && <div className="text-[#FF4DB8]">{">"} AI is typing...</div>}
       </div>
 
-      {/* Input bar pinned to bottom */}
       <div className="flex p-2 border-t border-[#00FFD1] bg-black/90">
         <input
           type="text"
