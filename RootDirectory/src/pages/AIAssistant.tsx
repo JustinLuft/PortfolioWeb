@@ -20,13 +20,42 @@ export const AIAssistant: React.FC = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [cooldown, setCooldown] = useState(false);
+  const [isScrolling, setIsScrolling] = useState<'up' | 'down' | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollIntervalRef = useRef<number | null>(null);
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Scroll control functions
+  const startScrolling = (direction: 'up' | 'down') => {
+    setIsScrolling(direction);
+    if (scrollIntervalRef.current) clearInterval(scrollIntervalRef.current);
+    
+    scrollIntervalRef.current = window.setInterval(() => {
+      if (containerRef.current) {
+        const scrollAmount = direction === 'up' ? -10 : 10;
+        containerRef.current.scrollTop += scrollAmount;
+      }
+    }, 16);
+  };
+
+  const stopScrolling = () => {
+    setIsScrolling(null);
+    if (scrollIntervalRef.current) {
+      clearInterval(scrollIntervalRef.current);
+      scrollIntervalRef.current = null;
+    }
+  };
 
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
-  }, [messages]);
+    return () => {
+      if (scrollIntervalRef.current) clearInterval(scrollIntervalRef.current);
+    };
+  }, []);
 
   const MAX_CHARS = 5000;
 
@@ -159,45 +188,86 @@ ${resumeText}
   };
 
   return (
-    <div className="flex flex-col h-screen bg-black font-mono text-white">
-      <div
-        ref={containerRef}
-        className="flex-1 overflow-y-auto p-2 scanline scrollbar-thin scrollbar-thumb-[#00FFD1] scrollbar-track-black whitespace-pre-wrap"
-      >
-        {messages.map((m, i) => (
-          <div
-            key={i}
-            className={`mb-2 ${
-              m.from === "System"
-                ? "text-[#00FFD1]"
-                : m.from === "AI"
-                ? "text-[#FF4DB8]"
-                : "text-[#00FFD1]"
-            }`}
-          >
-            {m.text}
-          </div>
-        ))}
-        {loading && <div className="text-[#FF4DB8]">{">"} AI is typing...</div>}
+    <div className="flex flex-col w-full h-screen bg-black font-mono text-white overflow-hidden">
+      {/* Scroll Control Buttons */}
+      <div className="absolute top-2 right-2 flex flex-col gap-1 z-10">
+        <button
+          onMouseDown={() => startScrolling('up')}
+          onMouseUp={stopScrolling}
+          onMouseLeave={stopScrolling}
+          onTouchStart={() => startScrolling('up')}
+          onTouchEnd={stopScrolling}
+          className="w-10 h-10 bg-[#00FFD1] text-black rounded-sm hover:bg-[#00E6CC] active:bg-[#00D4BB] flex items-center justify-center font-bold text-xl"
+        >
+          ▲
+        </button>
+        <button
+          onMouseDown={() => startScrolling('down')}
+          onMouseUp={stopScrolling}
+          onMouseLeave={stopScrolling}
+          onTouchStart={() => startScrolling('down')}
+          onTouchEnd={stopScrolling}
+          className="w-10 h-10 bg-[#00FFD1] text-black rounded-sm hover:bg-[#00E6CC] active:bg-[#00D4BB] flex items-center justify-center font-bold text-xl"
+        >
+          ▼
+        </button>
       </div>
 
-      <div className="flex p-2 border-t border-[#00FFD1] bg-black/90">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={cooldown ? "> Please wait 5 seconds..." : "> Ask a question..."}
-          disabled={cooldown}
-          className="flex-1 px-3 py-2 bg-black border border-[#00FFD1] text-[#00FFD1] rounded-sm focus:outline-none focus:ring-2 focus:ring-[#00FFD1] placeholder-[#00FFD1]"
-        />
-        <button
-          onClick={sendMessage}
-          disabled={loading || cooldown}
-          className="ml-2 px-4 py-2 bg-[#00FFD1] text-black rounded-sm hover:bg-[#00E6CC] disabled:opacity-50"
-        >
-          Send
-        </button>
+      <div
+        ref={containerRef}
+        className="flex-1 overflow-y-auto overflow-x-hidden p-2 md:p-4 pr-14 md:pr-16 scanline"
+        style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#00FFD1 black',
+          WebkitOverflowScrolling: 'touch'
+        }}
+        onTouchMove={(e) => e.stopPropagation()}
+        onWheel={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        <div className="max-w-full px-0">
+          {messages.map((m, i) => (
+            <div
+              key={i}
+              className={`mb-2 ${
+                m.from === "System"
+                  ? "text-[#00FFD1]"
+                  : m.from === "AI"
+                  ? "text-[#FF4DB8]"
+                  : "text-[#00FFD1]"
+              }`}
+            >
+              <pre className="whitespace-pre-wrap font-mono text-sm md:text-base m-0">{m.text}</pre>
+            </div>
+          ))}
+          {loading && (
+            <div className="text-[#FF4DB8]">
+              <pre className="whitespace-pre-wrap font-mono text-sm md:text-base m-0">{">"} AI is typing...</pre>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      <div className="flex-shrink-0 p-2 md:p-4 border-t border-[#00FFD1] bg-black">
+        <div className="flex gap-2 max-w-full">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={cooldown ? "> Please wait 5s..." : "> Ask a question..."}
+            disabled={cooldown}
+            className="flex-1 min-w-0 px-3 py-2 text-sm md:text-base bg-black border border-[#00FFD1] text-[#00FFD1] rounded-sm focus:outline-none focus:ring-2 focus:ring-[#00FFD1] placeholder-[#00FFD1] placeholder-opacity-60"
+          />
+          <button
+            onClick={sendMessage}
+            disabled={loading || cooldown}
+            className="flex-shrink-0 px-3 md:px-4 py-2 text-sm md:text-base bg-[#00FFD1] text-black rounded-sm hover:bg-[#00E6CC] disabled:opacity-50 transition-colors"
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );
