@@ -37,6 +37,7 @@ const menuItems: MenuItem[] = [
     { label: 'About', path: '/about', icon: <User size={20} /> },
   { label: 'Projects', path: '/projects', icon: <Folder size={20} /> },
   { label: 'Skills', path: '/skills', icon: <Code size={20} /> },
+  { label: 'AI', path: '/AIAssistant', icon: <Code size={20} /> }, 
   { label: 'SkillGame', path: '/skill-game', icon: <Code size={20} /> }, 
 ];
 

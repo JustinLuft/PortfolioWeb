@@ -7,7 +7,8 @@ import {
   AboutPage, 
   ProjectShowcasePage, 
   NotFoundPage,
-  SkillGame
+  SkillGame,
+  AIAssistant,
 } from '@/pages';
 import NavigationMenu from '@/components/NavigationMenu';
 import InteractiveElements from '@/components/InteractiveElements';
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="/skill-game" element={<SkillGame />} /> {/* new route */}
           <Route path="/about" element={<AboutPage />} />
           <Route path="/projects" element={<ProjectShowcasePage />} />
+          <Route path="/AIAssistant" element={<AIAssistant />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>

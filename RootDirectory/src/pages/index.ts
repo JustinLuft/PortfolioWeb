@@ -4,3 +4,4 @@ export { default as AboutPage } from './AboutPage';
 export { default as ProjectShowcasePage } from './ProjectShowcasePage';
 export { default as NotFoundPage } from './NotFoundPage';
 export { default as SkillGame } from './SkillGame';
+export { default as AIAssistant } from './AIAssistant';
