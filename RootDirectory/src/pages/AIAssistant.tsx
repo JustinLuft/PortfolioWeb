@@ -104,12 +104,6 @@ export const AIAssistant: React.FC = () => {
     setCooldown(true);
     setTimeout(() => setCooldown(false), 5000);
 
-    // Add system typing notice
-    setMessages((prev) => [
-      ...prev,
-      { from: "System", text: "> AI is generating a response..." },
-    ]);
-
     const projectText = serializeProjects();
     const resumeText = await extractPdfText("/JustinLuftResume.pdf");
 
@@ -163,7 +157,7 @@ ${resumeText}
         const text = await res.text();
         console.error("Groq API error:", text);
         setMessages((prev) => [
-          ...prev.filter((m) => m.from !== "System" || !m.text.includes("AI is generating")),
+          ...prev,
           { from: "AI", text: "> Error: bad request to Groq API." },
         ]);
         setLoading(false);
@@ -174,13 +168,13 @@ ${resumeText}
       const answer = data.choices?.[0]?.message?.content || "Sorry, I couldn't generate an answer.";
 
       setMessages((prev) => [
-        ...prev.filter((m) => m.from !== "System" || !m.text.includes("AI is generating")),
+        ...prev,
         { from: "AI", text: `> ${truncateMessage(answer)}` },
       ]);
     } catch (err) {
       console.error(err);
       setMessages((prev) => [
-        ...prev.filter((m) => m.from !== "System" || !m.text.includes("AI is generating")),
+        ...prev,
         { from: "AI", text: "> Error: request failed." },
       ]);
     } finally {
@@ -193,7 +187,10 @@ ${resumeText}
   };
 
   return (
-    <div className="flex flex-col w-full h-screen bg-black font-mono text-white overflow-hidden">
+    <div className="flex flex-col w-full h-screen bg-black font-mono text-white overflow-hidden fixed inset-0"
+      onWheel={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
+    >
       {/* Scroll Control Buttons */}
       <div className="absolute top-2 right-2 flex flex-col gap-1 z-10">
         <button
@@ -224,11 +221,9 @@ ${resumeText}
         style={{
           scrollbarWidth: 'thin',
           scrollbarColor: '#00FFD1 black',
-          WebkitOverflowScrolling: 'touch'
+          WebkitOverflowScrolling: 'touch',
+          overscrollBehavior: 'contain'
         }}
-        onTouchMove={(e) => e.stopPropagation()}
-        onWheel={(e) => e.stopPropagation()}
-        onMouseDown={(e) => e.stopPropagation()}
       >
         <div className="max-w-full px-0">
           {messages.map((m, i) => (
