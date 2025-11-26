@@ -120,7 +120,7 @@ export const projects: Project[] = [
     id: 4,
     name: "CinemaCache",
     description:
-      "A personalized movie catalog and recommendation-prompt generator powered by Firebase and real-time data sync.",
+      "A personalized movie catalog and AI movie reccomendor powered by Firebase, GROQ, and real-time data sync.",
     skills: ["React", "TypeScript", "Firebase", "Firestore"],
     githubLink: "https://github.com/JustinLuft/CinemaCache",
     websiteLink: "https://cinema-cache.vercel.app/",
