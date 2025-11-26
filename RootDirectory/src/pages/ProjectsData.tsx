@@ -162,7 +162,7 @@ export const projects: Project[] = [
     }
   },
   {
-  id: 4,
+  id: 17,
   name: "AI Task Summarizer",
   description:
     "A lightweight AI-powered tool that transforms long or cluttered task descriptions into clean, actionable summaries. Designed to boost productivity and workflow clarity.",
