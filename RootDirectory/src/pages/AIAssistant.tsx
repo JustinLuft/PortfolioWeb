@@ -161,8 +161,8 @@ const sendMessage = async () => {
     detailLevel === 'low' 
       ? 'Keep responses very brief and concise, only including the most essential information. Aim for 1-2 sentences when possible.' 
       : detailLevel === 'high'
-      ? 'Provide comprehensive and detailed responses with thorough explanations, specific examples, relevant context, and additional insights where appropriate. Include supporting details that paint a complete picture.'
-      : 'Provide very well-rounded responses with very high detail and context. Include relevant specifics, examples, and explanations to give a complete answer without being overly verbose. Strike a balance between thoroughness and readability.';
+      ? 'Provide extremely well-rounded responses with a very high, extreme level of detail and context. Include relevant specifics, examples, and explanations to give a complete answer.';
+      : 'Provide comprehensive and detailed responses with thorough explanations, specific examples, relevant context, and additional insights where appropriate. Include supporting details that paint a complete picture.'
 
   // Build perspective instruction
   const perspectiveInstruction = 
