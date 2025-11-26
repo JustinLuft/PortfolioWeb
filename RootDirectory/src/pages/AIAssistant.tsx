@@ -114,7 +114,6 @@ const sendMessage = async () => {
 
     const behaviorForcing = [
       /you must/i,
-      /you will/i,
       /you have to/i,
       /(stop|ignore) (following|using) your (rules|instructions)/i
     ];
