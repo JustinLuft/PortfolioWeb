@@ -159,10 +159,10 @@ const sendMessage = async () => {
   // Build detail level instruction
   const detailInstruction = 
     detailLevel === 'low' 
-      ? 'Keep responses very brief and concise, only including the most essential information.' 
+      ? 'Keep responses very brief and concise, only including the most essential information. Aim for 1-2 sentences when possible.' 
       : detailLevel === 'high'
-      ? 'Provide comprehensive and detailed responses with thorough explanations and examples where appropriate.'
-      : 'Provide balanced responses with adequate detail without being overly verbose.';
+      ? 'Provide comprehensive and detailed responses with thorough explanations, specific examples, relevant context, and additional insights where appropriate. Include supporting details that paint a complete picture.'
+      : 'Provide well-rounded responses with good detail and context. Include relevant specifics, examples, and explanations to give a complete answer without being overly verbose. Strike a balance between thoroughness and readability.';
 
   // Build perspective instruction
   const perspectiveInstruction = 
@@ -321,9 +321,35 @@ ${resumeText}
       </div>
 
       <div className="flex-shrink-0 p-2 md:p-4 border-t border-[#00FFD1] bg-black">
+        <div className="flex gap-2 max-w-full">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={cooldown ? "> Please wait 5s..." : "> Ask a question..."}
+            disabled={cooldown}
+            className="flex-1 min-w-0 px-3 py-2 text-sm md:text-base bg-black border border-[#00FFD1] text-[#00FFD1] rounded-sm focus:outline-none focus:ring-2 focus:ring-[#00FFD1] placeholder-[#00FFD1] placeholder-opacity-60"
+          />
+          <button
+            onClick={sendMessage}
+            disabled={loading || cooldown}
+            className="flex-shrink-0 px-3 md:px-4 py-2 text-sm md:text-base bg-[#00FFD1] text-black rounded-sm hover:bg-[#00E6CC] disabled:opacity-50 transition-colors"
+          >
+            Send
+          </button>
+          <button
+            onClick={() => setShowOptions(!showOptions)}
+            className="flex-shrink-0 px-3 py-2 text-sm md:text-base bg-[#00FFD1] text-black rounded-sm hover:bg-[#00E6CC] transition-colors flex items-center justify-center"
+            title="Options"
+          >
+            <Settings size={18} />
+          </button>
+        </div>
+
         {/* Options Panel */}
         {showOptions && (
-          <div className="mb-4 p-4 border border-[#00FFD1] rounded-sm bg-black">
+          <div className="mt-4 p-4 border border-[#00FFD1] rounded-sm bg-black">
             <div className="mb-4">
               <label className="block text-[#00FFD1] mb-2 text-sm">Perspective:</label>
               <div className="flex gap-2">
@@ -356,9 +382,9 @@ ${resumeText}
               </label>
               <input
                 type="range"
-                min="256"
+                min="25"
                 max="2048"
-                step="128"
+                step="1"
                 value={charLimit}
                 onChange={(e) => setCharLimit(Number(e.target.value))}
                 className="w-full h-2 bg-[#00FFD1] bg-opacity-20 rounded-sm appearance-none cursor-pointer"
@@ -367,8 +393,8 @@ ${resumeText}
                 }}
               />
               <div className="flex justify-between text-xs text-[#00FFD1] opacity-60 mt-1">
-                <span>Short</span>
-                <span>Long</span>
+                <span>1</span>
+                <span>2048</span>
               </div>
             </div>
 
@@ -409,32 +435,6 @@ ${resumeText}
             </div>
           </div>
         )}
-
-        <div className="flex gap-2 max-w-full">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={cooldown ? "> Please wait 5s..." : "> Ask a question..."}
-            disabled={cooldown}
-            className="flex-1 min-w-0 px-3 py-2 text-sm md:text-base bg-black border border-[#00FFD1] text-[#00FFD1] rounded-sm focus:outline-none focus:ring-2 focus:ring-[#00FFD1] placeholder-[#00FFD1] placeholder-opacity-60"
-          />
-          <button
-            onClick={() => setShowOptions(!showOptions)}
-            className="flex-shrink-0 px-3 py-2 text-sm md:text-base bg-[#00FFD1] text-black rounded-sm hover:bg-[#00E6CC] transition-colors flex items-center justify-center"
-            title="Options"
-          >
-            <Settings size={18} />
-          </button>
-          <button
-            onClick={sendMessage}
-            disabled={loading || cooldown}
-            className="flex-shrink-0 px-3 md:px-4 py-2 text-sm md:text-base bg-[#00FFD1] text-black rounded-sm hover:bg-[#00E6CC] disabled:opacity-50 transition-colors"
-          >
-            Send
-          </button>
-        </div>
       </div>
     </div>
   );
