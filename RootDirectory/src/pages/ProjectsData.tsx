@@ -15,7 +15,8 @@ import {
   Table,
   Globe,
   Terminal,
-  Layers
+  Layers,
+  Sparkles
 } from 'lucide-react';
 
 // ============================================
