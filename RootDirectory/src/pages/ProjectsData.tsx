@@ -161,6 +161,33 @@ export const projects: Project[] = [
     }
   },
   {
+  id: 4,
+  name: "AI Task Summarizer",
+  description:
+    "A lightweight AI-powered tool that transforms long or cluttered task descriptions into clean, actionable summaries. Designed to boost productivity and workflow clarity.",
+  skills: ["React", "Vite", "Tailwind CSS", "Firebase", "JavaScript"],
+  githubLink: "https://github.com/JustinLuft/AI-task-summarizer",
+  websiteLink: "https://ai-task-summarizer.vercel.app/",
+  icon: <Sparkles className="w-5 h-5" />,
+  category: "web",
+  fullDetails: {
+    technologies: [
+      "React",
+      "Vite",
+      "Tailwind CSS",
+      "Firebase",
+      "JavaScript",
+      "Vercel"
+    ],
+    challenges: [
+      "Built an AI-powered summarization module to automatically condense long task descriptions.",
+      "Implemented real-time task storage and syncing using Firebase.",
+      "Designed a modular frontend structure with reusable React components and TailwindCSS for a clean, responsive UI."
+    ]
+  }
+},
+
+  {
     id: 2,
     name: "SC Bills Web Scraper",
     description:
