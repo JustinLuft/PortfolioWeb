@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CirclePower, User, Folder, Code } from 'lucide-react';
+import { CirclePower, User, Folder, Code, Brain, Bot, Gamepad2 } from 'lucide-react';
 
 interface MenuItem {
   label: string;
@@ -32,14 +32,14 @@ const NavigationMenu = () => {
     return () => clearInterval(interval);
   }, []);
 
-const menuItems: MenuItem[] = [
-  { label: 'Home', path: '/', icon: <CirclePower size={20} /> },
+  const menuItems: MenuItem[] = [
+    { label: 'Home', path: '/', icon: <CirclePower size={20} /> },
     { label: 'About', path: '/about', icon: <User size={20} /> },
-  { label: 'Projects', path: '/projects', icon: <Folder size={20} /> },
-  { label: 'Skills', path: '/skills', icon: <Code size={20} /> },
-  { label: 'AI', path: '/AIAssistant', icon: <Code size={20} /> }, 
-  { label: 'SkillGame', path: '/skill-game', icon: <Code size={20} /> }, 
-];
+    { label: 'Projects', path: '/projects', icon: <Folder size={20} /> },
+    { label: 'Skills', path: '/skills', icon: <Brain size={20} /> },
+    { label: 'AI', path: '/AIAssistant', icon: <Bot size={20} /> },
+    { label: 'SkillGame', path: '/skill-game', icon: <Gamepad2 size={20} /> },
+  ];
 
 
   const handleNavigation = (path: string) => {
@@ -116,26 +116,27 @@ const menuItems: MenuItem[] = [
         </div>
 
         {/* Active Indicator */}
-        <AnimatePresence>
-          {activeItem === item.path && (
-            <motion.div
-              layoutId="active-indicator"
-              initial={{ width: 0, height: 0 }}
-              animate={{
-                width: '100%',
-                height: '2px',
-                transition: { duration: 10, repeat: Infinity, repeatType: 'reverse' },
-              }}
-              className="
-                absolute 
-                bottom-0 left-0
-                md:bottom-0 md:left-0 md:w-full md:h-[2px]
-                bg-secondary
-                z-10
-              "
-            />
-          )}
-        </AnimatePresence>
+       <AnimatePresence>
+  {activeItem === item.path && (
+    <motion.div
+      layoutId="active-indicator"
+      initial={{ width: 0, height: 2 }}
+      animate={{
+        width: '100%', // <-- make it full width
+        height: '2px',
+        transition: { duration: 10, repeat: Infinity, repeatType: 'reverse' },
+      }}
+      exit={{ width: 0 }} // makes it disappear when unselected
+      className="
+        absolute 
+        bottom-0 left-0
+        bg-secondary
+        z-10
+      "
+    />
+  )}
+</AnimatePresence>
+
       </button>
 
       {/* Label */}
