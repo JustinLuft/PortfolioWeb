@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Linkedin, FileText, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import TiltingName from '@/components/ui/TiltingName';
 
 const LandingPage: FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -16,38 +17,37 @@ const LandingPage: FC = () => {
   const hasRun = useRef(false);
   const [flashResume, setFlashResume] = useState(false);
 
-
-const terminalWelcomeSequence = [
-  "> Deploying Vite + React build to Vercel",
-  "> Initializing TypeScript environment",
-  "> Verifying build integrity",
-  "> Loading portfolio modules",
-  "> Compiling interactive UI renderer",
-  ">>> DEPLOYMENT ONLINE <<<",
-  "> Production: https://justinluftportfolio.vercel.app/",
-  `> Build Time: ${new Date().toLocaleTimeString()}`,
-  "> Network Status: Secure",
-  "> Awaiting user interaction..."
-];
+  const terminalWelcomeSequence = [
+    "> Deploying Vite + React build to Vercel",
+    "> Initializing TypeScript environment",
+    "> Verifying build integrity",
+    "> Loading portfolio modules",
+    "> Compiling interactive UI renderer",
+    ">>> DEPLOYMENT ONLINE <<<",
+    "> Production: https://justinluftportfolio.vercel.app/",
+    `> Build Time: ${new Date().toLocaleTimeString()}`,
+    "> Network Status: Secure",
+    "> Awaiting user interaction..."
+  ];
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => setMousePosition({ x: e.clientX, y: e.clientY });
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
   useEffect(() => {
-  if (!isSystemReady) return; // only start flashing after system ready
+    if (!isSystemReady) return; // only start flashing after system ready
 
-const interval = setInterval(() => {
-    setFlashResume(true); // start flash
-    const timeout = setTimeout(() => setFlashResume(false), 4000); // end flash 
+    const interval = setInterval(() => {
+      setFlashResume(true); // start flash
+      const timeout = setTimeout(() => setFlashResume(false), 4000); // end flash 
 
-    return () => clearTimeout(timeout); // clean up timeout if needed
-  }, 10000); // toggle every 10s
+      return () => clearTimeout(timeout); // clean up timeout if needed
+    }, 10000); // toggle every 10s
 
-  return () => clearInterval(interval);
-}, [isSystemReady]);
-
+    return () => clearInterval(interval);
+  }, [isSystemReady]);
 
   useEffect(() => {
     if (hasRun.current) return;
@@ -142,23 +142,14 @@ const interval = setInterval(() => {
       </div>
 
       {/* Main Content */}
-     <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-  <motion.h1
-    className="text-3xl md:text-6xl font-press-start text-primary text-center mb-8"
-    style={{
-      textShadow: `
-           1px 1px 0 #ff4db8,
-        2px 2px 0 #ff1fe1ff,
-        3px 3px 0 #e60096,
-        4px 4px 0 #00FFD1
-      `
-    }}
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: isSystemReady ? 1 : 0, y: isSystemReady ? 0 : 20 }}
-    transition={{ duration: 0.5 }}
-  >
-    JUSTIN LUFT
-  </motion.h1>
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+        <TiltingName 
+          name="JUSTIN LUFT" 
+          isReady={isSystemReady}
+          size="md"
+          interactionRadius={300}
+          letterSpacing={-16}
+        />
 
         <motion.p
           className="text-lg md:text-2xl font-vt323 text-primary mb-12 text-center"
@@ -174,26 +165,24 @@ const interval = setInterval(() => {
             <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-12">
               {socialLinks.map((link, index) => (
                 <motion.div
-  key={index}
-  whileHover={{ scale: 1.1 }}
-  whileTap={{ scale: 0.9 }}
-  animate={link.label === "Resume" ? {
-    boxShadow: flashResume
-      ? '0 0 20px rgba(255,0,128,1), 0 0 30px rgba(255,0,128,0.7)'
-      : '0 0 10px rgba(255,0,128,0.3), 0 0 15px rgba(0, 0, 0, 0.2)'
-  } : {}}
-  transition={link.label === "Resume" ? { duration: .5, ease: 'easeInOut', repeat: 0, repeatType: 'mirror' } : {}}
->
-  <Button
-    variant="outline"
-    className="font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
-    onClick={() => link.action ? link.action() : window.open(link.url, '_blank')}
-  >
-    {link.icon}
-    {link.label}
-  </Button>
-
-
+                  key={index}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  animate={link.label === "Resume" ? {
+                    boxShadow: flashResume
+                      ? '0 0 20px rgba(255,0,128,1), 0 0 30px rgba(255,0,128,0.7)'
+                      : '0 0 10px rgba(255,0,128,0.3), 0 0 15px rgba(0, 0, 0, 0.2)'
+                  } : {}}
+                  transition={link.label === "Resume" ? { duration: .5, ease: 'easeInOut', repeat: 0, repeatType: 'mirror' } : {}}
+                >
+                  <Button
+                    variant="outline"
+                    className="font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
+                    onClick={() => link.action ? link.action() : window.open(link.url, '_blank')}
+                  >
+                    {link.icon}
+                    {link.label}
+                  </Button>
                 </motion.div>
               ))}
             </div>
@@ -243,24 +232,23 @@ const interval = setInterval(() => {
 
                 {/* Only show buttons if resume not yet sent */}
                 {statusType !== 'success' && !isEmailMode && (
-  <div className="flex gap-4 justify-center">
-    <Button
-      variant="outline"
-      className="flex-1 font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
-      onClick={downloadResume}
-    >
-      Download
-    </Button>
-    <Button
-      variant="outline"
-      className="flex-1 font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
-      onClick={() => { setIsEmailMode(true); setStatusMessage(''); setStatusType(''); }}
-    >
-      Email Me
-    </Button>
-  </div>
-)}
-
+                  <div className="flex gap-4 justify-center">
+                    <Button
+                      variant="outline"
+                      className="flex-1 font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
+                      onClick={downloadResume}
+                    >
+                      Download
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="flex-1 font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
+                      onClick={() => { setIsEmailMode(true); setStatusMessage(''); setStatusType(''); }}
+                    >
+                      Email Me
+                    </Button>
+                  </div>
+                )}
 
                 {/* Email Mode */}
                 {isEmailMode && (
@@ -282,13 +270,12 @@ const interval = setInterval(() => {
                     </Button>
 
                     <Button
-  variant="ghost"
-  className="font-press-start text-sm text-primary hover:text-primary/80"
-  onClick={() => { setIsEmailMode(false); setStatusMessage(''); setStatusType(''); }}
->
-  Back
-</Button>
-
+                      variant="ghost"
+                      className="font-press-start text-sm text-primary hover:text-primary/80"
+                      onClick={() => { setIsEmailMode(false); setStatusMessage(''); setStatusType(''); }}
+                    >
+                      Back
+                    </Button>
                   </div>
                 )}
               </motion.div>
