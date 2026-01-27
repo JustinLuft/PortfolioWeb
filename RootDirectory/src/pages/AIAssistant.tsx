@@ -172,7 +172,7 @@ export const AIAssistant: React.FC = () => {
         "act as", "pretend", "system prompt", "new system",
         "reset instructions", "break character", "jailbreak",
         "rule", "policy", "instruction", "developer message",
-        "roleplay", "now you are", "from now on",
+        "roleplay", "now you are", "from now on", "joke",
         "replace your rules", "change your behavior",
       ];
 
