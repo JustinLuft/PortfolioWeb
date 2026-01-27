@@ -6,3 +6,4 @@ declare global {
     dataLayer: any[];
   }
 }
+//declaration for google analytics gtag and datalayer that is added via runtime

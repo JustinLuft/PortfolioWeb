@@ -23,6 +23,12 @@ const usePageTracking = () => {
       window.gtag('event', 'page_view', { page_path: location.pathname });
     }
   }, [location]);
+
+  //scroll reset
+  useEffect(() => {
+  window.scrollTo(0, 0);
+}, [location.pathname]);
+
 };
 
 const App = () => {
@@ -51,6 +57,9 @@ const App = () => {
     </div>
   );
 };
+
+
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
