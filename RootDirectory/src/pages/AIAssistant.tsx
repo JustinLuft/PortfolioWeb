@@ -132,7 +132,7 @@ export const AIAssistant: React.FC = () => {
     URL.revokeObjectURL(url); // clean up
   };
 
-  // Typing effect function
+  // Fake typing effect function to act as user cooldown
   const typeMessage = async (text: string) => {
     setIsTyping(true);
     const fullText = `> ${truncateMessage(text)}`;
@@ -380,6 +380,7 @@ ${resumeText}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            //prevent typing while ai is responding
             placeholder={cooldown ? "> Please wait 5s..." : isTyping ? "> AI is responding..." : "> Ask a question..."}
             disabled={cooldown || isTyping}
             className="flex-1 min-w-0 px-3 py-2 text-sm md:text-base bg-black border border-[#00FFD1] text-[#00FFD1] rounded-sm focus:outline-none focus:ring-2 focus:ring-[#00FFD1] placeholder-[#00FFD1] placeholder-opacity-60"

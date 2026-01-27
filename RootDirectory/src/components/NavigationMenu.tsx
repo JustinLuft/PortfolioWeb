@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CirclePower, User, Folder, Code, Brain, Bot, Gamepad2 } from 'lucide-react';
+
 
 interface MenuItem {
   label: string;
@@ -9,9 +10,9 @@ interface MenuItem {
   icon: JSX.Element;
 }
 
+
 const NavigationMenu = () => {
   const navigate = useNavigate();
-  const [activeItem, setActiveItem] = useState<string>(window.location.pathname);
   const [cyberLines, setCyberLines] = useState<
     { x: number; opacity: number; length: number; rotation: number; speed: number }[]
   >([]);
@@ -32,6 +33,9 @@ const NavigationMenu = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const location = useLocation();
+  const activeItem = location.pathname;
+
   const menuItems: MenuItem[] = [
     { label: 'Home', path: '/', icon: <CirclePower size={20} /> },
     { label: 'About', path: '/about', icon: <User size={20} /> },
@@ -43,9 +47,9 @@ const NavigationMenu = () => {
 
 
   const handleNavigation = (path: string) => {
-    setActiveItem(path);
-    navigate(path);
-  };
+  navigate(path);
+};
+
 
   return (
     <nav
