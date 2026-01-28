@@ -107,7 +107,7 @@ export const AIAssistant: React.FC = () => {
   // ---------------- Projects ----------------
   const serializeProjects = () =>
     projects
-      .slice(0, 10)
+      //.slice(0, 10)
       .map(
         (p) => `Project: ${p.name}, Category: ${p.category}, Skills: ${p.skills.join(", ")}`
       )
