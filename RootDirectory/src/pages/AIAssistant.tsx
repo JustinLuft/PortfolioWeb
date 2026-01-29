@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { projects } from "./ProjectsData";
 import * as pdfjsLib from 'pdfjs-dist';
 import { Settings, Download } from 'lucide-react';
+import { AnimatedRobot } from '@/components/ui/animatedRobot';
 
 // Set up PDF.js worker - using unpkg to automatically match the installed version
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
@@ -24,6 +25,7 @@ export const AIAssistant: React.FC = () => {
   const [isScrolling, setIsScrolling] = useState<'up' | 'down' | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [typingDots, setTypingDots] = useState(0);
+  const [isAngry, setIsAngry] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollIntervalRef = useRef<number | null>(null);
@@ -33,6 +35,28 @@ export const AIAssistant: React.FC = () => {
   const [perspective, setPerspective] = useState<'first' | 'third'>('third');
   const [detailLevel, setDetailLevel] = useState<'low' | 'normal' | 'high'>('normal');
   const [outputStyle, setOutputStyle] = useState<'normal' | 'bullets' | 'text'>('normal');
+
+  // Check if mobile
+  const [isMobile, setIsMobile] = useState(false);
+  const robotShownBeforeRef = useRef(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Mark robot as shown after first render (to skip entrance animation on subsequent shows)
+  useEffect(() => {
+    if (!isMobile && !showOptions) {
+      robotShownBeforeRef.current = true;
+    }
+  }, [showOptions, isMobile]);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -49,6 +73,13 @@ export const AIAssistant: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [loading]);
+
+  // Reset anger when typing stops
+  useEffect(() => {
+    if (!isTyping && isAngry) {
+      setIsAngry(false);
+    }
+  }, [isTyping, isAngry]);
 
   // Scroll control functions
   const startScrolling = (direction: 'up' | 'down') => {
@@ -196,6 +227,7 @@ export const AIAssistant: React.FC = () => {
     }
 
     if (isPromptInjection(input)) {
+      setIsAngry(true); // Trigger angry robot animation
       await typeMessage("Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.");
       setInput("");
       return;
@@ -373,7 +405,22 @@ ${resumeText}
         </div>
       </div>
 
-      <div className="flex-shrink-0 p-2 md:p-4 border-t border-[#00FFD1] bg-black">
+      <div className="flex-shrink-0 p-2 md:p-4 border-t border-[#00FFD1] bg-black relative">
+        {/* Robot in bottom right corner - hidden on mobile and when settings are open */}
+        {!isMobile && !showOptions && (
+          <div className="absolute right-2 bottom-20 z-20">
+            <AnimatedRobot 
+              isSpeaking={loading}
+              isTyping={isTyping}
+              perspective={perspective}
+              detailLevel={detailLevel}
+              outputStyle={outputStyle}
+              isAngry={isAngry}
+              skipEntrance={robotShownBeforeRef.current}
+            />
+          </div>
+        )}
+
         <div className="flex gap-2 max-w-full">
           <input
             type="text"
@@ -411,9 +458,11 @@ ${resumeText}
 
         {/* Options Panel */}
         {showOptions && (
-          <div className="mt-4 p-4 border border-[#00FFD1] rounded-sm bg-black">
+          <div className="mt-4 p-4 border border-[#00FFD1] rounded-sm bg-black animate-slideUp">
             <div className="mb-4">
-              <label className="block text-[#00FFD1] mb-2 text-sm">Perspective:</label>
+              <label className="block text-[#00FFD1] mb-2 text-sm">
+                Perspective: <span className="text-xs opacity-70">(Third = Cyan, First = Pink)</span>
+              </label>
               <div className="flex gap-2">
                 <button
                   onClick={() => setPerspective('first')}
@@ -439,7 +488,9 @@ ${resumeText}
             </div>
 
             <div className="mb-4">
-              <label className="block text-[#00FFD1] mb-2 text-sm">Detail Level:</label>
+              <label className="block text-[#00FFD1] mb-2 text-sm">
+                Detail Level: <span className="text-xs opacity-70">(Changes robot size)</span>
+              </label>
               <div className="flex gap-2">
                 <button
                   onClick={() => setDetailLevel('low')}
@@ -475,7 +526,9 @@ ${resumeText}
             </div>
 
             <div>
-              <label className="block text-[#00FFD1] mb-2 text-sm">Output Style:</label>
+              <label className="block text-[#00FFD1] mb-2 text-sm">
+                Output Style: <span className="text-xs opacity-70">(Changes chest display)</span>
+              </label>
               <div className="flex gap-2">
                 <button
                   onClick={() => setOutputStyle('normal')}
@@ -512,6 +565,23 @@ ${resumeText}
           </div>
         )}
       </div>
+
+      {/* Custom CSS for slide-up animation */}
+      <style>{`
+        @keyframes slideUp {
+          0% {
+            transform: translateY(20px);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        .animate-slideUp {
+          animation: slideUp 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
