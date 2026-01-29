@@ -42,6 +42,7 @@ export const AnimatedRobot: React.FC<AnimatedRobotProps> = ({
   const timeRef = useRef(0);
   const mousePositionRef = useRef({ x: 0, y: 0 });
   const headTargetRef = useRef({ x: 0, y: 0 });
+  const headCurrentRef = useRef({ x: 0, y: 0 }); // Current smoothed head rotation
   const entranceProgressRef = useRef(1); // Start at 1 (completed) by default
   const hasStartedEntranceRef = useRef(false);
 
@@ -401,21 +402,27 @@ export const AnimatedRobot: React.FC<AnimatedRobotProps> = ({
         scene.scale.set(scaleValue, scaleValue, scaleValue);
         
         // Entrance visual affects camera/scale only (head stays controlled by cursor)
-      } else if (entranceProgressRef.current >= 1) {
+      }
+      
+      // Update head target from cursor (ALWAYS, regardless of animation state)
+      const targetRotationY = mousePositionRef.current.x * 1;
+      const targetRotationX = mousePositionRef.current.y * -1;
+      
+      // Clamp rotations to prevent face from turning away completely
+      const clampedRotationY = Math.max(-0.6, Math.min(0.6, targetRotationY));
+      const clampedRotationX = Math.max(-0.3, Math.min(0.4, targetRotationX));
+      
+      // Update head target from cursor
+      headTargetRef.current.x = clampedRotationX;
+      headTargetRef.current.y = clampedRotationY;
+      
+      // Smooth interpolation for head movement (ALWAYS applied)
+      const headSmoothingFactor = 0.15; // Lower = smoother, higher = more responsive
+      headCurrentRef.current.x += (headTargetRef.current.x - headCurrentRef.current.x) * headSmoothingFactor;
+      headCurrentRef.current.y += (headTargetRef.current.y - headCurrentRef.current.y) * headSmoothingFactor;
+      
+      if (entranceProgressRef.current >= 1) {
         // Normal idle animation after entrance is complete
-        if (robotPartsRef.current.head) {
-          // Head follows cursor - ONLY thing that controls head rotation
-          const targetRotationY = mousePositionRef.current.x * 1;
-          const targetRotationX = mousePositionRef.current.y * -1;
-          
-          // Clamp rotations to prevent face from turning away completely
-          const clampedRotationY = Math.max(-0.6, Math.min(0.6, targetRotationY));
-          const clampedRotationX = Math.max(-0.3, Math.min(0.4, targetRotationX));
-          
-          // Update head target from cursor only
-          headTargetRef.current.x = clampedRotationX;
-          headTargetRef.current.y = clampedRotationY;
-        } 
         if (robotPartsRef.current.antenna) {
           robotPartsRef.current.antenna.rotation.z = Math.sin(timeRef.current * 3) * 0.1;
         }
@@ -428,8 +435,6 @@ export const AnimatedRobot: React.FC<AnimatedRobotProps> = ({
 
         // Anger animation
         if (isAngry) {
-          // (Head rotation is controlled only by cursor; keep other anger effects elsewhere)
-          
           // Turn eyes red and make them glow
           if (robotPartsRef.current.leftEye) {
             (robotPartsRef.current.leftEye.material as THREE.MeshPhongMaterial).color.setHex(0xff0000);
@@ -589,20 +594,15 @@ export const AnimatedRobot: React.FC<AnimatedRobotProps> = ({
         }
       }
 
-      // Apply head target (cursor-only control) last so nothing else overrides it
+      // CRITICAL: Apply smoothed head rotation LAST (cursor-only control, nothing else affects this)
       if (robotPartsRef.current.head) {
-        const tx = headTargetRef.current.x;
-        const ty = headTargetRef.current.y;
-
-        // Smoothly interpolate towards the cursor target for natural motion
-        const smoothing = 0.12;
-        robotPartsRef.current.head.rotation.x += (tx - robotPartsRef.current.head.rotation.x) * smoothing;
-        robotPartsRef.current.head.rotation.y += (ty - robotPartsRef.current.head.rotation.y) * smoothing;
-
-        // Compute and smooth vertical adjustment to prevent clipping
-        const downwardAdjustmentFinal = Math.max(0, -robotPartsRef.current.head.rotation.x * 0.3);
-        const targetHeadY = 1.5 + downwardAdjustmentFinal + Math.sin(timeRef.current * 2) * 0.05;
-        robotPartsRef.current.head.position.y += (targetHeadY - robotPartsRef.current.head.position.y) * smoothing;
+        // Use the smoothed values
+        robotPartsRef.current.head.rotation.x = headCurrentRef.current.x;
+        robotPartsRef.current.head.rotation.y = headCurrentRef.current.y;
+        
+        // Calculate head position with breathing and downward adjustment
+        const downwardAdjustmentFinal = Math.max(0, -headCurrentRef.current.x * 0.3);
+        robotPartsRef.current.head.position.y = 1.5 + downwardAdjustmentFinal + Math.sin(timeRef.current * 2) * 0.05;
       }
 
       renderer.render(scene, camera);
