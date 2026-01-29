@@ -4,6 +4,17 @@ import { Linkedin, FileText, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import TiltingName from '@/components/ui/TiltingName';
 
+interface ConfettiPiece {
+  id: number;
+  x: number;
+  y: number;
+  rotation: number;
+  scale: number;
+  velocityX: number;
+  velocityY: number;
+  rotationSpeed: number;
+}
+
 const LandingPage: FC = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [terminalLines, setTerminalLines] = useState<string[]>([]);
@@ -16,6 +27,8 @@ const LandingPage: FC = () => {
   const [statusType, setStatusType] = useState<'success' | 'error' | ''>('');
   const hasRun = useRef(false);
   const [flashResume, setFlashResume] = useState(false);
+  const [confetti, setConfetti] = useState<ConfettiPiece[]>([]);
+  const confettiRef = useRef<number>(0);
 
   const terminalWelcomeSequence = [
     "> Deploying Vite + React build to Vercel",
@@ -37,14 +50,14 @@ const LandingPage: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!isSystemReady) return; // only start flashing after system ready
+    if (!isSystemReady) return;
 
     const interval = setInterval(() => {
-      setFlashResume(true); // start flash
-      const timeout = setTimeout(() => setFlashResume(false), 4000); // end flash 
+      setFlashResume(true);
+      const timeout = setTimeout(() => setFlashResume(false), 4000);
 
-      return () => clearTimeout(timeout); // clean up timeout if needed
-    }, 10000); // toggle every 10s
+      return () => clearTimeout(timeout);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [isSystemReady]);
@@ -60,6 +73,48 @@ const LandingPage: FC = () => {
     });
   }, []);
 
+  const createConfetti = () => {
+    const pieces: ConfettiPiece[] = [];
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    for (let i = 0; i < 50; i++) {
+      pieces.push({
+        id: confettiRef.current++,
+        x: centerX,
+        y: centerY,
+        rotation: Math.random() * 360,
+        scale: Math.random() * 0.5 + 0.5,
+        velocityX: (Math.random() - 0.5) * 10,
+        velocityY: Math.random() * -8 - 5,
+        rotationSpeed: (Math.random() - 0.5) * 10,
+      });
+    }
+
+    setConfetti(pieces);
+
+    // Clear confetti after animation
+    setTimeout(() => setConfetti([]), 3000);
+  };
+
+  useEffect(() => {
+    if (confetti.length === 0) return;
+
+    const interval = setInterval(() => {
+      setConfetti(prev =>
+        prev.map(piece => ({
+          ...piece,
+          x: piece.x + piece.velocityX,
+          y: piece.y + piece.velocityY,
+          rotation: piece.rotation + piece.rotationSpeed,
+          velocityY: piece.velocityY + 0.3, // gravity
+        }))
+      );
+    }, 16);
+
+    return () => clearInterval(interval);
+  }, [confetti.length]);
+
   const downloadResume = () => {
     const a = document.createElement('a');
     a.href = '/JustinLuftResume.pdf';
@@ -68,6 +123,7 @@ const LandingPage: FC = () => {
     a.click();
     document.body.removeChild(a);
     setResumeModalOpen(false);
+    createConfetti();
   };
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -282,6 +338,22 @@ const LandingPage: FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Confetti */}
+        {confetti.map(piece => (
+          <motion.div
+            key={piece.id}
+            className="fixed w-3 h-3 bg-pink-500 pointer-events-none z-[100]"
+            style={{
+              left: piece.x,
+              top: piece.y,
+              transform: `rotate(${piece.rotation}deg) scale(${piece.scale})`,
+            }}
+            initial={{ opacity: 1 }}
+            animate={{ opacity: piece.y > window.innerHeight ? 0 : 1 }}
+            transition={{ duration: 0.3 }}
+          />
+        ))}
 
         {/* Custom Mouse Pointer */}
         <motion.div
