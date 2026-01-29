@@ -228,7 +228,7 @@ export const AIAssistant: React.FC = () => {
 
     if (isPromptInjection(input)) {
       setIsAngry(true); // Trigger angry robot animation
-      await typeMessage("Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.");
+      await typeMessage("Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.");
       setInput("");
       return;
     }
@@ -381,7 +381,8 @@ ${resumeText}
         onWheel={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <div className="max-w-full px-0">
+        {/* Add padding bottom to prevent text from going behind robot - only when robot is visible */}
+        <div className={`max-w-full px-0 ${!isMobile && !showOptions ? 'pb-52' : ''}`}>
           {messages.map((m, i) => (
             <div
               key={i}
@@ -408,7 +409,7 @@ ${resumeText}
       <div className="flex-shrink-0 p-2 md:p-4 border-t border-[#00FFD1] bg-black relative">
         {/* Robot in bottom right corner - hidden on mobile and when settings are open */}
         {!isMobile && !showOptions && (
-          <div className="absolute right-2 bottom-20 z-20">
+          <div className="absolute right-2 bottom-20 z-20 pointer-events-none">
             <AnimatedRobot 
               isSpeaking={loading}
               isTyping={isTyping}
