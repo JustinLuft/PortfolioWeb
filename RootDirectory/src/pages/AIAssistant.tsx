@@ -228,7 +228,7 @@ export const AIAssistant: React.FC = () => {
 
     if (isPromptInjection(input)) {
       setIsAngry(true); // Trigger angry robot animation
-      await typeMessage("Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.");
+      await typeMessage("Please stop trying to override my rules. I can only provide information about Justin Luft's portfolio and resume.");
       setInput("");
       return;
     }
