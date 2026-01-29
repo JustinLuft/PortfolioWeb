@@ -593,10 +593,16 @@ export const AnimatedRobot: React.FC<AnimatedRobotProps> = ({
       if (robotPartsRef.current.head) {
         const tx = headTargetRef.current.x;
         const ty = headTargetRef.current.y;
-        robotPartsRef.current.head.rotation.x = tx;
-        robotPartsRef.current.head.rotation.y = ty;
-        const downwardAdjustmentFinal = Math.max(0, -tx * 0.3);
-        robotPartsRef.current.head.position.y = 1.5 + downwardAdjustmentFinal + Math.sin(timeRef.current * 2) * 0.05;
+
+        // Smoothly interpolate towards the cursor target for natural motion
+        const smoothing = 0.12;
+        robotPartsRef.current.head.rotation.x += (tx - robotPartsRef.current.head.rotation.x) * smoothing;
+        robotPartsRef.current.head.rotation.y += (ty - robotPartsRef.current.head.rotation.y) * smoothing;
+
+        // Compute and smooth vertical adjustment to prevent clipping
+        const downwardAdjustmentFinal = Math.max(0, -robotPartsRef.current.head.rotation.x * 0.3);
+        const targetHeadY = 1.5 + downwardAdjustmentFinal + Math.sin(timeRef.current * 2) * 0.05;
+        robotPartsRef.current.head.position.y += (targetHeadY - robotPartsRef.current.head.position.y) * smoothing;
       }
 
       renderer.render(scene, camera);
