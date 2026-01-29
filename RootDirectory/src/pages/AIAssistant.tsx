@@ -462,7 +462,7 @@ ${resumeText}
           <div className="mt-4 p-4 border border-[#00FFD1] rounded-sm bg-black animate-slideUp">
             <div className="mb-4">
               <label className="block text-[#00FFD1] mb-2 text-sm">
-                Perspective: <span className="text-xs opacity-70">(Third = Cyan, First = Pink)</span>
+                Perspective: <span className="text-xs opacity-70"></span>
               </label>
               <div className="flex gap-2">
                 <button
@@ -490,7 +490,7 @@ ${resumeText}
 
             <div className="mb-4">
               <label className="block text-[#00FFD1] mb-2 text-sm">
-                Detail Level: <span className="text-xs opacity-70">(Changes robot size)</span>
+                Detail Level: <span className="text-xs opacity-70"></span>
               </label>
               <div className="flex gap-2">
                 <button
@@ -528,7 +528,7 @@ ${resumeText}
 
             <div>
               <label className="block text-[#00FFD1] mb-2 text-sm">
-                Output Style: <span className="text-xs opacity-70">(Changes chest display)</span>
+                Output Style: <span className="text-xs opacity-70"></span>
               </label>
               <div className="flex gap-2">
                 <button
