@@ -398,7 +398,7 @@ export const projects: Project[] = [
   description:
     "An enterprise-wide Power BI reporting solution for tracking Layered Process Audit (LPA) completion rates across production shops, powered by a custom Python Tkinter web scraping application.",
   skills: ["Power BI", "Python", "Tkinter", "Web Scraping", "Data Modeling"],
-  githubLink: "",
+  githubLink: "https://github.com/JustinLuft/useridextractor",
   icon: <BarChart3 className="w-5 h-5" />,
   category: "tools",
   fullDetails: {
