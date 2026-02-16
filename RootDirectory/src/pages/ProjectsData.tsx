@@ -16,7 +16,8 @@ import {
   Globe,
   Terminal,
   Layers,
-  Sparkles
+  Sparkles,
+  BarChart
 } from 'lucide-react';
 
 // ============================================
@@ -391,6 +392,24 @@ export const projects: Project[] = [
   // ==========================================
   // TOOLS & UTILITIES
   // ==========================================
+  {
+  id: 8,
+  name: "Mercedes-Benz LPA Tracker Power BI Visual",
+  description:
+    "An enterprise-wide Power BI reporting solution for tracking Layered Process Audit (LPA) completion rates across production shops, powered by a custom Python Tkinter web scraping application.",
+  skills: ["Power BI", "Python", "Tkinter", "Web Scraping", "Data Modeling"],
+  githubLink: "",
+  icon: <BarChart3 className="w-5 h-5" />,
+  category: "tools",
+  fullDetails: {
+    technologies: ["Power BI", "Python", "Tkinter", "Pandas", "DAX"],
+    challenges: [
+      "Built a Python Tkinter application to scrape and aggregate team member IDs and production line locations into structured datasets.",
+      "Designed a scalable Power BI data model to track LPA completion by shop and calendar week with dynamic filtering and drilldowns.",
+      "Improved plant-wide LPA compliance rates from ~60% to consistently 90–100% by increasing data visibility and accountability."
+    ]
+  }
+},
   {
     id: 1,
     name: "Photo Booth Experience",
