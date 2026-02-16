@@ -17,7 +17,7 @@ import {
   Terminal,
   Layers,
   Sparkles,
-  BarChart
+  BarChart3
 } from 'lucide-react';
 
 // ============================================
