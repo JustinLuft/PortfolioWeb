@@ -14,26 +14,51 @@ My personal personal portfolio website built with **React**, **TypeScript**, **T
 
 ```
 Root Directory/
+├── api
+│   └── sendResume.ts
 ├── index.html
+├── package-lock.json
 ├── package.json
+├── postcss.config.cjs
+├── public
+│   └── JustinLuftResume.pdf
+├── src
+│   ├── Types
+│   │   ├── env.d.ts
+│   │   ├── global.d.ts
+│   │   ├── nodemailer.d.ts
+│   │   └── pdfjs-dist.d.ts
+│   ├── analytics.ts
+│   ├── components
+│   │   ├── InteractiveElements.tsx
+│   │   ├── NavigationMenu.tsx
+│   │   ├── game
+│   │   │   └── GameComponents.tsx
+│   │   └── ui
+│   │       ├── Interactive3DCube.tsx
+│   │       ├── Letter3D.tsx
+│   │       ├── TiltingName.tsx
+│   │       ├── animatedRobot.tsx
+│   │       ├── button.tsx
+│   │       └── card.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   ├── pages
+│   │   ├── AIAssistant.tsx
+│   │   ├── AboutPage.tsx
+│   │   ├── LandingPage.tsx
+│   │   ├── NotFoundPage.tsx
+│   │   ├── ProjectShowcasePage.tsx
+│   │   ├── ProjectsData.tsx
+│   │   ├── SkillGame.tsx
+│   │   ├── SkillsPage.tsx
+│   │   └── index.ts
+│   └── usePageTracking.ts
 ├── tailwind.config.js
-├── vite.config.ts
-├── public/
-│   └── resume.pdf
-└── src/
-    ├── App.tsx
-    ├── main.tsx
-    ├── index.css
-    ├── components/
-    │   ├── NavigationMenu.tsx
-    │   ├── ProjectGallery.tsx
-    │   └── ui/
-    ├── pages/
-    │   ├── LandingPage.tsx
-    │   ├── AboutPage.tsx
-    │   ├── SkillsPage.tsx
-    │   ├── ProjectShowcasePage.tsx
-    │   └── NotFoundPage.tsx
+├── tsconfig.json
+├── tsconfig.node.json
+├── vercel.json
+└── vite.config.ts
 ```
 ## 🛠️ Installation & Setup
 1. Clone this repo:
