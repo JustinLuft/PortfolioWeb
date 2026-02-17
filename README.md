@@ -5,12 +5,22 @@ My personal personal portfolio website built with **React**, **TypeScript**, **T
 👉 [View Portfolio](https://portfolio-web-mu-ten.vercel.app/)
 
 ## 🚀 Features
-- ⚡️ Fast and optimized with Vite
-- 🎨 Styled with TailwindCSS
-- 📄 Resume download support
-- 🖼️ Project showcase with reusable components
-- 🧭 Responsive navigation menu
-- ✨ TypeScript for type safety
+-⚡️ Fast and optimized with Vite
+-🎨 Styled with TailwindCSS
+-📄 Resume download support
+-🖼️ Project showcase with reusable components
+-🧭 Responsive navigation menu
+-✨ TypeScript for type safety
+-📊 Analytics tracking for user interactions (analytics.ts, usePageTracking.ts)
+-🕹️ Interactive mini-games (SkillGame.tsx, GameComponents.tsx)
+-🧩 Modular and reusable UI components (ui folder: 3D cube, letters, animations, buttons, cards)
+-📨 Resume submission via API (sendResume.ts)
+-🌐 Multi-page support with routing (pages folder: landing, about, projects, skills, 404)
+-📝 Strong typing for external libraries (pdfjs-dist.d.ts, nodemailer.d.ts)
+-🎮 Interactive and animated elements for enhanced UX (InteractiveElements.tsx, animatedRobot.tsx, TiltingName.tsx)
+-📦 Configured for deployment with Vercel (vercel.json)
+-🔧 Fully typed configuration and project setup (tsconfig.json, vite.config.ts, tailwind.config.js)
+-🗂️ Organized project structure for scalability and maintainability
 
 ```
 Root Directory/
@@ -60,8 +70,3 @@ Root Directory/
 ├── vercel.json
 └── vite.config.ts
 ```
-## 🛠️ Installation & Setup
-1. Clone this repo:
-   ```bash
-   git clone https://github.com/yourusername/PortfolioWeb.git
-   cd PortfolioWeb-main/Root\ Directory
