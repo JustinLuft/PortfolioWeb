@@ -5,6 +5,7 @@ My personal personal portfolio website built with **React**, **TypeScript**, **T
 👉 [View Portfolio](https://portfolio-web-mu-ten.vercel.app/)
 
 ## 🚀 Features
+```
 -⚡️ Fast and optimized with Vite
 -🎨 Styled with TailwindCSS
 -📄 Resume download support
@@ -21,6 +22,7 @@ My personal personal portfolio website built with **React**, **TypeScript**, **T
 -📦 Configured for deployment with Vercel (vercel.json)
 -🔧 Fully typed configuration and project setup (tsconfig.json, vite.config.ts, tailwind.config.js)
 -🗂️ Organized project structure for scalability and maintainability
+```
 
 ```
 Root Directory/
