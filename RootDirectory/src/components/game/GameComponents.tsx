@@ -36,9 +36,9 @@ const skills = [
 ];
 
 // ============ BALL COMPONENT ============
-const Ball = memo(({ 
-  pos, 
-  skill, 
+const Ball = memo(({
+  pos,
+  skill,
   carPos,
   allBalls,
   index
@@ -77,7 +77,7 @@ const Ball = memo(({
     if (dist < 2.0) {
       const pushDir = tempVec.current.subVectors(ball.position, carPos).normalize();
       const overlap = 2.0 - dist;
-      // Scale impulse by dt*60 so it feels the same at 60 fps
+      // Scale impulse by dt*60 so it feels the same at 60fps
       const pushForce = overlap * 0.8 * (dt * 60);
       vel.current.addScaledVector(pushDir, pushForce);
       vel.current.y += 0.1 * (dt * 60);
@@ -105,7 +105,7 @@ const Ball = memo(({
     // Gravity — tuned at 60fps: 0.012 per frame → 0.012*60 = 0.72 units/s²
     vel.current.y -= 0.72 * dt;
 
-    // Exponential friction (air)
+    // Exponential air friction — 0.995 per frame at 60fps
     const airFriction = Math.pow(0.995, dt * 60);
     vel.current.multiplyScalar(airFriction);
 
@@ -167,7 +167,11 @@ const Ball = memo(({
       >
         <div
           className={`bg-black/80 px-3 py-1.5 rounded-lg ${SETTINGS.CUBE_TEXT_SIZE} font-bold whitespace-nowrap border border-[#00FFD1]/30 shadow-lg`}
-          style={{ color: SETTINGS.THEME_COLOR, userSelect: 'none', pointerEvents: 'none' }}
+          style={{
+            color: SETTINGS.THEME_COLOR,
+            userSelect: 'none',
+            pointerEvents: 'none'
+          }}
         >
           {skill}
         </div>
@@ -208,6 +212,39 @@ const Trail = memo(({ positions }: { positions: THREE.Vector3[] }) => {
 });
 
 Trail.displayName = 'Trail';
+
+// ============ CAR COMPONENTS ============
+const CarPart = memo(({ pos, size, color = SETTINGS.THEME_COLOR, emissive = 0.5, opacity = 1 }: any) => (
+  <mesh position={pos} castShadow>
+    <boxGeometry args={size} />
+    <meshStandardMaterial
+      color={color}
+      metalness={0.9}
+      roughness={0.1}
+      emissive={color}
+      emissiveIntensity={emissive}
+      transparent={opacity < 1}
+      opacity={opacity}
+    />
+  </mesh>
+));
+
+CarPart.displayName = 'CarPart';
+
+const Wheel = memo(({ pos }: { pos: [number, number, number] }) => (
+  <group position={pos}>
+    <mesh rotation={[0, 0, Math.PI / 2]} castShadow>
+      <cylinderGeometry args={[0.25, 0.25, 0.15, 16]} />
+      <meshStandardMaterial color="#111111" metalness={0.9} roughness={0.2} />
+    </mesh>
+    <mesh rotation={[0, 0, Math.PI / 2]}>
+      <cylinderGeometry args={[0.15, 0.15, 0.16, 16]} />
+      <meshStandardMaterial color="#00FFD1" emissive="#00FFD1" emissiveIntensity={0.7} metalness={1} roughness={0.2} />
+    </mesh>
+  </group>
+));
+
+Wheel.displayName = 'Wheel';
 
 const Car = memo(({
   onDebug,
@@ -263,7 +300,7 @@ const Car = memo(({
       d: keys.d || touchControls.d,
     };
 
-    // Turn speed tuned at 60fps: 0.05 rad/frame → 3 rad/s
+    // Turn speed tuned at 60fps: 0.05 rad/frame → 3.0 rad/s
     const turnAmount = 3.0 * dt;
 
     if (activeKeys.a) {
@@ -273,7 +310,7 @@ const Car = memo(({
       car.rotation.y -= turnAmount;
       tilt.current.z = Math.max(tilt.current.z - 0.02 * dt * 60, -0.15);
     } else {
-      // Exponential decay: base 0.9^(dt*60)
+      // Exponential tilt decay — 0.9 per frame at 60fps
       tilt.current.z *= Math.pow(0.9, dt * 60);
     }
 
@@ -345,7 +382,7 @@ Car.displayName = 'Car';
 
 // ============ CAMERA FOLLOW ============
 const CameraFollow = memo(({ target }: { target: THREE.Vector3 }) => {
-  // k=3 gives ~95% convergence in 1 second, matching the original lerp(0.05) at 60fps
+  // k=3 gives ~95% convergence in 1 second, matching original lerp(0.05) at 60fps
   const k = 3;
 
   useFrame((state, delta) => {
@@ -365,9 +402,9 @@ CameraFollow.displayName = 'CameraFollow';
 // ============ ENVIRONMENT ============
 const GameEnvironment = memo(() => {
   const wallPositions = useMemo(() => [
-    [0, 1, 25, 0], [0, 1, -25, 0], [25, 1, 0, Math.PI/2], [-25, 1, 0, Math.PI/2]
+    [0, 1, 25, 0], [0, 1, -25, 0], [25, 1, 0, Math.PI / 2], [-25, 1, 0, Math.PI / 2]
   ], []);
-  
+
   const pillarPositions = useMemo(() => [
     [24, 2, 24], [-24, 2, 24], [24, 2, -24], [-24, 2, -24]
   ] as [number, number, number][], []);
@@ -379,35 +416,35 @@ const GameEnvironment = memo(() => {
         <meshStandardMaterial color="#0a0a0a" metalness={0.8} roughness={0.2} />
       </mesh>
       <gridHelper args={[50, 50, SETTINGS.THEME_COLOR, '#004d44']} position={[0, 0.01, 0]} />
-      
+
       {wallPositions.map((w, i) => (
         <mesh key={i} position={[w[0], w[1], w[2]]} rotation={[0, w[3], 0]}>
           <boxGeometry args={[50, 2, 0.5]} />
-          <meshStandardMaterial 
-            color={SETTINGS.THEME_COLOR} 
-            emissive={SETTINGS.THEME_COLOR} 
-            emissiveIntensity={0.5} 
-            metalness={0.9} 
-            roughness={0.1} 
-            transparent 
-            opacity={0.3} 
+          <meshStandardMaterial
+            color={SETTINGS.THEME_COLOR}
+            emissive={SETTINGS.THEME_COLOR}
+            emissiveIntensity={0.5}
+            metalness={0.9}
+            roughness={0.1}
+            transparent
+            opacity={0.3}
           />
         </mesh>
       ))}
-      
+
       {pillarPositions.map((p, i) => (
         <mesh key={i} position={p} castShadow>
           <cylinderGeometry args={[0.5, 0.5, 4, 8]} />
-          <meshStandardMaterial 
-            color={SETTINGS.THEME_COLOR} 
-            emissive={SETTINGS.THEME_COLOR} 
-            emissiveIntensity={0.8} 
-            metalness={1} 
-            roughness={0} 
+          <meshStandardMaterial
+            color={SETTINGS.THEME_COLOR}
+            emissive={SETTINGS.THEME_COLOR}
+            emissiveIntensity={0.8}
+            metalness={1}
+            roughness={0}
           />
         </mesh>
       ))}
-      
+
       <Stars radius={100} depth={50} count={800} factor={4} saturation={0} fade speed={1} />
     </>
   );
