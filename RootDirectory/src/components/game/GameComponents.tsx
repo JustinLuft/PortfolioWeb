@@ -61,12 +61,15 @@ const Ball = memo(({
     }
   }, [allBalls, index]);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!ref.current) return;
-    
+
+    // Clamp delta to avoid spiral of death on tab re-focus
+    const dt = Math.min(delta, 0.1);
+
     frameCounter.current++;
     if (frameCounter.current % SETTINGS.BALL_UPDATE_FREQUENCY !== 0) return;
-    
+
     const ball = ref.current;
 
     // Car collision
@@ -74,32 +77,39 @@ const Ball = memo(({
     if (dist < 2.0) {
       const pushDir = tempVec.current.subVectors(ball.position, carPos).normalize();
       const overlap = 2.0 - dist;
-      const pushForce = overlap * 0.8;
-      vel.current.add(pushDir.multiplyScalar(pushForce));
-      vel.current.y += 0.1;
+      // Scale impulse by dt*60 so it feels the same at 60 fps
+      const pushForce = overlap * 0.8 * (dt * 60);
+      vel.current.addScaledVector(pushDir, pushForce);
+      vel.current.y += 0.1 * (dt * 60);
     }
 
     // Ball-to-ball collision
     allBalls.current.forEach((otherBall, otherIndex) => {
       if (!otherBall || otherIndex === index) return;
-      
+
       const ballDist = ball.position.distanceTo(otherBall.position);
       const minDist = radius * 2;
-      
+
       if (ballDist < minDist && ballDist > 0.01) {
-        const collisionDir = tempVec.current.subVectors(ball.position, otherBall.position).normalize();
+        const collisionDir = tempVec.current
+          .subVectors(ball.position, otherBall.position)
+          .normalize();
         const overlap = minDist - ballDist;
-        ball.position.add(collisionDir.clone().multiplyScalar(overlap * 0.25));
+        ball.position.addScaledVector(collisionDir, overlap * 0.25);
         if (vel.current.length() > 0.01) {
-          vel.current.add(collisionDir.multiplyScalar(overlap * 0.3));
+          vel.current.addScaledVector(collisionDir, overlap * 0.3 * (dt * 60));
         }
       }
     });
 
-    // Physics
-    vel.current.y -= 0.012;
-    vel.current.multiplyScalar(0.995);
-    ball.position.add(vel.current);
+    // Gravity — tuned at 60fps: 0.012 per frame → 0.012*60 = 0.72 units/s²
+    vel.current.y -= 0.72 * dt;
+
+    // Exponential friction (air)
+    const airFriction = Math.pow(0.995, dt * 60);
+    vel.current.multiplyScalar(airFriction);
+
+    ball.position.addScaledVector(vel.current, dt * 60);
 
     // Ground collision
     if (ball.position.y < radius) {
@@ -111,8 +121,10 @@ const Ball = memo(({
       }
       const horizontalSpeed = Math.sqrt(vel.current.x ** 2 + vel.current.z ** 2);
       if (horizontalSpeed > 0.001) {
-        vel.current.x *= 0.92;
-        vel.current.z *= 0.92;
+        // Ground friction — tuned at 60fps: 0.92 per frame
+        const groundFriction = Math.pow(0.92, dt * 60);
+        vel.current.x *= groundFriction;
+        vel.current.z *= groundFriction;
       } else {
         vel.current.x = 0;
         vel.current.z = 0;
@@ -133,7 +145,7 @@ const Ball = memo(({
     const speed = Math.sqrt(vel.current.x ** 2 + vel.current.z ** 2);
     if (speed > 0.001) {
       const axis = new THREE.Vector3(-vel.current.z, 0, vel.current.x).normalize();
-      ball.rotateOnAxis(axis, speed / radius);
+      ball.rotateOnAxis(axis, (speed / radius) * dt * 60);
     }
   });
 
@@ -147,19 +159,15 @@ const Ball = memo(({
         emissive={SETTINGS.THEME_COLOR}
         emissiveIntensity={0.3}
       />
-      <Html 
-        distanceFactor={SETTINGS.CUBE_TEXT_DISTANCE} 
+      <Html
+        distanceFactor={SETTINGS.CUBE_TEXT_DISTANCE}
         center
         zIndexRange={[0, 0]}
         style={{ pointerEvents: 'none' }}
       >
         <div
           className={`bg-black/80 px-3 py-1.5 rounded-lg ${SETTINGS.CUBE_TEXT_SIZE} font-bold whitespace-nowrap border border-[#00FFD1]/30 shadow-lg`}
-          style={{ 
-            color: SETTINGS.THEME_COLOR, 
-            userSelect: 'none', 
-            pointerEvents: 'none'
-          }}
+          style={{ color: SETTINGS.THEME_COLOR, userSelect: 'none', pointerEvents: 'none' }}
         >
           {skill}
         </div>
@@ -201,41 +209,8 @@ const Trail = memo(({ positions }: { positions: THREE.Vector3[] }) => {
 
 Trail.displayName = 'Trail';
 
-// ============ CAR COMPONENTS ============
-const CarPart = memo(({ pos, size, color = SETTINGS.THEME_COLOR, emissive = 0.5, opacity = 1 }: any) => (
-  <mesh position={pos} castShadow>
-    <boxGeometry args={size} />
-    <meshStandardMaterial 
-      color={color} 
-      metalness={0.9} 
-      roughness={0.1} 
-      emissive={color} 
-      emissiveIntensity={emissive} 
-      transparent={opacity < 1} 
-      opacity={opacity} 
-    />
-  </mesh>
-));
-
-CarPart.displayName = 'CarPart';
-
-const Wheel = memo(({ pos }: { pos: [number, number, number] }) => (
-  <group position={pos}>
-    <mesh rotation={[0, 0, Math.PI/2]} castShadow>
-      <cylinderGeometry args={[0.25, 0.25, 0.15, 16]} />
-      <meshStandardMaterial color="#111111" metalness={0.9} roughness={0.2} />
-    </mesh>
-    <mesh rotation={[0, 0, Math.PI/2]}>
-      <cylinderGeometry args={[0.15, 0.15, 0.16, 16]} />
-      <meshStandardMaterial color="#00FFD1" emissive="#00FFD1" emissiveIntensity={0.7} metalness={1} roughness={0.2} />
-    </mesh>
-  </group>
-));
-
-Wheel.displayName = 'Wheel';
-
-const Car = memo(({ 
-  onDebug, 
+const Car = memo(({
+  onDebug,
   onPosChange,
   touchControls,
   onTrailUpdate
@@ -274,11 +249,13 @@ const Car = memo(({
     };
   }, []);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!ref.current) return;
+
+    const dt = Math.min(delta, 0.1);
     const car = ref.current;
     const angle = car.rotation.y;
-    
+
     const activeKeys = {
       w: keys.w || touchControls.w,
       s: keys.s || touchControls.s,
@@ -286,37 +263,52 @@ const Car = memo(({
       d: keys.d || touchControls.d,
     };
 
-    if (activeKeys.a) { 
-      car.rotation.y += SETTINGS.CAR_TURN_SPEED;
-      tilt.current.z = Math.min(tilt.current.z + 0.02, 0.15);
-    } else if (activeKeys.d) { 
-      car.rotation.y -= SETTINGS.CAR_TURN_SPEED;
-      tilt.current.z = Math.max(tilt.current.z - 0.02, -0.15);
-    } else tilt.current.z *= 0.9;
+    // Turn speed tuned at 60fps: 0.05 rad/frame → 3 rad/s
+    const turnAmount = 3.0 * dt;
 
-    if (activeKeys.w) { 
-      vel.current.x += Math.sin(angle) * SETTINGS.CAR_SPEED; 
-      vel.current.z += Math.cos(angle) * SETTINGS.CAR_SPEED;
-      tilt.current.x = Math.max(tilt.current.x - 0.01, -0.08);
-    } else if (activeKeys.s) { 
-      vel.current.x -= Math.sin(angle) * SETTINGS.CAR_SPEED * SETTINGS.CAR_REVERSE_SPEED; 
-      vel.current.z -= Math.cos(angle) * SETTINGS.CAR_SPEED * SETTINGS.CAR_REVERSE_SPEED;
-      tilt.current.x = Math.min(tilt.current.x + 0.01, 0.05);
-    } else tilt.current.x *= 0.9;
+    if (activeKeys.a) {
+      car.rotation.y += turnAmount;
+      tilt.current.z = Math.min(tilt.current.z + 0.02 * dt * 60, 0.15);
+    } else if (activeKeys.d) {
+      car.rotation.y -= turnAmount;
+      tilt.current.z = Math.max(tilt.current.z - 0.02 * dt * 60, -0.15);
+    } else {
+      // Exponential decay: base 0.9^(dt*60)
+      tilt.current.z *= Math.pow(0.9, dt * 60);
+    }
+
+    // Acceleration tuned at 60fps: 0.03 per frame → 1.8 units/s²
+    const accel = 1.8 * dt;
+    const reverseAccel = accel * SETTINGS.CAR_REVERSE_SPEED;
+
+    if (activeKeys.w) {
+      vel.current.x += Math.sin(angle) * accel;
+      vel.current.z += Math.cos(angle) * accel;
+      tilt.current.x = Math.max(tilt.current.x - 0.01 * dt * 60, -0.08);
+    } else if (activeKeys.s) {
+      vel.current.x -= Math.sin(angle) * reverseAccel;
+      vel.current.z -= Math.cos(angle) * reverseAccel;
+      tilt.current.x = Math.min(tilt.current.x + 0.01 * dt * 60, 0.05);
+    } else {
+      tilt.current.x *= Math.pow(0.9, dt * 60);
+    }
 
     car.rotation.z = tilt.current.z;
     car.rotation.x = tilt.current.x;
 
-    car.position.x += vel.current.x;
-    car.position.z += vel.current.z;
-    vel.current.x *= 0.92;
-    vel.current.z *= 0.92;
+    // Exponential velocity decay — 0.92 per frame at 60fps
+    const friction = Math.pow(0.92, dt * 60);
+    vel.current.x *= friction;
+    vel.current.z *= friction;
+
+    car.position.x += vel.current.x * dt * 60;
+    car.position.z += vel.current.z * dt * 60;
 
     car.position.x = Math.max(-22, Math.min(22, car.position.x));
     car.position.z = Math.max(-22, Math.min(22, car.position.z));
 
     onPosChange(car.position);
-    
+
     frameCount.current++;
     if (frameCount.current % 3 === 0) {
       onTrailUpdate(car.position.clone());
@@ -353,10 +345,18 @@ Car.displayName = 'Car';
 
 // ============ CAMERA FOLLOW ============
 const CameraFollow = memo(({ target }: { target: THREE.Vector3 }) => {
-  useFrame((state) => {
-    state.camera.position.lerp(new THREE.Vector3(target.x, target.y + 12, target.z - 18), 0.05);
+  // k=3 gives ~95% convergence in 1 second, matching the original lerp(0.05) at 60fps
+  const k = 3;
+
+  useFrame((state, delta) => {
+    const dt = Math.min(delta, 0.1);
+    const smoothing = 1 - Math.exp(-k * dt);
+
+    const desired = new THREE.Vector3(target.x, target.y + 12, target.z - 18);
+    state.camera.position.lerp(desired, smoothing);
     state.camera.lookAt(target.x, target.y + 1, target.z);
   });
+
   return null;
 });
 
