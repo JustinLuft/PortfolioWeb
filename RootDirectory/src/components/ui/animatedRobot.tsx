@@ -24,6 +24,7 @@ export const AnimatedRobot: React.FC<AnimatedRobotProps> = ({
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const clock = new THREE.Clock();
   const robotPartsRef = useRef<{
     head?: THREE.Group;
     body?: THREE.Group;
@@ -379,11 +380,12 @@ export const AnimatedRobot: React.FC<AnimatedRobotProps> = ({
 
     // Animation loop
     const animate = () => {
-      timeRef.current += 0.016; // ~60fps
+      const delta = clock.getDelta(); // seconds since last frame
+      timeRef.current += delta;
       
       // Entrance animation - only if entrance progress is not complete
       if (entranceProgressRef.current < 1) {
-        entranceProgressRef.current += 0.016 / 2.5; // 2.5 second duration
+        entranceProgressRef.current += delta / 2.5;
         entranceProgressRef.current = Math.min(entranceProgressRef.current, 1);
 
         // Smooth easing function
