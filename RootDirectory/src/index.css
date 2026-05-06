@@ -9,13 +9,34 @@
   }
 
   .scanline {
+    pointer-events: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scanline::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(
       rgba(18, 16, 16, 0) 50%,
       rgba(0, 0, 0, 0.25) 50%
     );
     background-size: 100% 4px;
+    animation: scanline 10s linear infinite;
     pointer-events: none;
-    animation: scanline 7.5s linear infinite;
+  }
+
+  @keyframes scanline {
+    0% {
+      transform: translateY(0%);
+    }
+    100% {
+      transform: translateY(200%);
+    }
   }
 
   /* Floating animation utility */
@@ -82,26 +103,24 @@
 
   /* Container class that moves scrollbar to left */
   .scrollbar-left {
-    direction: rtl;       /* scrollbar on the left */
+    direction: rtl;
     overflow-y: auto;
-    overflow-x: hidden;   /* prevent horizontal scroll */
-    cursor: var(--cursor-normal) !important; /* ensure custom cursor */
+    overflow-x: hidden;
+    cursor: var(--cursor-normal) !important;
   }
 
-  /* Reset content inside to normal LTR direction */
   .scrollbar-left > * {
     direction: ltr;
   }
 
-  /* Combine with your existing custom scrollbar styles */
   .scrollbar-left.scrollbar-custom::-webkit-scrollbar {
     width: 8px;
-    cursor: var(--cursor-normal) !important; /* cursor on scrollbar */
+    cursor: var(--cursor-normal) !important;
   }
 
   .scrollbar-left.scrollbar-custom::-webkit-scrollbar-track {
     background: #1A1E23;
-    cursor: var(--cursor-normal) !important; /* cursor on track */
+    cursor: var(--cursor-normal) !important;
   }
 
   .scrollbar-left.scrollbar-custom::-webkit-scrollbar-thumb {
@@ -109,52 +128,38 @@
     border-radius: 9999px;
     border: 2px solid #1A1E23;
     box-shadow: 0 0 8px #00FFD1;
-    cursor: var(--cursor-normal) !important; /* cursor on thumb */
+    cursor: var(--cursor-normal) !important;
   }
 
-  /* Firefox */
   .scrollbar-left.scrollbar-custom {
     scrollbar-width: thin;
     scrollbar-color: #00FFD1 #1A1E23;
-    cursor: var(--cursor-normal) !important; /* cursor on scrollbar container */
+    cursor: var(--cursor-normal) !important;
   }
-  /* Make entire page background black and text readable */
-body {
-  background-color: #000; /* black background */
-  color: #fff;            /* default text color white */
-  margin: 0;
-  padding: 0;
-}
 
-  @keyframes scanline {
-    0% {
-      background-position: 0 -100%;
-    }
-    35%, 100% {
-      background-position: 0 100%;
-    }
+  body {
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
   }
 }
 
 /* === Global Custom Cursor === */
 
-/* Hide the default cursor */
 body {
   cursor: none;
 }
 
-/* Define CSS variables for cursor URLs */
 :root {
   --cursor-normal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 30 30' fill='rgba(0, 255, 209, 0.7)'%3E%3Cpath d='M15 0 L0 30 L30 30 Z' /%3E%3C/svg%3E") 8 8, auto;
   --cursor-hover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 30 30' fill='rgba(0, 255, 209, 0.7)'%3E%3Cpath d='M15 0 L0 30 L30 30 Z' /%3E%3C/svg%3E") 8 8, auto;
 }
 
-/* Apply normal cursor everywhere */
 * {
   cursor: var(--cursor-normal) !important;
 }
 
-/* Change cursor on hover for interactive elements */
 a:hover,
 button:hover,
 input:hover,
@@ -163,12 +168,12 @@ select:hover {
   cursor: var(--cursor-hover) !important;
 }
 
-/* Fallback for touch devices */
 @media (hover: none) and (pointer: coarse) {
   *, a, button, input, textarea, select {
     cursor: auto !important;
   }
 }
+
 /* 3D Landing Page Letters */
 
 .perspective-container {
@@ -207,7 +212,6 @@ select:hover {
   background: transparent;
 }
 
-/* Front face - cyan color with no shadows */
 .letter-front {
   position: relative;
   color: #00FFD1 !important;
@@ -215,7 +219,6 @@ select:hover {
   z-index: 100;
 }
 
-/* Extrusion layers - pink gradient, positioned behind front */
 .letter-extrusion {
   position: absolute;
   top: 0;
@@ -231,6 +234,3 @@ select:hover {
   pointer-events: none;
   background: transparent;
 }
-
-
-
