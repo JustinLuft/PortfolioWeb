@@ -15,14 +15,17 @@
     );
     background-size: 100% 4px;
     pointer-events: none;
-    animation: scanline 10s linear infinite;
+    animation: scanline 13s linear infinite;
   }
 
   @keyframes scanline {
     0% {
       background-position: 0 0;
     }
-    100% {
+    23% {
+      background-position: 0 100vh;
+    }
+    23.01%, 100% {
       background-position: 0 100vh;
     }
   }
