@@ -8,6 +8,16 @@
     text-shadow: 0 0 5px #00FFD1;
   }
 
+  /* ============================================
+     SCANLINE TIMING
+     --scanline-move-time:   3    (seconds the line sweeps)
+     --scanline-pause-time:  10   (seconds it holds still)
+     ============================================ */
+  :root {
+    --scanline-move-time: 4;
+    --scanline-pause-time: 9;
+  }
+
   .scanline {
     background: linear-gradient(
       rgba(18, 16, 16, 0) 50%,
@@ -15,17 +25,21 @@
     );
     background-size: 100% 4px;
     pointer-events: none;
-    animation: scanline 13s linear infinite;
+    animation: scanline calc((var(--scanline-move-time) + var(--scanline-pause-time)) * 1s) linear infinite;
   }
 
   @keyframes scanline {
     0% {
       background-position: 0 0;
     }
-    23% {
+    /* move% = move / (move + pause) * 100 */
+    /* With defaults: 3 / 13 * 100 = 23.08% */
+    /* This value must be updated manually if you change the times above */
+    /* Formula: move / (move + pause) * 100 */
+    23.08% {
       background-position: 0 100vh;
     }
-    23.01%, 100% {
+    23.09%, 100% {
       background-position: 0 100vh;
     }
   }
