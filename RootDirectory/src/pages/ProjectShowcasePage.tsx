@@ -14,6 +14,13 @@ import {
 
 import Interactive3DCube from '../components/ui/Interactive3DCube';
 
+const PROJECTS_PER_PAGE = 5;
+// Each card is ~64px tall — holds the list container height stable
+// so the detail panel never expands during transitions.
+const LIST_MIN_HEIGHT = PROJECTS_PER_PAGE * 64;
+// Must match the exit animation duration below (in ms).
+const EXIT_DURATION_MS = 150;
+
 const ProjectShowcasePage: React.FC = () => {
   // -------------------------------
   // State
@@ -24,6 +31,9 @@ const ProjectShowcasePage: React.FC = () => {
   );
   const [activeTab, setActiveTab] = useState<'overview' | 'technologies' | 'challenges'>('overview');
   const [currentPage, setCurrentPage] = useState(0);
+  // When false the list fades out; we swap data underneath, then set true to fade back in.
+  // This guarantees old and new items never coexist in the DOM at the same time.
+  const [listVisible, setListVisible] = useState(true);
 
   // -------------------------------
   // Refs
@@ -31,7 +41,17 @@ const ProjectShowcasePage: React.FC = () => {
   const projectsRef = useRef<HTMLDivElement>(null);
 
   // -------------------------------
-  // Pagination reset when category changes
+  // Derived data
+  // -------------------------------
+  const filteredProjects = getProjectsByCategory(selectedCategory);
+  const totalPages = Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE);
+  const paginatedProjects = filteredProjects.slice(
+    currentPage * PROJECTS_PER_PAGE,
+    (currentPage + 1) * PROJECTS_PER_PAGE
+  );
+
+  // -------------------------------
+  // Reset page when category changes
   // -------------------------------
   useEffect(() => {
     setCurrentPage(0);
@@ -51,31 +71,44 @@ const ProjectShowcasePage: React.FC = () => {
   };
 
   // -------------------------------
-  // Skip to projects
+  // Scroll to projects
   // -------------------------------
   const scrollToProjects = () => {
     projectsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   // -------------------------------
-  // Pagination
+  // Page change: fade out → swap → fade in
+  // Prevents old+new items from ever overlapping in the DOM,
+  // which was causing the 10-item flash and detail panel expansion.
   // -------------------------------
-  const PROJECTS_PER_PAGE = 5;
-  const filteredProjects = getProjectsByCategory(selectedCategory);
-  const totalPages = Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE);
-  const paginatedProjects = filteredProjects.slice(
-    currentPage * PROJECTS_PER_PAGE,
-    (currentPage + 1) * PROJECTS_PER_PAGE
-  );
+  const changePage = (next: number) => {
+    setListVisible(false);
+    setTimeout(() => {
+      setCurrentPage(next);
+      const incoming = filteredProjects.slice(
+        next * PROJECTS_PER_PAGE,
+        (next + 1) * PROJECTS_PER_PAGE
+      );
+      if (incoming.length > 0) {
+        setSelectedProject(incoming[0]);
+        setActiveTab('overview');
+      }
+      setListVisible(true);
+    }, EXIT_DURATION_MS);
+  };
 
   const handleNextPage = () => {
-    if (currentPage < totalPages - 1) setCurrentPage(prev => prev + 1);
+    if (currentPage < totalPages - 1) changePage(currentPage + 1);
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 0) setCurrentPage(prev => prev - 1);
+    if (currentPage > 0) changePage(currentPage - 1);
   };
 
+  // -------------------------------
+  // Tab content
+  // -------------------------------
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
@@ -192,7 +225,7 @@ const ProjectShowcasePage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 sm:gap-2">
             {/* Project List */}
             <div className="lg:col-span-1 px-4 sm:px-4">
-              {/* List header + pagination controls */}
+              {/* Header + pagination controls */}
               <div className="flex items-center justify-between mb-3 sm:mb-4 px-1 sm:px-2">
                 <h2 className="font-press-start text-[10px] sm:text-xs text-primary/60">
                   {filteredProjects.length} Project{filteredProjects.length !== 1 ? 's' : ''}
@@ -229,59 +262,54 @@ const ProjectShowcasePage: React.FC = () => {
               </div>
 
               {/*
-                Using a stable min-height so the container never collapses between
-                pages, which was the root cause of the spacing-growth bug.
-                overflow-hidden removed — it was clipping the fade-in of incoming
-                items at the container boundary.
-                mode="sync" lets exits and entrances overlap cleanly as pure fades.
+                min-height keeps the column a fixed size so the detail panel
+                on the right is never pushed by list height changes.
+                No overflow-hidden — that was clipping cards during fade-in.
+                listVisible drives a single opacity transition on the wrapper;
+                the data swap happens inside the setTimeout while opacity is 0,
+                so the user never sees old and new items at the same time.
               */}
-              <div
-                className="relative"
-                style={{ minHeight: `${PROJECTS_PER_PAGE * 64}px` }}
-              >
-                <div className="space-y-2 sm:space-y-3">
-                  <AnimatePresence mode="sync">
-                    {paginatedProjects.map((project, index) => (
-                      <motion.div
-                        key={project.id}
-                        layout="position"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{
-                          opacity: { duration: 0.18, delay: index * 0.04 },
-                          layout: { duration: 0.2 },
-                        }}
-                        whileHover={{ scale: 1.02 }}
-                        onClick={() => {
-                          setSelectedProject(project);
-                          setActiveTab('overview');
-                        }}
-                        className={`
-                          cursor-pointer p-3 sm:p-4 rounded-lg transition-all duration-300
-                          ${selectedProject.id === project.id
-                            ? 'bg-primary/20 border-2 border-primary shadow-lg shadow-primary/10'
-                            : 'bg-background/50 border-2 border-primary/10 hover:bg-primary/10 hover:border-primary/30'}
-                        `}
-                      >
-                        <div className="flex items-center gap-2 sm:gap-3">
-                          <div className={`
-                            flex-shrink-0
-                            ${selectedProject.id === project.id ? 'text-primary' : 'text-primary/60'}
-                          `}>
-                            {project.icon}
-                          </div>
-                          <h3 className={`
-                            font-press-start text-[10px] sm:text-xs leading-tight
-                            ${selectedProject.id === project.id ? 'text-primary' : 'text-primary/80'}
-                          `}>
-                            {project.name}
-                          </h3>
+              <div className="relative" style={{ minHeight: `${LIST_MIN_HEIGHT}px` }}>
+                <motion.div
+                  className="space-y-2 sm:space-y-3"
+                  animate={{ opacity: listVisible ? 1 : 0 }}
+                  transition={{ duration: EXIT_DURATION_MS / 1000, ease: 'easeInOut' }}
+                >
+                  {paginatedProjects.map((project, index) => (
+                    <motion.div
+                      key={project.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.15, delay: index * 0.05 }}
+                      whileHover={{ scale: 1.02 }}
+                      onClick={() => {
+                        setSelectedProject(project);
+                        setActiveTab('overview');
+                      }}
+                      className={`
+                        cursor-pointer p-3 sm:p-4 rounded-lg transition-all duration-300
+                        ${selectedProject.id === project.id
+                          ? 'bg-primary/20 border-2 border-primary shadow-lg shadow-primary/10'
+                          : 'bg-background/50 border-2 border-primary/10 hover:bg-primary/10 hover:border-primary/30'}
+                      `}
+                    >
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className={`
+                          flex-shrink-0
+                          ${selectedProject.id === project.id ? 'text-primary' : 'text-primary/60'}
+                        `}>
+                          {project.icon}
                         </div>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </div>
+                        <h3 className={`
+                          font-press-start text-[10px] sm:text-xs leading-tight
+                          ${selectedProject.id === project.id ? 'text-primary' : 'text-primary/80'}
+                        `}>
+                          {project.name}
+                        </h3>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </div>
             </div>
 
