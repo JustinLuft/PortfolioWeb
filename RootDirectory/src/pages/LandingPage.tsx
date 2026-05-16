@@ -55,7 +55,6 @@ const LandingPage: FC = () => {
     const interval = setInterval(() => {
       setFlashResume(true);
       const timeout = setTimeout(() => setFlashResume(false), 4000);
-
       return () => clearTimeout(timeout);
     }, 10000);
 
@@ -92,8 +91,6 @@ const LandingPage: FC = () => {
     }
 
     setConfetti(pieces);
-
-    // Clear confetti after animation
     setTimeout(() => setConfetti([]), 3000);
   };
 
@@ -107,7 +104,7 @@ const LandingPage: FC = () => {
           x: piece.x + piece.velocityX,
           y: piece.y + piece.velocityY,
           rotation: piece.rotation + piece.rotationSpeed,
-          velocityY: piece.velocityY + 0.3, // gravity
+          velocityY: piece.velocityY + 0.3,
         }))
       );
     }, 16);
@@ -168,11 +165,26 @@ const LandingPage: FC = () => {
     }
   };
 
+  // Social links split into two types:
+  // - href links: rendered as native <a> tags (adblock-safe)
+  // - action links: rendered as buttons (resume modal trigger)
   const socialLinks = [
-    { icon: <Linkedin className="mr-2 w-5 h-5" />, label: "LinkedIn", url: "http://www.linkedin.com/in/justinnl" },
-    { icon: <Github className="mr-2 w-5 h-5" />, label: "GitHub", url: "https://github.com/JustinLuft" },
-    { icon: <FileText className="mr-2 w-5 h-5" />, label: "Resume", action: () => { setResumeModalOpen(true); setIsEmailMode(false); } }
-  ];
+    {
+      icon: <Linkedin className="mr-2 w-5 h-5" />,
+      label: "LinkedIn",
+      href: "http://www.linkedin.com/in/justinnl",
+    },
+    {
+      icon: <Github className="mr-2 w-5 h-5" />,
+      label: "GitHub",
+      href: "https://github.com/JustinLuft",
+    },
+    {
+      icon: <FileText className="mr-2 w-5 h-5" />,
+      label: "Resume",
+      action: () => { setResumeModalOpen(true); setIsEmailMode(false); },
+    },
+  ] as const;
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
@@ -199,8 +211,8 @@ const LandingPage: FC = () => {
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-        <TiltingName 
-          name="JUSTIN LUFT" 
+        <TiltingName
+          name="JUSTIN LUFT"
           isReady={isSystemReady}
           size="md"
           interactionRadius={300}
@@ -219,28 +231,51 @@ const LandingPage: FC = () => {
         {isSystemReady && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
             <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-12">
-              {socialLinks.map((link, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  animate={link.label === "Resume" ? {
-                    boxShadow: flashResume
-                      ? '0 0 20px rgba(255,0,128,1), 0 0 30px rgba(255,0,128,0.7)'
-                      : '0 0 10px rgba(255,0,128,0.3), 0 0 15px rgba(0, 0, 0, 0.2)'
-                  } : {}}
-                  transition={link.label === "Resume" ? { duration: .5, ease: 'easeInOut', repeat: 0, repeatType: 'mirror' } : {}}
-                >
-                  <Button
-                    variant="outline"
-                    className="font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border"
-                    onClick={() => link.action ? link.action() : window.open(link.url, '_blank')}
+              {socialLinks.map((link, index) => {
+                const isResume = link.label === "Resume";
+
+                const buttonClass =
+                  "font-press-start text-primary border-primary text-xs md:text-base px-3 py-2 hover:bg-primary/20 hover:text-primary neon-border";
+
+                return (
+                  <motion.div
+                    key={index}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    animate={isResume ? {
+                      boxShadow: flashResume
+                        ? '0 0 20px rgba(255,0,128,1), 0 0 30px rgba(255,0,128,0.7)'
+                        : '0 0 10px rgba(255,0,128,0.3), 0 0 15px rgba(0, 0, 0, 0.2)'
+                    } : {}}
+                    transition={isResume
+                      ? { duration: 0.5, ease: 'easeInOut', repeat: 0, repeatType: 'mirror' }
+                      : {}
+                    }
                   >
-                    {link.icon}
-                    {link.label}
-                  </Button>
-                </motion.div>
-              ))}
+                    {'href' in link ? (
+                      // Native anchor — bypasses all adblocker popup blocking
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center border-2 rounded-none transition-colors ${buttonClass}`}
+                      >
+                        {link.icon}
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        className={buttonClass}
+                        onClick={link.action}
+                      >
+                        {link.icon}
+                        {link.label}
+                      </Button>
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         )}
