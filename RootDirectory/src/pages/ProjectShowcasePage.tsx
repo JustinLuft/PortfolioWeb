@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Globe, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { Github, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
-// Import all project data and types
-import { 
-  projects, 
-  categoryInfo, 
+import {
+  projects,
+  categoryInfo,
   getProjectsByCategory,
   getFirstProjectByCategory,
   type Category,
-  type Project 
+  type Project
 } from './ProjectsData';
 
-// Import the new Interactive3DCube component
 import Interactive3DCube from '../components/ui/Interactive3DCube';
 
 const ProjectShowcasePage: React.FC = () => {
@@ -60,7 +58,7 @@ const ProjectShowcasePage: React.FC = () => {
   };
 
   // -------------------------------
-  // Pagination handlers
+  // Pagination
   // -------------------------------
   const PROJECTS_PER_PAGE = 5;
   const filteredProjects = getProjectsByCategory(selectedCategory);
@@ -89,8 +87,8 @@ const ProjectShowcasePage: React.FC = () => {
             </p>
             <div className="flex flex-wrap gap-2 mt-4">
               {selectedProject.skills.map((skill, index) => (
-                <span 
-                  key={index} 
+                <span
+                  key={index}
                   className="bg-secondary/20 text-secondary px-2 py-1 rounded text-xs font-press-start"
                 >
                   {skill}
@@ -105,8 +103,8 @@ const ProjectShowcasePage: React.FC = () => {
             <h3 className="font-press-start text-xs mb-3 text-primary">Tech Stack</h3>
             <div className="flex flex-wrap gap-2">
               {selectedProject.fullDetails.technologies.map((tech, index) => (
-                <span 
-                  key={index} 
+                <span
+                  key={index}
                   className="bg-primary/10 text-primary px-2.5 py-1.5 rounded-full text-sm font-vt323"
                 >
                   {tech}
@@ -123,7 +121,9 @@ const ProjectShowcasePage: React.FC = () => {
               {selectedProject.fullDetails.challenges.map((challenge, index) => (
                 <li key={index} className="flex gap-2">
                   <span className="text-secondary mt-0.5 text-sm">▸</span>
-                  <span className="font-vt323 text-base md:text-lg text-primary/80 leading-snug">{challenge}</span>
+                  <span className="font-vt323 text-base md:text-lg text-primary/80 leading-snug">
+                    {challenge}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -153,15 +153,13 @@ const ProjectShowcasePage: React.FC = () => {
         </div>
 
         {/* Interactive 3D Cube */}
-        <Interactive3DCube 
+        <Interactive3DCube
           selectedCategory={selectedCategory}
           onCategoryChange={handleCategoryChange}
           onScrollToProjects={scrollToProjects}
         />
 
-     
-
-        {/* Projects Section - Add ref here */}
+        {/* Projects Section */}
         <div ref={projectsRef}>
           {/* Category Tabs */}
           <div className="mb-6 sm:mb-8 flex flex-wrap justify-center gap-2">
@@ -170,11 +168,11 @@ const ProjectShowcasePage: React.FC = () => {
                 key={category}
                 onClick={() => handleCategoryChange(category)}
                 className={`
-                  flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg 
+                  flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg
                   font-press-start text-xs sm:text-sm
                   transition-all duration-300 border-2
-                  ${selectedCategory === category 
-                    ? 'bg-primary/20 border-primary text-primary shadow-lg shadow-primary/20' 
+                  ${selectedCategory === category
+                    ? 'bg-primary/20 border-primary text-primary shadow-lg shadow-primary/20'
                     : 'bg-background/50 border-primary/20 text-primary/60 hover:border-primary/40 hover:text-primary'}
                 `}
               >
@@ -194,6 +192,7 @@ const ProjectShowcasePage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 sm:gap-2">
             {/* Project List */}
             <div className="lg:col-span-1 px-4 sm:px-4">
+              {/* List header + pagination controls */}
               <div className="flex items-center justify-between mb-3 sm:mb-4 px-1 sm:px-2">
                 <h2 className="font-press-start text-[10px] sm:text-xs text-primary/60">
                   {filteredProjects.length} Project{filteredProjects.length !== 1 ? 's' : ''}
@@ -228,45 +227,60 @@ const ProjectShowcasePage: React.FC = () => {
                   </div>
                 )}
               </div>
-              
-              <div className="space-y-2 sm:space-y-3">
-                <AnimatePresence mode="wait">
-                  {paginatedProjects.map((project, index) => (
-                    <motion.div
-                      key={project.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ delay: index * 0.05 }}
-                      whileHover={{ scale: 1.02 }}
-                      onClick={() => {
-                        setSelectedProject(project);
-                        setActiveTab('overview');
-                      }}
-                      className={`
-                        cursor-pointer p-3 sm:p-4 rounded-lg transition-all duration-300
-                        ${selectedProject.id === project.id
-                          ? 'bg-primary/20 border-2 border-primary shadow-lg shadow-primary/10'
-                          : 'bg-background/50 border-2 border-primary/10 hover:bg-primary/10 hover:border-primary/30'}
-                      `}
-                    >
-                      <div className="flex items-center gap-2 sm:gap-3">
-                        <div className={`
-                          flex-shrink-0
-                          ${selectedProject.id === project.id ? 'text-primary' : 'text-primary/60'}
-                        `}>
-                          {project.icon}
+
+              {/*
+                FIX: Wrap AnimatePresence in a relative + overflow-hidden container.
+                This prevents exiting elements (which Framer temporarily takes out of
+                flow via position:absolute during popLayout exit) from bleeding height
+                into the parent and causing the spacing-growth bug.
+              */}
+              <div className="relative overflow-hidden">
+                <div className="space-y-2 sm:space-y-3">
+                  {/*
+                    FIX: Changed mode="wait" → mode="popLayout".
+                    popLayout temporarily removes exiting items from layout flow so they
+                    don't push surrounding content down. Combined with layout prop on each
+                    child, siblings animate smoothly into place instead of snapping.
+                  */}
+                  <AnimatePresence mode="popLayout">
+                    {paginatedProjects.map((project, index) => (
+                      <motion.div
+                        key={project.id}
+                        layout
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        whileHover={{ scale: 1.02 }}
+                        onClick={() => {
+                          setSelectedProject(project);
+                          setActiveTab('overview');
+                        }}
+                        className={`
+                          cursor-pointer p-3 sm:p-4 rounded-lg transition-all duration-300
+                          ${selectedProject.id === project.id
+                            ? 'bg-primary/20 border-2 border-primary shadow-lg shadow-primary/10'
+                            : 'bg-background/50 border-2 border-primary/10 hover:bg-primary/10 hover:border-primary/30'}
+                        `}
+                      >
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <div className={`
+                            flex-shrink-0
+                            ${selectedProject.id === project.id ? 'text-primary' : 'text-primary/60'}
+                          `}>
+                            {project.icon}
+                          </div>
+                          <h3 className={`
+                            font-press-start text-[10px] sm:text-xs leading-tight
+                            ${selectedProject.id === project.id ? 'text-primary' : 'text-primary/80'}
+                          `}>
+                            {project.name}
+                          </h3>
                         </div>
-                        <h3 className={`
-                          font-press-start text-[10px] sm:text-xs leading-tight
-                          ${selectedProject.id === project.id ? 'text-primary' : 'text-primary/80'}
-                        `}>
-                          {project.name}
-                        </h3>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
 
@@ -292,14 +306,14 @@ const ProjectShowcasePage: React.FC = () => {
 
               {/* Tab Navigation */}
               <div className="flex gap-1.5 sm:gap-2 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-primary/20 overflow-x-auto">
-                {['overview', 'technologies', 'challenges'].map((tab) => (
+                {(['overview', 'technologies', 'challenges'] as const).map((tab) => (
                   <button
                     key={tab}
-                    onClick={() => setActiveTab(tab as any)}
+                    onClick={() => setActiveTab(tab)}
                     className={`
                       font-press-start text-[10px] sm:text-xs px-2.5 sm:px-4 py-1.5 sm:py-2 rounded transition-all whitespace-nowrap
-                      ${activeTab === tab 
-                        ? 'bg-secondary/20 text-secondary border border-secondary' 
+                      ${activeTab === tab
+                        ? 'bg-secondary/20 text-secondary border border-secondary'
                         : 'text-primary/60 hover:text-primary hover:bg-primary/5'}
                     `}
                   >
@@ -325,8 +339,8 @@ const ProjectShowcasePage: React.FC = () => {
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="flex-1 flex items-center justify-center gap-2 border-primary text-primary hover:bg-primary/10 font-press-start text-[10px] sm:text-xs h-10 sm:h-12"
                   onClick={() => window.open(selectedProject.githubLink, '_blank')}
                 >
