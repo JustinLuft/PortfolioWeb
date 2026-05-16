@@ -393,7 +393,7 @@ export const projects: Project[] = [
   // TOOLS & UTILITIES
   // ==========================================
   {
-  id: 8,
+  id: 82,
   name: "Mercedes-Benz LPA Tracker Power BI Visual",
   description:
     "An enterprise-wide Power BI reporting solution for tracking Layered Process Audit (LPA) completion rates across production shops, powered by a custom Python Tkinter web scraping application.",
@@ -429,7 +429,7 @@ export const projects: Project[] = [
     }
   },
   {
-    id: 7,
+    id: 72,
     name: "Mercedes-Benz Power BI Heatmap Visual",
     description:
       "A custom enterprise Power BI visual used at Mercedes-Benz to analyze production-line defect patterns through an interactive heatmap.",
