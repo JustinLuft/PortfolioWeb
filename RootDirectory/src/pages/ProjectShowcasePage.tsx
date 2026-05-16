@@ -229,28 +229,29 @@ const ProjectShowcasePage: React.FC = () => {
               </div>
 
               {/*
-                FIX: Wrap AnimatePresence in a relative + overflow-hidden container.
-                This prevents exiting elements (which Framer temporarily takes out of
-                flow via position:absolute during popLayout exit) from bleeding height
-                into the parent and causing the spacing-growth bug.
+                Using a stable min-height so the container never collapses between
+                pages, which was the root cause of the spacing-growth bug.
+                overflow-hidden removed — it was clipping the fade-in of incoming
+                items at the container boundary.
+                mode="sync" lets exits and entrances overlap cleanly as pure fades.
               */}
-              <div className="relative overflow-hidden">
+              <div
+                className="relative"
+                style={{ minHeight: `${PROJECTS_PER_PAGE * 64}px` }}
+              >
                 <div className="space-y-2 sm:space-y-3">
-                  {/*
-                    FIX: Changed mode="wait" → mode="popLayout".
-                    popLayout temporarily removes exiting items from layout flow so they
-                    don't push surrounding content down. Combined with layout prop on each
-                    child, siblings animate smoothly into place instead of snapping.
-                  */}
-                  <AnimatePresence mode="popLayout">
+                  <AnimatePresence mode="sync">
                     {paginatedProjects.map((project, index) => (
                       <motion.div
                         key={project.id}
-                        layout
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        layout="position"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ delay: index * 0.05 }}
+                        transition={{
+                          opacity: { duration: 0.18, delay: index * 0.04 },
+                          layout: { duration: 0.2 },
+                        }}
                         whileHover={{ scale: 1.02 }}
                         onClick={() => {
                           setSelectedProject(project);
